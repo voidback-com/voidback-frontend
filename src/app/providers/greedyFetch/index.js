@@ -86,7 +86,8 @@ const GreedyFetchContextProvider = ({children}) => {
       setLocalCached(request, responses[endpoint]);
     }
 
-    return responses[endpoint];
+    if(responses)
+      return responses[endpoint];
   }
 
 

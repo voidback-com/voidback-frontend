@@ -53,7 +53,7 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
       alignItems={"center"}
       overflow={"hidden"}
       width="100%"
-      maxW={"20vw"}
+      maxW={"25vw"}
       paddingRight={10}
       paddingLeft={5}
       style={{scrollbarWidth: "none"}}

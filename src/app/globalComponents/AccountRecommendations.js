@@ -79,7 +79,7 @@ const AccountRecommendations = () => {
     return (
       <Show breakpoint="(min-width: 1000px)">
         <Card
-          className="w-full h-1/2 max-h-[300px] bg-background border-1 shadow-none rounded-md"
+          className="w-full h-1/2 max-h-[300px] bg-background border-1 shadow-none rounded-md my-4 left-5 relative"
         >
           <CardHeader
             className="w-full"
