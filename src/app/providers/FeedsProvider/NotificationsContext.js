@@ -56,19 +56,13 @@ const notificatitonsContext = () => {
   }
 
 
-  let ws = null;
-
-  if(isAuthenticated()){
-
-    ws = new WebSocket(WS_NOTIFICATIONS_COUNT);
-
-
-  }
-
 
   useEffect(()=> {
 
-    if(ws){
+    if(isAuthenticated()){
+
+      const ws = new WebSocket(WS_NOTIFICATIONS_COUNT);
+
       ws.onopen = (event) => {
         ws.send(JSON.stringify({"token": getAccessToken()}));
       }
@@ -88,13 +82,23 @@ const notificatitonsContext = () => {
 
       ws.onclose = (ev) => {
         setNewNotifications(0);
-      }
 
-     const interval = setInterval(()=> {
-        ws.send(JSON.stringify({"token": getAccessToken()}));
+        return ()=> {
+          ws.close();
+        }
+
+      };
+
+      const interval = setInterval(()=> {
+        try{
+          ws.send(JSON.stringify({"token": getAccessToken()}));
+        }catch(err){
+          //
+        }
       }, 5000); 
-      
+    
       return ()=> clearInterval(interval);
+
     }
 
   }, [])

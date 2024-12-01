@@ -136,6 +136,9 @@ const AuthContextProvider = ({ children }) => {
         {
           setCookie("authTok", JSON.stringify(response));
         }
+        else{
+          logoutUser();
+        }
       }).catch((err)=> {
       })
     }

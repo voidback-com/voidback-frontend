@@ -98,7 +98,9 @@ const RightFeedContextProvider = ({children}) => {
           }
         }
         setTopSymbolsLoading(false);
-      })
+      }).catch(()=>{
+
+    })
 
 
 
@@ -124,9 +126,12 @@ const RightFeedContextProvider = ({children}) => {
 
     let data = [];
 
-    for(let i = 0; i < endpoints.length; i++)
+    if(responses)
     {
-      data.push(responses[endpoints[i]]);
+      for(let i = 0; i < endpoints.length; i++)
+      {
+        data.push(responses[endpoints[i]]);
+      }
     }
 
     return data;
