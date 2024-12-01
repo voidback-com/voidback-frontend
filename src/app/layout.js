@@ -1,9 +1,14 @@
 "use client"
 import MobileAlert from "./globalComponents/mobileAlert";
 import "./globals.css";
-import Providers from "./providers/index";
+import dynamic from 'next/dynamic'
 
 
+const DynamicProviders = dynamic(
+  () => import('./providers/index'),
+  { ssr: false }
+)
+ 
 
 
 
@@ -32,9 +37,9 @@ export default function RootLayout({ children }) {
 
       <body>
         <MobileAlert />
-        <Providers>
+        <DynamicProviders>
           {children}
-        </Providers>
+        </DynamicProviders>
       </body>
     </html>
   );

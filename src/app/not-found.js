@@ -3,6 +3,7 @@ import { Image, Link } from '@nextui-org/react';
 import { NavBack } from './research/components/topSection';
 
 
+
 export default async function NotFound() {
   return (
     <div className='bg-background'>

@@ -9,6 +9,8 @@ import SidebarContextProvider from "./FeedsProvider/SidebarProvider.js";
 import {NextUIProvider} from "@nextui-org/react";
 import GreedyFetchContextProvider from "./greedyFetch/index.js";
 import AnalyticsContextProvider from "./AnalyticsProvider/index.js";
+import dynamic from 'next/dynamic'
+ 
 
         
 

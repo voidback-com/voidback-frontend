@@ -25,10 +25,11 @@ import { PostCard } from "@/app/home/components/postCard";
 import { RefreshCcw } from "@geist-ui/icons";
 
 
+export const dynamicParams = false
 
 
 
-const Hashtag = ({ params }) => {
+const Page = ({ params }) => {
 
   const { hashtag } = params;
 
@@ -207,4 +208,4 @@ const Hashtag = ({ params }) => {
 
 
 
-export default Hashtag;
+export default Page;

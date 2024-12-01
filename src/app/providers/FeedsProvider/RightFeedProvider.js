@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { API_URL, errorToReadable, isError, toAuthHeaders } from "@/app/configs/api";
 import { GreedyFetchContext } from "../greedyFetch";
 import { AnalyticsContext } from "../AnalyticsProvider";
-import { useRouter } from "next/router";
 
 
 
@@ -41,7 +40,6 @@ const RightFeedContextProvider = ({children}) => {
 
   const { logEvent } = useContext(AnalyticsContext);
 
-  const router = useRouter();
 
   // symbols posts count
   const getSymbolsPostsCount = async (symbols) => {
@@ -198,7 +196,7 @@ const RightFeedContextProvider = ({children}) => {
 
   const insertSearchQuery = async (query) => {
 
-    logEvent("explore-search-query", router.pathname, {"query": query});
+    logEvent("explore-search-query", window.location.href, {"query": query});
 
 
     const data = await fetch(API_URL+'searchQuery', {
@@ -314,7 +312,7 @@ const RightFeedContextProvider = ({children}) => {
 
  
       if (skip===0)
-        logEvent("explore-category-search-query", router.pathname, {"query": query, "category": category});
+        logEvent("explore-category-search-query", window.location.href, {"query": query, "category": category});
 
 
     }
