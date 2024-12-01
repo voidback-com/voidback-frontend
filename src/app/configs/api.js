@@ -1,6 +1,7 @@
+'use client'
 import { getCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
-
+ 
 
 
 
