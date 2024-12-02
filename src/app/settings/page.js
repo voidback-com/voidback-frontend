@@ -23,19 +23,12 @@ import { Touchable } from "../auth/components";
 import { InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { errorToReadable, isAuthenticated } from "../configs/api";
+import { Popover } from "@mui/material";
 
 
 
 
 const SettingsPage = () => {
-
-
-  const router = useRouter();
-
-  useEffect(()=> {
-    if(!isAuthenticated())
-      return router.push("/home")
-  }, [])
 
 
 
@@ -201,12 +194,11 @@ const SettingsPage = () => {
       <VStack 
         height={"100%"} 
         width={"50vw"} 
-        maxW={"600px"}
       >
-        <Spacer />
-        <Accordion variant="bordered">
+        <Spacer/>
+        <Accordion className="w-1/2 min-w-fit" variant="bordered">
 
-          <AccordionItem key="Change password" aria-label="change password" title="Change password">
+          <AccordionItem className="h-fit" isDisabled={!isAuthenticated()} key="Change password" aria-label="change password" title="Change password">
             <HStack>
               <Spacer/>
               <Button onPress={()=>sendOTP(passwordResetModal)} variant="bordered">
@@ -216,7 +208,7 @@ const SettingsPage = () => {
             </HStack>
           </AccordionItem>
 
-          <AccordionItem key="Delete account" aria-label="delete account" title="Delete account">
+          <AccordionItem isDisabled={!isAuthenticated()} className="h-fit" key="Delete account" aria-label="delete account" title="Delete account">
             <HStack>
               <Spacer/>
 
@@ -228,7 +220,7 @@ const SettingsPage = () => {
           </AccordionItem>
 
 
-          <AccordionItem key="Legal" aria-label="legal" title="Legal">
+          <AccordionItem className="h-fit" key="Legal" aria-label="legal" title="Legal">
             <HStack padding={5}>
               <Spacer/>
               <Link href="/legal/pp" color="foreground" underline="always">
@@ -243,7 +235,7 @@ const SettingsPage = () => {
             </HStack>
           </AccordionItem>
 
-          <AccordionItem key="Help" aria-label="Help" title="Help">
+          <AccordionItem className="h-fit" key="Help" aria-label="Help" title="Help">
             <HStack padding={5}>
 
               <Spacer/>

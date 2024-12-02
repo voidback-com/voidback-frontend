@@ -27,10 +27,21 @@ import { Spinner } from "@nextui-org/react";
 const InboxPage = () => {
 
   const router = useRouter();
+  const toast = useToast();
 
   useEffect(()=> {
     if(!isAuthenticated())
-      return router.push("/home")
+    {
+      if(!toast.isActive(1))
+        toast({
+          title: "You have to login to view your inbox!",
+          status: "info",
+          duration: 5000,
+          isClosable: true,
+          id: 1
+        })
+      return router.replace("/home/foryou");
+    }
   }, [])
 
 
@@ -56,8 +67,6 @@ const InboxPage = () => {
   const [from, setFrom] = useState("all");
 
 
-
-  const toast = useToast();
 
 
   useEffect(()=> {

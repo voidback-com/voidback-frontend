@@ -18,9 +18,21 @@ const NotificationsPage = () => {
 
   const router = useRouter();
 
+  const toast = useToast();
+
   useEffect(()=> {
     if(!isAuthenticated())
-      return router.push("/home")
+    {
+      if(!toast.isActive(2))
+        toast({
+          title: "You have to login to view your Notifications!",
+          status: "info",
+          duration: 5000,
+          isClosable: true,
+          id: 2
+        })
+      return router.replace("/home/foryou");
+    }
   }, [])
 
 
@@ -33,7 +45,6 @@ const NotificationsPage = () => {
 
   const { getNotifications, deleteAllNotifications } = useContext(SidebarContext);
 
-  const toast = useToast();
 
 
   const clearAll = async () => {
@@ -44,7 +55,7 @@ const NotificationsPage = () => {
       setNotifications([]);
       toast({
         title: "Successfully cleared all notifications.",
-        duration: 3000,
+        duration: 4000,
         status: "success"
       })
     }

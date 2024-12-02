@@ -46,6 +46,7 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
   const editor = useDisclosure();
 
+
   return (
     <VStack
       height="100vh"
@@ -83,6 +84,8 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
           {
             return router.push(e);
           }
+          else if(e==="/home")
+            return router.push('/home/foryou');
         }}
       >
 
@@ -124,7 +127,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
 
         <Tab
-          isDisabled={account && isAuthenticated() ? false : true}
           key={"/inbox"}
           className="flex flex-row justify-start"
           title={
@@ -139,7 +141,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
 
         <Tab
-          isDisabled={account && isAuthenticated() ? false : true}
           key={"/notifications"}
           className="flex flex-row justify-start"
           title={
@@ -200,7 +201,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
 
         <Tab
-          isDisabled={account && isAuthenticated() ? false : true}
           key={"/settings"}
           className="flex flex-row justify-start"
           title={
