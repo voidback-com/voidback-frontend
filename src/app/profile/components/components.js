@@ -363,12 +363,17 @@ export const MyLikes = ({account}) => {
 
   const [posts,setPosts] = useState(false);
   const [endReached, setEndReached] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const toast = useToast();
 
 
   const fetchPosts = async () => {
+
+    if(loading) return;
+
+    setLoading(true);
 
     if(!posts)
     {
@@ -417,6 +422,8 @@ export const MyLikes = ({account}) => {
         })
       }
     }
+
+    setLoading(false);
   }
   
   const vref = useRef();
@@ -453,11 +460,11 @@ export const MyLikes = ({account}) => {
               paddingBottom={"10%"}
             >
               <Spacer/>
-              <SkewLoader color="mediumpurple" />
+              <Spinner color="default" />
               <Spacer/>
             </HStack>
           }
-          threshold={400}
+          threshold={1000}
           useWindow={false}
         >
           { 
@@ -511,7 +518,9 @@ export const MyLikes = ({account}) => {
 
             : 
 
+              !loading ?
             <Text fontSize={"small"}>not liked posts found.</Text>
+            : null
           }
         </InfiniteScroll>
       </VStack>
