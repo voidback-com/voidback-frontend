@@ -136,10 +136,9 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
   const renderPosts = () => {
 
-    if(!loading)
-      return posts.map((post, i)=> {
-        return <Stack direction={"column"} className="w-8/12 h-full shadow-none" key={i}><PostCard post={post} impressions={impressions[i]} post_replies={repliesCount[i]}  /></Stack>
-    })
+    return posts.map((post, i)=> {
+      return <Stack direction={"column"} className="w-8/12 h-full shadow-none" key={i}><PostCard post={post} impressions={impressions[i]} post_replies={repliesCount[i]}  /></Stack>
+  })
   }
 
 
@@ -204,7 +203,7 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
           : null
         }
 
-        {loading ? null : renderPosts()}
+        {renderPosts()}
       </InfiniteScroll>
   )
 
@@ -216,9 +215,7 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
 const Foryou = () => {
 
-
   return (
-
     <Container
       height="100vh"
       minW="100vw"

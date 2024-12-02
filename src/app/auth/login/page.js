@@ -43,11 +43,14 @@ const Login = () => {
   const [password, setPassword] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState(false);
 
   const [show, setShow] = useState(false);
+
   const [auth_loading, setAuthLoading] = useState(false);
+
+  const [loginBtnDisabled, setLoginBtnDisabled] = useState(false);
+
 
   const { auth_login } = useContext(AuthContext);
 
@@ -59,9 +62,16 @@ const Login = () => {
   const toast = useToast();
 
 
-  const loginUser = () => {
+  const loginUser = async () => {
+
     setEmailError(null);
+
     setPasswordError(null);
+
+    setLoginBtnDisabled(true);
+
+    setAuthLoading(true);
+
 
     if(!isEmailValid(email))
     {
@@ -74,30 +84,28 @@ const Login = () => {
     }
 
     else{
-      auth_login(email, password)
-        .then(async (res)=> {
-           if(res.status===200)
-            {
-              setLoginSuccess(true);
-              setCookie("authTok", JSON.stringify(await res.json()));
-            }
-            else{
-              setLoginError(await res.json());
-            }
-            setAuthLoading(false);
-        })
+      const response = await auth_login(email, password);
 
-      if(loginSuccess)
+      if(response && response.status===200)
       {
-        toast({
+        setCookie("authTok", JSON.stringify(await response.json()));
+         toast({
           title: "Successfully logged-in!",
           status: "success",
           duration: 5000
         })
 
-        return router.push("/home");
+        return router.replace("/home/foryou");
       }
+      else{
+        setLoginError(await response.json());
+      }
+      setAuthLoading(false);
+
     }
+
+    setLoginBtnDisabled(false);
+    setAuthLoading(false);
   }
 
 
@@ -126,7 +134,7 @@ const Login = () => {
 
   useEffect(()=> {
     if(isAuthenticated())
-      return router.push("/home");
+      return router.replace("/home/foryou");
   }, [])
 
   
@@ -144,9 +152,20 @@ const Login = () => {
         width={"60%"}
         maxW={"500px"}
       >
-        <div className="w-[100vw] flex flex-row justify-end px-10 py-10">
+        <div className="w-[100vw] flex flex-row justify-end p-10">
+          <Spacer/>
 
-            <Spacer />
+          <Text
+            fontSize={"xx-large"}
+            fontFamily={"sans-serif"}
+            fontWeight={600}
+            marginLeft={10}
+          >
+            Voidback.
+          </Text>
+
+          <Spacer />
+
           <Skeleton
             borderRadius={"3px"}
             isLoaded={!auth_loading}
@@ -226,15 +245,20 @@ const Login = () => {
 
             </Skeleton>
 
-            <InputRightElement paddingRight={4} paddingTop={2}>
-              <Touchable type="button" onClick={()=>setShow(!show)}>
-                { show ?
-                <FaEye size={28} />
-                  :
-                  <FaEyeSlash size={28} />
-                }
-              </Touchable>
-            </InputRightElement>
+             <Skeleton
+                borderRadius={"3px"}
+                isLoaded={!auth_loading}
+              >
+                <InputRightElement paddingRight={4} paddingTop={2}>
+                  <Touchable type="button" onClick={()=>setShow(!show)}>
+                    { show ?
+                    <FaEye size={28} />
+                      :
+                      <FaEyeSlash size={28} />
+                    }
+                  </Touchable>
+                </InputRightElement>
+            </Skeleton>
           </InputGroup>
 
 
@@ -247,7 +271,7 @@ const Login = () => {
             variant="solid"
             marginTop={5}
             onClick={loginUser}
-            isDisabled={!email || !password}
+            isDisabled={!email || !password || loginBtnDisabled}
           >
             Login
           </Button>
@@ -317,75 +341,61 @@ const Login = () => {
   <Spacer />
 
   <div className="w-full flex flex-row justify-center py-4">
-      <HStack
-        direction={"row"}
-        width="80%"
-        maxWidth={"700px"}
-        alignSelf="center"
+    <HStack
+      direction={"row"}
+      width="80%"
+      maxWidth={"700px"}
+      alignSelf="center"
+    >
+
+      <SkeletonText
+        borderRadius={"3px"}
+        isLoaded={!auth_loading}
+      >         
+        <Link
+          color="grey"
+          fontSize={"small"}
+          fontWeight={500}
+          href="/help/au"
+        >
+          About
+        </Link>
+
+      </SkeletonText>
+
+      <Spacer/>
+
+      <SkeletonText
+        borderRadius={"3px"}
+        isLoaded={!auth_loading}
       >
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!auth_loading}
-        >         
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
-          >
-            About
-          </Link>
-
-        </SkeletonText>
-
-        <Spacer/>
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!auth_loading}
+        <Link
+          color="grey"
+          fontSize={"small"}
+          fontWeight={500}
+          href="/legal/pp"
         >
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
-          >
-            Cookies Policy
-          </Link>
+          Privacy Policy
+        </Link>
 
-        </SkeletonText>
+      </SkeletonText>
 
+      <Spacer/>
 
-        <Spacer/>
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!auth_loading}
+      <SkeletonText
+        borderRadius={"3px"}
+        isLoaded={!auth_loading}
+      >
+        <Link
+          color="grey"
+          fontSize={"small"}
+          fontWeight={500}
+          href="/legal/tos"
         >
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
-          >
-            Privacy Policy
-          </Link>
+          Terms Of Service
+        </Link>
 
-        </SkeletonText>
-
-        <Spacer/>
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!auth_loading}
-        >
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
-          >
-            Terms Of Service
-          </Link>
-
-        </SkeletonText>
+      </SkeletonText>
       </HStack>
     </div>
   </div>

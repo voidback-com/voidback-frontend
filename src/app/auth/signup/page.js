@@ -35,6 +35,7 @@ import {
   Image,
   DatePicker
 } from "@nextui-org/react";
+import { isAuthenticated } from "@/app/configs/api";
 
 
 
@@ -64,20 +65,18 @@ const Signup = () => {
   const [show, setShow] = useState(false);
 
   const [signupError, setSignupError] = useState(null);
-  const [signupSuccess, setSignupSuccess] = useState(null);
   const [auth_loading, setAuthLoading] = useState(false);
   const [formValid, setFormValid] = useState(true);
 
   const { 
-    auth_signup, 
-    account
+    auth_signup
   } = useContext(AuthContext);
 
 
   const toast = useToast();
 
 
-  const signupUser = () => {
+  const signupUser = async () => {
 
     setUsernameError(null);
     setFullNameError(null);
@@ -134,44 +133,41 @@ const Signup = () => {
     if(formValid){
       setAuthLoading(true);
 
-      auth_signup(username, email, password, fullName, birthDate.toString())
-        .then(async (res)=> {
-          if(res.status===201)
-          {
-            setSignupSuccess(true);
-          }
-          else{
-            setSignupError(await res.json());
-          }
-          setAuthLoading(false);
+      const response = await auth_signup(username, email, password, fullName, birthDate.toString());
+
+      if(response && response.status===201)
+      {
+        toast({
+          title: "Successfully signed up!",
+          description: "you can now login to your account!",
+          status: "success",
+          duration: 5000
         })
+        setUsername(null);
+        setEmail(null);
+        setPassword(null);
+        setBirthDate(null);
+        setFullName(null);
+
+        return router.replace("/auth/login");
+      }
+      else{
+        if(response)
+          setSignupError(await response.json());
+        else{
+          router.refresh();
+        }
+      }
+
+      setAuthLoading(false);
     }
 
   }
 
 
   useEffect(()=> {
-    if(account!==null) return router.push("/");
-  }, [account])
-
-
-  useEffect(()=> {
-    if(signupSuccess)
-    {
-      toast({
-        title: "Successfully signed up!",
-        description: "you can now login to your account!",
-        status: "success",
-        duration: 5000
-      })
-      setSignupSuccess(false);
-      setUsername(null);
-      setEmail(null);
-      setPassword(null);
-      setBirthDate(null);
-      setFullName(null);
-    }
-  }, [signupSuccess])
+    if(isAuthenticated()) return router.replace("/home/foryou");
+  }, [])
 
 
   useEffect(()=> {
@@ -210,6 +206,15 @@ const Signup = () => {
         maxW={"500px"}
       >
         <div className="w-[100vw] flex flex-row justify-end px-10 py-5">
+          <Spacer/>
+          <Text
+            fontSize={"xx-large"}
+            fontFamily={"sans-serif"}
+            fontWeight={600}
+            marginLeft={10}
+          >
+            Voidback.
+          </Text>
 
             <Spacer />
           <Skeleton
@@ -454,6 +459,7 @@ const Signup = () => {
             color="grey"
             fontSize={"small"}
             fontWeight={500}
+            href="/help/au"
           >
             About
           </Link>
@@ -470,23 +476,7 @@ const Signup = () => {
             color="grey"
             fontSize={"small"}
             fontWeight={500}
-          >
-            Cookies Policy
-          </Link>
-
-        </SkeletonText>
-
-
-        <Spacer/>
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!auth_loading}
-        >
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
+            href="/legal/pp"
           >
             Privacy Policy
           </Link>
@@ -503,6 +493,7 @@ const Signup = () => {
             color="grey"
             fontSize={"small"}
             fontWeight={500}
+            href="/legal/tos"
           >
             Terms Of Service
           </Link>

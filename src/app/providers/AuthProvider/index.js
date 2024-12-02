@@ -11,10 +11,9 @@ export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
 
-  const [loginError, setLoginError] = useState(null);
   const [account, setAccount] = useState(null);
-  const [authFetchError, setAuthFetchError] = useState(null);
   const [checkToken, setCheckToken] = useState(false);
+
 
 
   const { getLocalCached, setLocalCached, deleteLocalCached } = useContext(GreedyFetchContext);
@@ -406,9 +405,7 @@ const AuthContextProvider = ({ children }) => {
     auth_reset,
 
     auth_login,
-    loginError,
 
-    authFetchError,
 
     updateAccount,
     deleteAccount,

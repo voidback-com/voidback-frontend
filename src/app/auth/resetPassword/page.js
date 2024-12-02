@@ -40,21 +40,17 @@ const Page = () => {
 
 
   const [email, setEmail] = useState(null);
-  const [emailError, setEmailError] = useState(null);
 
   const [password, setPassword] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
 
   const [otp, setOtp] = useState("");
 
 
-
   const [show, setShow] = useState(false);
-  const [showNew, setShowNew] = useState(false);
   const [loading, setLoading] = useState(false);
 
 
-  const { auth_reset, auth_sendOtp } = useContext(AuthContext);
+  const { auth_reset } = useContext(AuthContext);
 
 
   
@@ -66,7 +62,7 @@ const Page = () => {
 
   useEffect(()=> {
     if(isAuthenticated())
-      return router.push("/home");
+      return router.replace("/home/foryou");
   }, [])
 
 
@@ -74,6 +70,7 @@ const Page = () => {
 
 
   const verifyEmail = async () => {
+    setLoading(true);
     const response = await fetch(API_URL+`account/anonymous_sendOtp?email=${email}`, {method: "GET"});
     
     const data = await response.json();
@@ -101,6 +98,7 @@ const Page = () => {
       passwordModal.onOpen();
     }
 
+    setLoading(false);
   }
 
 
@@ -115,7 +113,7 @@ const Page = () => {
     if(response.status===200)
     {
       toast({
-        title: "Password was successfully updated!",
+        title: "Password was successfully reset.",
         description: "you can login now with your new password.",
         status: "success",
         duration: 4000
@@ -129,7 +127,7 @@ const Page = () => {
         description: errorToReadable(data),
         status: "error",
         duration: 4000
-      })
+      });
 
     }
 
@@ -152,6 +150,17 @@ const Page = () => {
         maxW={"500px"}
       >
         <div className="w-[100vw] flex flex-row justify-end px-10 py-10">
+          <Spacer/>
+          <Text
+            fontSize={"xx-large"}
+            fontFamily={"sans-serif"}
+            fontWeight={600}
+            marginLeft={10}
+          >
+            Voidback.
+          </Text>
+
+
             <Spacer />
           <Skeleton
             borderRadius={"3px"}
@@ -202,8 +211,6 @@ const Page = () => {
                 e.preventDefault();
                 setEmail(e.target.value);
               }}
-              errorMessage={emailError}
-              isInvalid={emailError}
             />
           </Skeleton>
 
@@ -218,6 +225,7 @@ const Page = () => {
             marginTop={5}
             variant={"solid"}
             onClick={verifyEmail}
+            disabled={!email || loading}
           >
             verify
           </Button>
@@ -275,39 +283,60 @@ const Page = () => {
             <VStack width={"100%"} height={"100%"} paddingTop={100}>
               <HStack width={"100%"} paddingBottom={4}>
                 <Spacer/>
-                <Input type="text" placeholder="one time password..." onChange={(e)=>{
-                  setOtp(e.target.value);
-                }}/>
+                <Skeleton
+                 borderRadius={"3px"}
+                 isLoaded={!loading}
+                 width="100%"
+                >
+                  <Input type="text" placeholder="one time password..." onChange={(e)=>{
+                    setOtp(e.target.value);
+                  }}/>
+                </Skeleton>
               </HStack>
 
               <HStack width={"100%"} paddingBottom={5}>
-                <InputGroup>
-                   <Input 
-                    size="md"
-                    fontSize={"large"}
-                    alignSelf={"center"}
-                    placeholder="new password here..."
-                    type={show ?"text" : "password"}
-                    onChange={(e)=>{
-                      setPassword(e.target.value);
-                    }}
-                  />
-                 <InputRightElement paddingRight={4}>
-                    <Touchable onClick={()=>setShow(!show)}>
-                      { show ?
-                      <FaEye size={28} />
-                        :
-                        <FaEyeSlash size={28} />
-                      }
-                    </Touchable>
-                  </InputRightElement>
-                </InputGroup>
+
+                <Skeleton
+                   borderRadius={"3px"}
+                   isLoaded={!loading}
+                   width="100%"
+                >
+                  <InputGroup>
+                     <Input 
+                      size="md"
+                      fontSize={"large"}
+                      alignSelf={"center"}
+                      placeholder="new password here..."
+                      type={show ?"text" : "password"}
+                      onChange={(e)=>{
+                        setPassword(e.target.value);
+                      }}
+                    />
+
+
+                   <InputRightElement paddingRight={4}>
+                      <Touchable onClick={()=>setShow(!show)}>
+                        { show ?
+                        <FaEye size={28} />
+                          :
+                          <FaEyeSlash size={28} />
+                        }
+                      </Touchable>
+                    </InputRightElement>
+                  </InputGroup>
+                </Skeleton>
+
               </HStack>
 
-              <Button onClick={handleReset} variant="bordered">
-                reset
-              </Button>
-                <Spacer/>
+              <Skeleton
+                 borderRadius={"3px"}
+                 isLoaded={!loading}
+              >
+                <Button disabled={!otp.length || !password} onClick={handleReset} variant="bordered">
+                  reset
+                </Button>
+              </Skeleton>
+              <Spacer/>
             </VStack>
           </ModalBody>
           )}
@@ -324,77 +353,63 @@ const Page = () => {
   <Spacer />
 
   <div className="w-full flex flex-row justify-center py-4">
-      <HStack
-        direction={"row"}
-        width="80%"
-        maxWidth={"700px"}
-        alignSelf="center"
+    <HStack
+      direction={"row"}
+      width="80%"
+      maxWidth={"700px"}
+      alignSelf="center"
+    >
+
+      <SkeletonText
+        borderRadius={"3px"}
+        isLoaded={!loading}
+      >         
+        <Link
+          color="grey"
+          fontSize={"small"}
+          fontWeight={500}
+          href="/help/au"
+        >
+          About
+        </Link>
+
+      </SkeletonText>
+
+      <Spacer/>
+
+      <SkeletonText
+        borderRadius={"3px"}
+        isLoaded={!loading}
       >
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!loading}
-        >         
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
-          >
-            About
-          </Link>
-
-        </SkeletonText>
-
-        <Spacer/>
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!loading}
+        <Link
+          color="grey"
+          fontSize={"small"}
+          fontWeight={500}
+          href="/legal/pp"
         >
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
-          >
-            Cookies Policy
-          </Link>
+          Privacy Policy
+        </Link>
 
-        </SkeletonText>
+      </SkeletonText>
 
+      <Spacer/>
 
-        <Spacer/>
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!loading}
+      <SkeletonText
+        borderRadius={"3px"}
+        isLoaded={!loading}
+      >
+        <Link
+          color="grey"
+          fontSize={"small"}
+          fontWeight={500}
+          href="/legal/tos"
         >
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
-          >
-            Privacy Policy
-          </Link>
+          Terms Of Service
+        </Link>
 
-        </SkeletonText>
-
-        <Spacer/>
-
-        <SkeletonText
-          borderRadius={"3px"}
-          isLoaded={!loading}
-        >
-          <Link
-            color="grey"
-            fontSize={"small"}
-            fontWeight={500}
-          >
-            Terms Of Service
-          </Link>
-
-        </SkeletonText>
-      </HStack>
-    </div>
+      </SkeletonText>
+    </HStack>
+   </div>
   </div>
   )
 }
