@@ -21,9 +21,11 @@ const PlatformContext = () => {
         method: "GET",
         headers: toAuthHeaders({})
       }
-    );
+    ).catch((err)=> {
 
-    if(response.status===200)
+      });
+
+    if(response && response.status===200)
     {
       const data = await response.json();
 

@@ -114,8 +114,9 @@ export const errorToReadable = (errorObj) => {
 
 
 export const isError = (obj) => {
-  if(obj === null)
+  if(obj === null || obj === undefined)
     return false;
+
   if("details" in obj){
     return true;
   }

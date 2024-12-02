@@ -73,7 +73,7 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
   const fetchPosts = async () => {
 
-    if(loading) return;
+    if(loading) return null;
 
     setLoading(true);
 
@@ -84,11 +84,12 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
     {
       if(data && data.length)
       {
-        if(posts.length)
-            setPosts(p=>[...p, ...data]);
+        if(posts.length > 0)
+        {
+          setPosts(p=>[...p, ...data]);
+        }
         else
-          setPosts(data);
-
+          setPosts([...data]);
 
         const imps = await postsImpressions(data);
 
@@ -132,10 +133,12 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
   const vref = useRef();
 
 
+
   const renderPosts = () => {
 
-    return posts.map((post, i)=> {
-      return <Stack direction={"column"} className="w-8/12 h-full shadow-none" key={i}><PostCard post={post} impressions={impressions[i]} post_replies={repliesCount[i]}  /></Stack>
+    if(!loading)
+      return posts.map((post, i)=> {
+        return <Stack direction={"column"} className="w-8/12 h-full shadow-none" key={i}><PostCard post={post} impressions={impressions[i]} post_replies={repliesCount[i]}  /></Stack>
     })
   }
 
@@ -201,7 +204,7 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
           : null
         }
 
-        {renderPosts()}
+        {loading ? null : renderPosts()}
       </InfiniteScroll>
   )
 

@@ -30,11 +30,17 @@ const AccountRecommendations = () => {
   const fetchRecommendations = async () => {
     const response = await getAccountRecommendations();
 
-    const data = await response.json();
-
-    if(response.status===200)
+    if(response)
     {
-      setRecommended(data);
+      const data = await response.json();
+
+      if(response.status===200)
+      {
+        setRecommended(data);
+      }
+      else{
+        setEnd(true);
+      }
     }
     else{
       setEnd(true);
