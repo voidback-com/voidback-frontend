@@ -131,10 +131,11 @@ const PostsContext = () => {
 
     let data = [];
 
-    for(let i = 0; i < endpoints.length; i++)
-    {
-      data.push(responses[endpoints[i]]);
-    }
+    if(responses)
+      for(let i = 0; i < endpoints.length; i++)
+      {
+        data.push(responses[endpoints[i]]);
+      }
 
     return data;
   }

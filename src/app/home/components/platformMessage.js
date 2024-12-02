@@ -31,7 +31,6 @@ const PlatformMessage = ({message}) => {
     )
   }
 
-  console.log(message);
 
   if(message)
   {

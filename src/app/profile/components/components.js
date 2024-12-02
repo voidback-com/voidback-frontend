@@ -527,6 +527,7 @@ export const TabBar = ({account, isDifferentAccount}) => {
 
   const [current, setCurrent] = useState("posts");
 
+
   const renderCurrent = () => {
     if(current==="posts"){
       return <MyPosts account={account} />

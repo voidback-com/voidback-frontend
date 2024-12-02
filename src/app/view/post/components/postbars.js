@@ -636,11 +636,13 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
   const [dislikes, setDislikes] = useState(0);
   const [impression, setImpression] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [repliesCount, setRepliesCount] = useState();
+  const [repliesCount, setRepliesCount] = useState(0);
+  const [dataFetched, setDataFetched] = useState(false);
 
   const [views, setViews] = useState(0);
 
   const format = require("human-readable-numbers");
+
 
 
   const getMyImpression = async () => {
@@ -684,13 +686,14 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
     if(!isError(data))
     {
       setRepliesCount(data.replies);
+      setDataFetched(true);
     }
 
   }
 
 
   useEffect(()=> {
-    if(isInFeed && impressions)
+    if(isInFeed && impressions && !dataFetched)
     {
       setLikes(impressions.likes);
       setDislikes(impressions.dislikes);
@@ -698,7 +701,7 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
 
       setLoading(false);
     }
-    else if(isInFeed){
+    else if(isInFeed && !dataFetched){
       setLoading(true);
     }
   }, [impressions, isInFeed])
@@ -706,19 +709,19 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
 
 
   useEffect(()=> {
-    if(isInFeed && post_replies)
+    if(isInFeed && post_replies && !dataFetched)
     {
       setRepliesCount(post_replies.replies);
       setLoading(false);
     }
-    else if(isInFeed){
+    else if(isInFeed && !dataFetched){
       setLoading(true);
     }
   }, [post_replies, isInFeed])
 
 
   useEffect(()=> {
-    if(!loading)
+    if(!loading && !dataFetched)
     {
       setLoading(true);
 
@@ -727,10 +730,12 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
         getImpressions();
         getRepliesCount();
       }
+
+      // my impression on this post (as the authencated user)
       getMyImpression();
     }
 
-  }, [post])
+  }, [post, !dataFetched])
 
 
 
