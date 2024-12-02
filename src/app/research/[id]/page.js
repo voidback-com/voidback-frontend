@@ -406,7 +406,7 @@ const PublishedResearchPaper = ({ params }) => {
  
             <Spacer/>
 
-            <Skeleton width={"fit-content"} isLoaded={!loading}>
+            <Skeleton width={"fit-content"} isLoaded={!loading && impressions!==false}>
               <HStack gap={0} spacing={1}>
 
                 <Button

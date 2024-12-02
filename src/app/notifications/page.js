@@ -165,7 +165,7 @@ const NotificationsPage = () => {
                   <Spacer />
                 </HStack>
               }
-              threshold={10000}
+              threshold={1000}
               useWindow={false}
             >
               {renderNotifications()}

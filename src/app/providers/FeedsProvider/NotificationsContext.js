@@ -91,7 +91,10 @@ const notificatitonsContext = () => {
 
       const interval = setInterval(()=> {
         try{
-          ws.send(JSON.stringify({"token": getAccessToken()}));
+          if(ws.readyState!==WebSocket.CLOSED)
+          {
+            ws.send(JSON.stringify({"token": getAccessToken()}));
+          }
         }catch(err){
           //
         }

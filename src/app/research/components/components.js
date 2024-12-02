@@ -20,7 +20,7 @@ import {
   WrapItem,
   Wrap,
 } from "@chakra-ui/react";
-import { Card, CardHeader, User, Link, CardBody, Image, CardFooter, Button, Skeleton, Divider, Pagination, useDisclosure } from "@nextui-org/react";
+import { Card, CardHeader, User, Link, CardBody, Image, CardFooter, Button, Skeleton, Divider, Pagination, useDisclosure, Spinner } from "@nextui-org/react";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { SidebarContext } from "@/app/providers/FeedsProvider/SidebarProvider";
 import { useRouter } from "next/navigation";
@@ -285,12 +285,16 @@ export const RenderMyResearch = () => {
 
   const [papers, setPapers] = useState(false);
   const [endReached, setEndReached] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const toast = useToast();
 
 
   const fetchPapers = async () => {
+    if(loading) return;
+
+    setLoading(true);
     if(!papers)
     {
       const response = await myResearch(0, 10);
@@ -314,7 +318,6 @@ export const RenderMyResearch = () => {
       }
     }
     else{
-
       const response = await myResearch(papers.length+1, papers.length+11);
 
       const data = await response.json();
@@ -336,13 +339,15 @@ export const RenderMyResearch = () => {
         })
       }
     }
+
+    setLoading(false);
   }
 
 
   const renderItems = () => {
     if(papers && papers.length)
       return papers.map((paper)=> {
-        return <WrapItem style={{scrollbarWidth: "none"}} key={paper.id}><ResearchPaperCard paper={paper} deletable={true} /></WrapItem>
+        return <ResearchPaperCard paper={paper} deletable={true} />
       })
   }
 
@@ -365,9 +370,15 @@ export const RenderMyResearch = () => {
       overflowY={"auto"}
       paddingBottom={"22%"}
       style={{scrollbarWidth: "none"}}
+      paddingTop={10}
       >
+
+      {!papers?.length && isAuthenticated() && !loading ? <Text fontSize={"small"}>no published research found.</Text> : null}
+
+      {!isAuthenticated() ? <Text fontSize={"small"}>Can't load research, you are not authenticated.</Text> : null}
+
+
        <InfiniteScroll
-        element={Wrap}
         pageStart={0}
         style={{paddingBottom: 100}}
         hasMore={!endReached}
@@ -375,15 +386,19 @@ export const RenderMyResearch = () => {
         loadMore={fetchPapers}
         data={papers}
         getScrollParent={()=>vref.current}
-        className="w-full h-full flex flex-row"
+        threshold={1000}
+        loader={
+          <HStack
+            width="100%"
+          >
+            <Spacer/>
+            <Spinner size="md" color="default" />
+            <Spacer/>
+          </HStack>
+        }
       >
         {renderItems()}
       </InfiniteScroll>
-
-      {!papers?.length && isAuthenticated() ? <Text fontSize={"small"}>no published research found.</Text> : null}
-
-      {!isAuthenticated() ? <Text fontSize={"small"}>Can't load research, you are not authenticated.</Text> : null}
-
     </VStack>
   )
 
@@ -399,12 +414,16 @@ export const RenderAccountResearch = ({username}) => {
 
   const [papers, setPapers] = useState(false);
   const [endReached, setEndReached] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const toast = useToast();
 
 
   const fetchPapers = async () => {
+    if(loading) return;
+
+    setLoading(true);
     if(!papers)
     {
       const response = await accountResearch(username, 0, 10);
@@ -450,13 +469,16 @@ export const RenderAccountResearch = ({username}) => {
         })
       }
     }
+
+
+    setLoading(false);
   }
 
 
   const renderItems = () => {
     if(papers && papers.length)
       return papers.map((paper)=> {
-        return <WrapItem style={{scrollbarWidth: "none"}} key={paper.id}><ResearchPaperCard paper={paper} deletable={false} /></WrapItem>
+        return <ResearchPaperCard paper={paper} deletable={false} />
       })
   }
 
@@ -479,9 +501,14 @@ export const RenderAccountResearch = ({username}) => {
       overflowY={"auto"}
       paddingBottom={"22%"}
       style={{scrollbarWidth: "none"}}
+      paddingTop={10}
       >
+
+      {!papers?.length && isAuthenticated() && !loading ? <Text fontSize={"small"}>no published research found.</Text> : null}
+
+
+
        <InfiniteScroll
-        element={Wrap}
         pageStart={0}
         style={{paddingBottom: 100}}
         hasMore={!endReached}
@@ -489,12 +516,20 @@ export const RenderAccountResearch = ({username}) => {
         loadMore={fetchPapers}
         data={papers}
         getScrollParent={()=>vref.current}
-        className="w-full h-full flex flex-row"
+        threshold={1000}
+        loader={
+          <HStack
+            width="100%"
+          >
+            <Spacer/>
+            <Spinner size="md" color="default" />
+            <Spacer/>
+          </HStack>
+        }
       >
         {renderItems()}
       </InfiniteScroll>
 
-      {!papers?.length ? <Text fontSize={"small"}>no published research found.</Text> : null}
 
     </VStack>
   )
