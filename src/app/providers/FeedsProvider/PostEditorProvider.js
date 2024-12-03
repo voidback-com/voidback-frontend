@@ -2,10 +2,17 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { afinn165FinancialMarketNews } from "afinn-165-financialmarketnews";
 import sentimentExtras from "./sentiment";
-import { pipeline } from "@xenova/transformers";
+import { pipeline, env } from "@xenova/transformers";
 import { API_URL, toAuthHeaders } from "@/app/configs/api";
 import { AuthContext } from "../AuthProvider";
 import { AnalyticsContext } from "../AnalyticsProvider";
+
+
+env.allowRemoteModels = false;
+
+env.localModelPath = '/models/';
+
+env.backends.onnx.wasm.wasmPaths = "/models/";
 
 
 export const EditorContext = createContext();
