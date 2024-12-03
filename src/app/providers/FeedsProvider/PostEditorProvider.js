@@ -8,13 +8,6 @@ import { AuthContext } from "../AuthProvider";
 import { AnalyticsContext } from "../AnalyticsProvider";
 
 
-env.allowRemoteModels = false;
-
-env.localModelPath = '/models/';
-
-env.backends.onnx.wasm.wasmPaths = "/models/";
-
-
 export const EditorContext = createContext();
 
 
@@ -35,6 +28,13 @@ const EditorContextProvider = ({children}) => {
 
 
   const handlePostMetadata = async (post, text, partial_sentiment, symbols, hashtags) => {
+
+
+    env.allowRemoteModels = false;
+
+    env.localModelPath = '/models/';
+
+    env.backends.onnx.wasm.wasmPaths = "/models/";
 
 
 
