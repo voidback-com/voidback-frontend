@@ -17,9 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { errorToReadable } from "@/app/configs/api";
 import { Button, Card, CardBody, CardFooter, CardHeader, Image, Spinner } from "@nextui-org/react";
-import { AiOutlineRedo } from "@react-icons/all-files/ai/AiOutlineRedo";
 import { NavBack } from "@/app/research/components/topSection";
-import { Github } from "@geist-ui/icons";
 
 
 
@@ -29,7 +27,7 @@ const Page = () => {
 
   return (
     <div
-      className="w-full h-[100vh] bg-background flex flex-col p-4 gap-10"
+      className="w-full h-[100vh] bg-background flex flex-col p-10 gap-10"
     >
 
       <div className="w-full flex flex-row">
@@ -52,45 +50,7 @@ const Page = () => {
         <Spacer />
       </div>
 
-
-      <HStack className="w-fit self-center my-10">
-
-        <Text className="self-center">
-          Contribute to our: 
-        </Text>
-
-        <Button
-          size="lg"
-          variant="bordered"
-          className="w-fit"
-          onPress={()=>window.location.assign("https://github.com/uvert2024/Voidback-frontend")}
-        >
-          <HStack>
-            <Text>Frontend</Text>
-            <Spacer />
-            <Github />
-          </HStack>
-        </Button>
-
-        <Text className="self-center">
-          AND / OR
-        </Text>
-
-        <Button
-          size="lg"
-          variant="bordered"
-          className="w-fit"
-          onPress={()=>window.location.assign("https://github.com/uvert2024/Voidback-backend")}
-        >
-          <HStack>
-            <Text>Backend</Text>
-            <Spacer />
-            <Github />
-          </HStack>
-        </Button>
-      </HStack>
-
-
+      <Spacer />
 
       <VStack
         className="w-full overflow-y-scroll flex flex-col space-y-10"
@@ -148,7 +108,7 @@ const Page = () => {
 
       <HStack>
           <Card
-            className="w-fit bg-background max-w-[600px] h-full shadow-none"
+            className="w-fit bg-background max-w-[1200px] h-full shadow-none"
           >
             <CardHeader>
               <Text
@@ -171,35 +131,12 @@ const Page = () => {
             </CardBody>
           </Card>
 
-
-          <Card
-            className="w-fit bg-background max-w-[600px] h-full shadow-none"
-          >
-            <CardHeader>
-              <Text
-                fontSize={"large"}
-                fontWeight={600}
-                fontFamily={"sans-serif"}
-              >
-                Voidback: Transparency and Community Power
-              </Text>
-            </CardHeader>
-
-            <CardBody className="h-full">
-              <Text
-                fontFamily={"sans-serif"}
-                fontSize={"medium"}
-              >
-                Voidback is more than just a platform; it's a community-driven initiative that champions transparency and open collaboration. By making its source code fully accessible on GitHub, Voidback empowers its users to understand the intricacies of its operations and contribute to its ongoing development. This level of transparency fosters trust and ensures that the platform's algorithms are unbiased and ethical.
-              </Text>
-
-            </CardBody>
-
-          </Card>
-
         </HStack>
 
       </VStack>
+
+      <Spacer />
+      <Spacer />
 
 
    </div>
