@@ -71,11 +71,11 @@ const EditorContextProvider = ({children}) => {
 
     await logEvent("new-post", window.location.href, {"sentiment": text_sentiment});
 
-    fetch(API_URL+`post/metadata`, {
+    await fetch(API_URL+`post/metadata`, {
       method: "POST",
       headers: toAuthHeaders({"Content-Type": "application/json"}),
       body: JSON.stringify(data)
-    });
+    }).catch((err)=>null);
   }
 
 
@@ -103,7 +103,7 @@ const EditorContextProvider = ({children}) => {
       formData.append("image", image.file);
 
 
-    fetch(API_URL+"post", {
+    await fetch(API_URL+"post", {
       method: "POST",
       headers: toAuthHeaders({}),
       body: formData
@@ -137,15 +137,12 @@ const EditorContextProvider = ({children}) => {
 
 
         if(!postError)
-          {
-            setPostLoading(false);
-            setLastPostId(data.id);
-            setPostSuccess(1);
-          }
+        {
+          setLastPostId(data.id);
+          setPostSuccess(1);
+        }
 
-          else{
-            setPostLoading(false);
-          }
+        setPostLoading(false);
     })
 
     }

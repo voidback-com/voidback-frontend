@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { Image } from "@nextui-org/react";
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/youtube";
 import { PlayFill } from '@geist-ui/icons';
 
 
@@ -29,7 +29,8 @@ const VideoPlayer = ({url}) => {
   return (
     <ReactPlayer 
       url={url} 
-      style={{borderWidth: 1, backgroundColor: "black", borderRadius: 5, padding: 5, paddingBottom: 10}}
+      height={300}
+      className={`border-1 rounded-md bg-background`}
       playIcon={<PlayFill size={20} />}
       controls
     />
@@ -88,16 +89,16 @@ export const MediaSection = ({video, image, setVideo, setImage, edit_mode=false}
         >
           <DrawerOverlay />
           <DrawerContent
-
             width="100%"
             height="100%"
             alginContent="center"
             padding="4%"
-            backgroundColor="Background"
+            background={"default"}
+            className="bg-background h-full w-dull"
             overflow={"scroll"}
           >
             <DrawerCloseButton />
-            <HStack className="w-full" paddingTop={20}>
+            <HStack className="w-full h-full bg-background" paddingTop={20}>
               <Spacer/>
             {
               edit_mode ?

@@ -84,7 +84,7 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
       isFullHeight
     >
       <DrawerOverlay />
-      <DrawerContent width="100%" height={"100%"} background={"default"} className="bg-background">
+      <DrawerContent width="100%" height={"100%"} background={"default"} className="bg-background" overflowY={"scroll"}>
 
       <DrawerHeader width={"100%"}>
         <HStack width={"100%"}>
@@ -93,13 +93,13 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
         </HStack>
       </DrawerHeader>
 
-      <DrawerBody width="90%" height={"100%"} alignSelf={"center"} padding={0} overflowY={"hidden"}>
+      <DrawerBody overscrollY={"scroll"} width="90%" height={"100%"} alignSelf={"center"} padding={0}>
         <VStack
           maxHeight={"100%"}
           minHeight={"100%"}
           padding={"2%"}
           direction="column"
-          overflowY={"hidden"}
+          overflowY={"scroll"}
         >
 {
               errorOpen 
@@ -165,9 +165,9 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
 
 
-            <Skeleton isLoaded={!postLoading}>
+            <Skeleton className="p-4" isLoaded={!postLoading}>
               { image || video ?
-              <MediaSection setVideo={setVideo} video={video} image={image} setImage={setImage} edit_mode />
+              <MediaSection  setVideo={setVideo} video={video} image={image} setImage={setImage} edit_mode />
                 : null
               }
             </Skeleton>
