@@ -33,7 +33,7 @@ export const Page = async () => {
     >
       <div className="w-full flex flex-row justify-around">
         <div className="flex flex-col justify-center p-4">
-          <NavBack />
+          <NavBack home />
         </div>
 
         <Spacer />

@@ -33,7 +33,7 @@ const Page = () => {
       <div className="w-full flex flex-row">
         
         <div className="absolute flex flex-col justify-center p-4">
-          <NavBack />
+          <NavBack home />
         </div>
 
         <Spacer />
