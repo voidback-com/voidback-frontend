@@ -9,14 +9,6 @@ import { AnalyticsContext } from "../AnalyticsProvider";
 import checkImage from "@/app/globalComponents/imageNSFW";
 
 
-env.allowRemoteModels = false;
-
-env.localModelPath = '/models/';
-
-env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
-
-
-
 
 export const EditorContext = createContext();
 
@@ -38,6 +30,15 @@ const EditorContextProvider = ({children}) => {
 
 
   const handlePostMetadata = async (post, text, partial_sentiment, symbols, hashtags, text_toxicity) => {
+
+    env.allowRemoteModels = false;
+
+    env.localModelPath = '/models/';
+
+    env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
+
+
+
 
     let text_sentiment = "";
 
@@ -75,6 +76,13 @@ const EditorContextProvider = ({children}) => {
   const handlePost = async (content, text, attributes, image, video, parent_post) => {
 
     if(!account) return;
+
+
+    env.allowRemoteModels = false;
+
+    env.localModelPath = '/models/';
+
+    env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
 
 
     setPostLoading(true);
