@@ -3,6 +3,7 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { API_URL, getRefresh, isAuthenticated, shouldRefresh, toAuthHeaders } from "@/app/configs/api";
 import { GreedyFetchContext } from "../greedyFetch";
+import { useRouter } from "next/navigation";
 
 
 export const AuthContext = createContext();
@@ -26,7 +27,7 @@ const AuthContextProvider = ({ children }) => {
       username: username,
       email: email,
       password: password,
-      birth_date: birth_date,
+      birth_date: birth_date
     };
 
 
@@ -62,12 +63,44 @@ const AuthContextProvider = ({ children }) => {
       })
   }
 
+
+  const refreshAccount = async () => {
+    const headers = toAuthHeaders({});
+
+    fetch(API_URL+"account", {
+      method: "GET",
+      headers: headers
+    })
+    .then((res)=> {
+      if(res.status===200)
+        return res.json();
+      else{
+        refreshToken();
+      }
+    }).then((acc)=> {
+      if(acc)
+      {
+          setAccount(acc);
+          setLocalCached("accInfo", acc);
+      }
+      }).catch((err)=> {
+        //
+      })
+  }
+
+
+
   const auth_verifyOtp = async (token) => {
     return fetch(API_URL+"account/verifyOtp", {
       method: "POST",
       headers: toAuthHeaders({"Content-Type": "application/json"}),
       body: JSON.stringify({otp: token})
-    }).catch(()=> {
+    }).then( async (r)=> {
+        setAccount(null);
+        await refreshAccount(); // get the updated email_verified field
+        return r;
+      })
+      .catch(()=> {
 
       })
   }
@@ -142,32 +175,6 @@ const AuthContextProvider = ({ children }) => {
       })
     }
   }
-
-
-  const refreshAccount = async () => {
-    const headers = toAuthHeaders({});
-
-    fetch(API_URL+"account", {
-      method: "GET",
-      headers: headers
-    })
-    .then((res)=> {
-      if(res.status===200)
-        return res.json();
-      else{
-        refreshToken();
-      }
-    }).then((acc)=> {
-      if(acc)
-      {
-          setAccount(acc);
-          setLocalCached("accInfo", acc);
-      }
-      }).catch((err)=> {
-        //
-      })
-  }
-
 
 
   const getAccount = async () => {

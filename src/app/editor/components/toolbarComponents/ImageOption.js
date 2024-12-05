@@ -9,7 +9,6 @@ import { useEffect } from "react";
 const ImageOption = ({setImage, image}) => {
   const [selectedImage, selectImage] = useFileUpload();
 
-
   useEffect(()=> {
     setImage(selectedImage);
   }, [selectedImage])

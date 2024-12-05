@@ -6,6 +6,7 @@ import { pipeline, env } from "@xenova/transformers";
 import { API_URL, toAuthHeaders } from "@/app/configs/api";
 import { AuthContext } from "../AuthProvider";
 import { AnalyticsContext } from "../AnalyticsProvider";
+import checkImage from "@/app/globalComponents/imageNSFW";
 
 
 export const EditorContext = createContext();
@@ -27,7 +28,7 @@ const EditorContextProvider = ({children}) => {
 
 
 
-  const handlePostMetadata = async (post, text, partial_sentiment, symbols, hashtags) => {
+  const handlePostMetadata = async (post, text, partial_sentiment, symbols, hashtags, text_toxicity) => {
 
 
     env.allowRemoteModels = false;
@@ -39,7 +40,6 @@ const EditorContextProvider = ({children}) => {
 
 
     let text_sentiment = "";
-    let text_toxicity = [];
 
 
     // full sentiment analysis
@@ -47,13 +47,6 @@ const EditorContextProvider = ({children}) => {
 
     await sentiment_model(text).then((res)=> {
       text_sentiment = res[0].label;
-    })
-
-
-    // toxicity analysis
-    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
-    await toxicity_model(text, {topk: null}).then((res)=> {
-      text_toxicity = res;
     })
 
 
@@ -100,52 +93,76 @@ const EditorContextProvider = ({children}) => {
 
     
     if(image)
+    {
+
       formData.append("image", image.file);
+      const imgSafe = await checkImage(image);
 
-
-    await fetch(API_URL+"post", {
-      method: "POST",
-      headers: toAuthHeaders({}),
-      body: formData
-    }).then((res)=> {
-        if(res.status===200)
-          return res.json();
-        else
-        {
-          setPostError(res.error);
-          setPostLoading(false);
-        }
-      }).then(async (data)=> {
-
-        if(!data)
-          return;
-
-        // partial sentiment
-        const sentiment = require("wink-sentiment");
-
-        let result = await sentiment(text, {
-          options: {
-            extras: {
-            ...afinn165FinancialMarketNews,
-            ...sentimentExtras
-          },
-          
-        }});
-
-
-        await handlePostMetadata(data, text, result, attributes.symbols, attributes.hashtags);
-
-
-        if(!postError)
-        {
-          setLastPostId(data.id);
-          setPostSuccess(1);
-        }
-
+      if(!imgSafe)
+      {
+        setPostError("The image was classified as not safe for work, please respect our terms of service.");
         setPostLoading(false);
-    })
-
+        return;
+      }
     }
+
+    // toxicity analysis
+    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
+    const text_toxicity = await toxicity_model(text, {topk: null});
+
+
+    if(text_toxicity[0].score > 0.5)
+    {
+      setPostError("The text was classified as not safe for work, please respect our terms of service.");
+      setPostLoading(false);
+      return;
+    }
+    else{
+
+
+      await fetch(API_URL+"post", {
+        method: "POST",
+        headers: toAuthHeaders({}),
+        body: formData
+      }).then((res)=> {
+          if(res.status===200)
+            return res.json();
+          else
+          {
+            setPostError(res.error);
+            setPostLoading(false);
+          }
+        }).then(async (data)=> {
+
+          if(!data)
+            return;
+
+          // partial sentiment
+          const sentiment = require("wink-sentiment");
+
+          let result = await sentiment(text, {
+            options: {
+              extras: {
+              ...afinn165FinancialMarketNews,
+              ...sentimentExtras
+            },
+            
+          }});
+
+
+          await handlePostMetadata(data, text, result, attributes.symbols, attributes.hashtags, text_toxicity);
+
+
+          if(!postError)
+          {
+            setLastPostId(data.id);
+            setPostSuccess(1);
+          }
+
+          setPostLoading(false);
+      })
+    }
+  }
 
   const value = {
 

@@ -27,6 +27,7 @@ import { errorToReadable, isAuthenticated } from "../configs/api";
 import AccountCard from "./components/accountCard";
 import { LogOut } from "@geist-ui/icons";
 import { useRouter } from "next/navigation";
+import checkImage from "../globalComponents/imageNSFW";
 
 
 
@@ -236,7 +237,18 @@ const ProfilePage = () => {
 
     if(newAvatar)
     {
-      await saveElement(newAvatar.file, "avatar", true);
+      const avatarSafe = await checkImage(newAvatar);
+
+      if(avatarSafe)
+        await saveElement(newAvatar.file, "avatar", true);
+      else{
+        toast({
+          title: "This avatar was classified as not safe for work.",
+          description: "Please respect our terms of service.",
+          status: "error",
+          duration: 3000
+        });
+      }
     }
 
 
@@ -255,9 +267,19 @@ const ProfilePage = () => {
 
 
     if(newFullName){
+      const nameValid = await isFullNameValid(newFullName);
 
-      if(isFullNameValid(newFullName)) {
+      if(nameValid===true) {
         await saveElement({full_name: newFullName}, "full name");
+      }
+
+      else if(nameValid==="nsfw"){
+        toast({
+          title: "Error saving the Full Name.",
+          description: "This Full Name is not safe for work, please respect our terms of service!",
+          status: "error",
+          duration: 3000
+        });
       }
 
       else{
@@ -273,8 +295,20 @@ const ProfilePage = () => {
 
 
     if(newBio){
-      if(isBioValid(newBio)) {
+      const bioValid = await isBioValid(newBio);
+
+      if(bioValid===true) {
         await saveElement({bio: newBio}, "bio");
+      }
+
+      else if(bioValid==="nsfw")
+      {
+        toast({
+          title: "The new bio contains words that are not safe for work!.",
+          description: "Please respect our terms of service.",
+          status: "error",
+          duration: 3000
+        });
       }
 
       else{
@@ -290,9 +324,21 @@ const ProfilePage = () => {
 
     if(newSiteLink){
 
-      if(isLinkValid(newSiteLink))
+      const linkValid = await isLinkValid(newSiteLink);
+
+      if(linkValid===true)
       {
         await saveElement({site_link: newSiteLink}, "site link");
+      }
+
+      else if(linkValid === "nsfw")
+      {
+        toast({
+          title: "The new link was classified as not safe for work!",
+          description: "Please respect our terms of service.",
+          status: "error",
+          duration: 3000
+        });
       }
 
       else{

@@ -38,7 +38,11 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
     getPostsRepliesCount,
 
     platformMessage
+
   } = useContext(LeftFeedContext);
+
+
+  const { account } = useContext(AuthContext);
 
 
   const [posts, setPosts] = useState([]);
@@ -47,6 +51,16 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
   const [loading, setLoading] = useState(false);
   const [end, setEnd] = useState(false);
   const [repliesCount, setRepliesCount] = useState([]);
+
+
+  const router = useRouter();
+
+  useEffect(()=> {
+    if(account && account.email_verified==false)
+    {
+      return router.push("/auth/emailVerification");
+    }
+  }, [account])
 
 
 
@@ -214,6 +228,7 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
 
 const Foryou = () => {
+
 
   return (
     <Container

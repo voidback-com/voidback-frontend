@@ -183,17 +183,17 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
         <Tab
           key={"/data-hub"}
-          className="flex flex-row justify-start"
           isDisabled={true}
+          className="flex flex-row justify-start"
           title={
-            <Tooltip content="Coming soon.">
-              <HStack spacing={5}>
-                <BsGraphUp size={25} />
+            <Tooltip content="Coming soon!">
+            <HStack spacing={5}>
+              <BsGraphUp size={25} />
 
-                <Show breakpoint="(min-width: 1000px)">
-                  <Text fontSize={"medium"} fontWeight={600}>Data Hub</Text>
-                </Show>
-              </HStack>
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>Data Hub</Text>
+              </Show>
+            </HStack>
             </Tooltip>
           }
         />
@@ -802,7 +802,7 @@ export const RightSection = () => {
 
 const Sections = ({ActiveFeed, currentSelection}) => {
 
-  
+ 
   return (
     <Stack
       className="bg-background"

@@ -1,5 +1,6 @@
 'use client';
 import styled from "@emotion/styled";
+import { pipeline } from "@xenova/transformers";
 
 
 
@@ -27,41 +28,97 @@ export const isEmailValid = (email) => {
 }
 
 
-export const isUsernameValid = (username) => {
+export const isUsernameValid = async (username) => {
+
 
   if(username.length < 3) return false;
 
   let usernameRegex = /^[a-zA-Z0-9]+([a-zA-Z0-9](_)[a-zA-Z0-9])*[a-zA-Z0-9]+$/;
 
-  if(usernameRegex.test(username)) return true;
+  if(usernameRegex.test(username)) {
+
+    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
+    const res = await toxicity_model(username, {topk: null}).then((res)=> {
+      if(res)
+        return res[0].score;
+    })
+
+
+    if(res && res >= 0.05)
+      return "nsfw";
+
+    return true;
+  }
 
   return false;
 }
 
 
 
-export const isFullNameValid = (fullName) => {
+export const isFullNameValid = async (fullName) => {
   let fullnameRegex = /^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/;
 
-  if(fullnameRegex.test(fullName)) return true;
+  if(fullnameRegex.test(fullName)) {
+
+    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
+    const res = await toxicity_model(fullName, {topk: null}).then((res)=> {
+      if(res)
+        return res[0].score;
+    })
+
+
+    if(res && res >= 0.05)
+      return "nsfw";
+
+
+    return true;
+  };
 
   return false;
 }
 
 
-export const isBioValid = (bio) => {
+export const isBioValid = async (bio) => {
 
-  if(bio.length<=300) return true;
+  if(bio.length<=300) {
+
+    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
+    const res = await toxicity_model(bio, {topk: null}).then((res)=> {
+      if(res)
+        return res[0].score;
+    })
+
+
+    if(res && res >= 0.05)
+      return "nsfw";
+
+    return true;
+
+  };
 
   return false;
 }
 
 
 
-export const isLinkValid = (link) => {
+export const isLinkValid = async (link) => {
   let linkrgx = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
-  if(linkrgx.test(link)) return true;
+  if(linkrgx.test(link)) {
+
+    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
+    const res = await toxicity_model(link, {topk: null}).then((res)=> {
+      if(res)
+        return res[0].score;
+    })
+
+
+    if(res && res >= 0.05)
+      return "nsfw";
+
+    return true;
+
+  };
 
   return false;
 }

@@ -225,7 +225,7 @@ const Page = () => {
             marginTop={5}
             variant={"solid"}
             onClick={verifyEmail}
-            disabled={!email || loading}
+            isDisabled={!email || loading}
           >
             verify
           </Button>
@@ -332,7 +332,7 @@ const Page = () => {
                  borderRadius={"3px"}
                  isLoaded={!loading}
               >
-                <Button disabled={!otp.length || !password} onClick={handleReset} variant="bordered">
+                <Button isDisabled={!otp.length || !password} onClick={handleReset} variant="bordered">
                   reset
                 </Button>
               </Skeleton>

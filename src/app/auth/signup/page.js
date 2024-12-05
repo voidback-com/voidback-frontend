@@ -66,7 +66,7 @@ const Signup = () => {
 
   const [signupError, setSignupError] = useState(null);
   const [auth_loading, setAuthLoading] = useState(false);
-  const [formValid, setFormValid] = useState(true);
+
 
   const { 
     auth_signup
@@ -86,24 +86,35 @@ const Signup = () => {
 
     let birthValid = isBirthDateValid(birthDate.toString());
 
-    if(!isUsernameValid(username))
+    let usernameValid = await isUsernameValid(username);
+    let FullNameValid = await isFullNameValid(fullName);
+
+    if(usernameValid==="nsfw")
     {
-      setUsernameError("Username format is invalid, make sure it's at least 3 characters long and contains one or two: digits (0-9), characters (a-Z), special characters (_)")
-      setFormValid(false);
+      setUsernameError("This username was classified as not safe for work, please respect our terms of service.");
+    }
+
+    else if(usernameValid!==true)
+    {
+      setUsernameError("Username format is invalid, make sure it's at least 3 characters long and contains one or two: digits (0-9), characters (a-Z), special characters (_).")
+    }
+
+
+    else if(FullNameValid==="nsfw")
+    {
+      setFullNameError("Your Full Name was classified as not safe for work, please respect our terms of service.");
     }
   
-    else if(!isFullNameValid(fullName))
+    else if(FullNameValid!==true)
     {
       setFullNameError("Full Name format is invalid, make sure to put a space between first and last name.");
       setFullName(null);
-      setFormValid(false);
     }
 
     else if(!isEmailValid(email))
     {
       setEmailError("Email format is invalid.");
       setEmailError(null);
-      setFormValid(false);
     }
 
 
@@ -111,7 +122,6 @@ const Signup = () => {
     {
       setPasswordError("Password is too weak, make sure it's more than 6 characters long.")
       setPassword(null);
-      setFormValid(false);
     }
 
 
@@ -119,18 +129,16 @@ const Signup = () => {
     {
       setBirthDateError("You need to be at least 18 years old to use voidback.")
       setBirthDate(null);
-      setFormValid(false);
     }
 
     else if(birthValid===2)
     {
       setBirthDateError("You need a valid birth date to use voidback.")
       setBirthDate(null);
-      setFormValid(false);
     }
 
+    else{
 
-    if(formValid){
       setAuthLoading(true);
 
       const response = await auth_signup(username, email, password, fullName, birthDate.toString());

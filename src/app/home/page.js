@@ -13,6 +13,7 @@ const Home = () => {
 
   const router = useRouter();
 
+
   useEffect(()=> {
     if(!loading) return router.replace("/home/foryou");
   }, [account, loading])

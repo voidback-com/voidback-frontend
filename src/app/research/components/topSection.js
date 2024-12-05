@@ -34,6 +34,7 @@ import { useFileUpload } from "use-file-upload";
 import { RenderMyResearch } from "./components";
 import { errorToReadable, isAuthenticated } from "@/app/configs/api";
 import { Search } from '@geist-ui/icons';
+import checkImage from "@/app/globalComponents/imageNSFW";
 
 
 
@@ -130,7 +131,19 @@ export const TopSection = ({searchPapers}) => {
     setProgressValue(100);
     setProgressLabel("Just a sec, uploading these files takes some time.");
 
+    let thumbnailSafe = await checkImage(thumbnail);
+
     setPublishLoading(true);
+
+
+    if(!thumbnailSafe){
+      toast({
+        status: "error",
+        title: "Thumbnail is not safe for work!",
+        description: "Please respect our terms of service.",
+        duration: 3000
+      })
+    }
 
     if(title.length < 3 | title.length > 100)
     {
