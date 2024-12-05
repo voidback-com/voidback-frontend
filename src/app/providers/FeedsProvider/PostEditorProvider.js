@@ -30,16 +30,6 @@ const EditorContextProvider = ({children}) => {
 
 
   const handlePostMetadata = async (post, text, partial_sentiment, symbols, hashtags, text_toxicity) => {
-
-    env.allowRemoteModels = false;
-
-    env.localModelPath = '/models/';
-
-    env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
-
-
-
-
     let text_sentiment = "";
 
 
