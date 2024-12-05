@@ -17,7 +17,7 @@ export const EditorContext = createContext();
 const EditorContextProvider = ({children}) => {
 
   env.allowLocalModels = true;
-  env.useBrowserCache = true;
+  env.useBrowserCache = false;
   env.allowRemoteModels = false;
 
   env.localModelPath = '/models/';
