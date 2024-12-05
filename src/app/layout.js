@@ -1,5 +1,4 @@
 "use client"
-import MobileAlert from "./globalComponents/mobileAlert";
 import "./globals.css";
 import dynamic from 'next/dynamic'
 import HydrationZustand from "./globalComponents/HydrationZustand";
@@ -35,7 +34,6 @@ export default function RootLayout({ children }) {
         </head>
 
         <body>
-          <MobileAlert />
           <DynamicProviders>
             {children}
           </DynamicProviders>
