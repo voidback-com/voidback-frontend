@@ -74,6 +74,7 @@ const EditorContextProvider = ({children}) => {
 
     env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
 
+    env.useBrowserCache = false;
 
     setPostLoading(true);
 
