@@ -16,6 +16,16 @@ export const EditorContext = createContext();
 
 const EditorContextProvider = ({children}) => {
 
+  env.allowLocalModels = true;
+  env.useBrowserCache = true;
+  env.allowRemoteModels = false;
+
+  env.localModelPath = '/models/';
+
+  env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
+
+
+
   const [postError, setPostError] = useState(null);
   const [postLoading, setPostLoading] = useState(false);
   const [postSuccess, setPostSuccess] = useState(null);
@@ -66,15 +76,6 @@ const EditorContextProvider = ({children}) => {
   const handlePost = async (content, text, attributes, image, video, parent_post) => {
 
     if(!account) return;
-
-
-    env.allowRemoteModels = false;
-
-    env.localModelPath = '/models/';
-
-    env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
-
-    env.useBrowserCache = false;
 
     setPostLoading(true);
 
