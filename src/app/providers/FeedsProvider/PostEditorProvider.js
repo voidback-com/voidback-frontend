@@ -16,13 +16,7 @@ export const EditorContext = createContext();
 
 const EditorContextProvider = ({children}) => {
 
-  env.allowLocalModels = true;
-  env.useBrowserCache = false;
-  env.allowRemoteModels = false;
-
-  env.localModelPath = '/models/';
-
-  env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
+  env.allowLocalModels = false;
 
 
 
