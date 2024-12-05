@@ -5,7 +5,6 @@ import * as nsfwjs from "nsfwjs";
 tf.enableProdMode();
 
 
-
 const checkImage = async (image) => {
 
   tf.setBackend("cpu");

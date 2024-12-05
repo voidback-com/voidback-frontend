@@ -3,10 +3,19 @@ import { createContext, useEffect, useState, useContext } from "react";
 import { afinn165FinancialMarketNews } from "afinn-165-financialmarketnews";
 import sentimentExtras from "./sentiment";
 import { pipeline, env } from "@xenova/transformers";
-import { API_URL, toAuthHeaders } from "@/app/configs/api";
+import { API_URL, errorToReadable, toAuthHeaders } from "@/app/configs/api";
 import { AuthContext } from "../AuthProvider";
 import { AnalyticsContext } from "../AnalyticsProvider";
 import checkImage from "@/app/globalComponents/imageNSFW";
+
+
+env.allowRemoteModels = false;
+
+env.localModelPath = '/models/';
+
+env.backends.onnx.wasm.wasmPaths = "/models/wasm/";
+
+
 
 
 export const EditorContext = createContext();
@@ -29,15 +38,6 @@ const EditorContextProvider = ({children}) => {
 
 
   const handlePostMetadata = async (post, text, partial_sentiment, symbols, hashtags, text_toxicity) => {
-
-
-    env.allowRemoteModels = false;
-
-    env.localModelPath = '/models/';
-
-    env.backends.onnx.wasm.wasmPaths = "/models/";
-
-
 
     let text_sentiment = "";
 
@@ -107,7 +107,9 @@ const EditorContextProvider = ({children}) => {
     }
 
     // toxicity analysis
+    
     let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
+
     const text_toxicity = await toxicity_model(text, {topk: null});
 
 
@@ -119,17 +121,16 @@ const EditorContextProvider = ({children}) => {
     }
     else{
 
-
       await fetch(API_URL+"post", {
         method: "POST",
         headers: toAuthHeaders({}),
         body: formData
-      }).then((res)=> {
+      }).then(async (res)=> {
           if(res.status===200)
             return res.json();
           else
           {
-            setPostError(res.error);
+            setPostError(errorToReadable(await res.json()));
             setPostLoading(false);
           }
         }).then(async (data)=> {

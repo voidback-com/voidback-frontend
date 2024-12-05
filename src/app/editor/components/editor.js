@@ -221,6 +221,7 @@ export const ReadonlyEditor = ({content}) => {
       editor={editor} 
       className="w-full"
       readOnly
+      label="editor"
     />
   )
 }

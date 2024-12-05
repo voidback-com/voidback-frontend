@@ -102,7 +102,6 @@ const Page = () => {
       setVerified(true);
     }
     else if(account && !verified){
-      setSent(true);
       auth_sendOtp().then(async (res)=> {
         if(res.status==200)
         {
