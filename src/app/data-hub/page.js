@@ -4,15 +4,40 @@ import {
   VStack,
   Container,
   Show,
+  useToast,
 } from "@chakra-ui/react";
 import { FeedBackPollCard, HashtagSentimentQueryCard, KeywordSentimentQueryCard, PositionPollCard, SymbolSentimentQueryCard } from "./components/Cards";
 import { NavBarTop } from "./components/NavBar";
 import { useDisclosure } from "@nextui-org/react";
 import { Drawers } from "./components/drawers";
+import { isAuthenticated } from "../configs/api";
+import { useRouter } from "next/navigation";
 
 
 
 const Page = () => {
+
+
+  const router = useRouter();
+
+  const toast = useToast();
+
+  useEffect(()=> {
+    if(!isAuthenticated())
+    {
+      if(!toast.isActive(2))
+        toast({
+          title: "You have to login to use the data-hub.",
+          status: "info",
+          duration: 5000,
+          isClosable: true,
+          id: 2
+        })
+      return router.replace("/home/foryou");
+    }
+  }, [])
+
+
 
   const [refresh, setRefresh] = useState(false);
   const [myQueries, setMyQueries] = useState(false);

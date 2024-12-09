@@ -26,7 +26,6 @@ import { Search } from '@geist-ui/icons';
 import { NavBack } from "@/app/research/components/topSection";
 import { SidebarContext } from "@/app/providers/FeedsProvider/SidebarProvider";
 import AccountRecommendations from "@/app/globalComponents/AccountRecommendations";
-import { isAuthenticated } from "@/app/configs/api";
 
 
 
@@ -41,9 +40,11 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
   const { account } = useContext(AuthContext);
 
 
+
   const router = useRouter();
 
   const editor = useDisclosure();
+
 
 
   return (
@@ -213,7 +214,7 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
 
       <Button 
-        onClick={isAuthenticated() ? editor.onOpen : ()=>router.push("/auth/login")}
+        onClick={account ? editor.onOpen : ()=>router.push("/auth/login")}
         size="md"
         variant="light"
       >
@@ -276,6 +277,7 @@ const CenterSection = ({ActiveFeed}) => {
 
   const editor = useDisclosure();
 
+
   return (
     <VStack
       width="100%"
@@ -326,7 +328,7 @@ const CenterSection = ({ActiveFeed}) => {
 
 
         { 
-          (isAuthenticated() && account)
+          (account)
           ?
           <Button 
             onClick={editor.onOpen}
