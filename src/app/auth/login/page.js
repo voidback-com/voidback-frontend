@@ -29,6 +29,13 @@ import { isAuthenticated } from "@/app/configs/api";
 
 
 
+export const metdata = {
+  title: "Login",
+  description: "Voidback's login page.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
+
 
 
 const Login = () => {

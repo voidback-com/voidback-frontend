@@ -9,6 +9,12 @@ const DynamicProviders = dynamic(
   { ssr: false }
 )
  
+export const metdata = {
+  title: "Voidback",
+  description: "Voidback is a social media platform tailored to traders and finance oriented people, with ai powered analytics and safe for work algorithms reinforcing the purity, safety and civility of our platform.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
 
 
 

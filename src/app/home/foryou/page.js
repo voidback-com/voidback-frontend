@@ -29,6 +29,15 @@ import PlatformMessage from "../components/platformMessage";
 
 
 
+export const metdata = {
+  title: "For You",
+  description: "Voidback's ForYou page.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
+
+
+
 
 
 export const ForYouPostsFeed = ({refresh, setRefresh}) => {

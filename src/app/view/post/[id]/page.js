@@ -34,6 +34,14 @@ import { ParentPostCard, ReplyEditor } from "../components/components";
 import { NavBack } from "@/app/research/components/topSection";
 
 
+export const metdata = {
+  title: "Voidback Post",
+  description: "Voidback post.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
+
+
 
 
 const ViewPost = ({ params }) => {

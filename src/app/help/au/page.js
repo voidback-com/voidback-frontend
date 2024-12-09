@@ -20,6 +20,15 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Image, Spinner } from "
 import { NavBack } from "@/app/research/components/topSection";
 
 
+export const metdata = {
+  title: "About Us",
+  description: "Voidback's about page.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
+
+
+
 
 
 const Page = () => {

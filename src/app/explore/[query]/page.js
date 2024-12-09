@@ -29,6 +29,14 @@ import { ResearchPaperCard } from "@/app/research/components/components";
 import AccountCard from "@/app/profile/components/accountCard";
 
 
+export const metdata = {
+  title: "Explore",
+  description: "Voidback's explore page.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
+
+
 
 
 const ExplorePage = ({ params }) => {

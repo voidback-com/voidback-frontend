@@ -39,6 +39,15 @@ import { Flag } from "@geist-ui/icons";
 
 
 
+export const metdata = {
+  title: "Voidback User",
+  description: "Voidback user.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
+
+
+
 
 const ViewAccount = ({ params }) => {
 

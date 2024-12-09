@@ -26,6 +26,15 @@ import { errorToReadable, isAuthenticated } from "../configs/api";
 import { Popover } from "@mui/material";
 
 
+export const metdata = {
+  title: "Settings",
+  description: "Voidback's settings page.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
+
+
+
 
 
 const SettingsPage = () => {

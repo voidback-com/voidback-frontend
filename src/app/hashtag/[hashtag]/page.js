@@ -28,6 +28,14 @@ import { RefreshCcw } from "@geist-ui/icons";
 export const dynamicParams = false
 
 
+export const metdata = {
+  title: "Hashtag",
+  description: "Voidback's hashtag page.",
+  referrer: "origin-when-cross-origin",
+  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
+}
+
+
 
 const Page = ({ params }) => {
 
