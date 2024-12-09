@@ -15,6 +15,7 @@
     "@geist-ui/icons": "^1.0.2",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@mui/x-charts": "^7.23.1",
     "@nextui-org/autocomplete": "^2.1.5",
     "@nextui-org/react": "^2.6.4",
     "@nextui-org/system": "^2.2.5",

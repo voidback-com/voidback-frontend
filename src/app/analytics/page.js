@@ -11,7 +11,8 @@ import { API_URL, toAuthHeaders } from "@/app/configs/api";
 import { useEffect, useState } from "react";
 import { Tab, Tabs } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { PieChart } from "@geist-ui/icons";
+import { Home, Users } from "@geist-ui/icons";
+import { UsersActivity } from "./components/LeftBarOptions";
 
 
 
@@ -38,17 +39,34 @@ const LeftSection = ({currentSelection, setCurrentSelection}) => {
         }}
       >
         <Tab
-          key={"eventsOverview"}
+          key={"home"}
           className="flex flex-row justify-start"
           title={
             <HStack spacing={5}>
-              <PieChart size={25} />
+              <Home size={25} />
               <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>Events Overview</Text>
+                <Text fontSize={"medium"} fontWeight={600}>Home</Text>
               </Show>
           </HStack>
           }
         />
+
+
+
+
+        <Tab
+          key={"usersActivity"}
+          className="flex flex-row justify-start"
+          title={
+            <HStack spacing={5}>
+              <Users size={25} />
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>Users Events</Text>
+              </Show>
+          </HStack>
+          }
+        />
+
 
 
       </Tabs>
@@ -61,89 +79,21 @@ const LeftSection = ({currentSelection, setCurrentSelection}) => {
 
 
 
-const OverviewEvents = () => {
-  const [eventsOverview, setEventsOverview] = useState(false);
-  const [error, setError] = useState(false);
-
-  const router = useRouter();
-
-  const getEventsOverview = async () => {
-
-    const res = await fetch(API_URL+"analytics/eventsOverview", {
-      method: "GET",
-      headers: toAuthHeaders({})
-    });
-
-
-    const data = await res.json();
-
-    if(res.status===200)
-    {
-      setEventsOverview(data)
-    }
-    else{
-      setError(data);
-    }
-
-  }
-
-
-  useEffect(()=> {
-    if(!error && !eventsOverview)
-    {
-      getEventsOverview();
-    }
-  }, [!eventsOverview, !error])
-
-
-  if(error)
-    return router.push("/");
-
-  return (
-    <VStack overflowY={'scroll'} className="bg-background w-full h-full flex flex-col  content-center p-4 space-y-10 py-10">
-
-        <Skeleton className="w-fit h-fit bg-yellow-200" isLoaded={eventsOverview}>
-          <div 
-            dangerouslySetInnerHTML={{__html: eventsOverview.postEvents}}/>
-        </Skeleton>
-
-        <Skeleton className="w-fit h-fit bg-red-200" isLoaded={eventsOverview}>
-          <div 
-          dangerouslySetInnerHTML={{__html: eventsOverview.ViewAccountEvents}}/>
-        </Skeleton>
-
-        <Skeleton className="w-fit h-fit bg-green-200" isLoaded={eventsOverview}>
-          <div 
-          dangerouslySetInnerHTML={{__html: eventsOverview.viewHashtagSymbolEvents}}/>
-        </Skeleton>
-
-        <Skeleton className="w-fit h-fit bg-blue-200" isLoaded={eventsOverview}>
-          <div 
-          dangerouslySetInnerHTML={{__html: eventsOverview.exploreEvents}}/>
-        </Skeleton>
-
-
-        <Skeleton className="w-fit h-fit bg-yellow-200" isLoaded={eventsOverview}>
-          <div 
-          dangerouslySetInnerHTML={{__html: eventsOverview.researchEvents}}/>
-        </Skeleton>
-
-
-    </VStack>
-  )
-
-}
-
-
 const Analytics = () => {
 
-  const [currentSelection, setCurrentSelection] = useState("eventsOverview");
+  const [currentSelection, setCurrentSelection] = useState("usersActivity");
+
+
+  const router = useRouter();
 
 
   const renderSelection = () => {
     switch(currentSelection) {
-      case "eventsOverview":
-        return <OverviewEvents />;
+      case "usersActivity":
+        return <UsersActivity />;
+
+      case "home":
+        return router.replace("/home");
 
     }
 

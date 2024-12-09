@@ -812,7 +812,9 @@ const Sections = ({ActiveFeed, currentSelection}) => {
     >
 
 
-      <LeftSection currentSelection={currentSelection} />
+      <Show breakpoint="(min-width: 700px)" style={{display: "none"}}>
+        <LeftSection currentSelection={currentSelection} />
+      </Show>
 
       <CenterSection ActiveFeed={ActiveFeed} />
 

@@ -60,6 +60,7 @@ export const MediaSection = ({video, image, setVideo, setImage, edit_mode=false}
               onClick={imgDrawer.onOpen}
               src={image.image} 
               className="object-contain p-0 max-w-full max-h-[250px]"
+                alt="post image"
             />
           </HStack>
         }
@@ -89,12 +90,14 @@ export const MediaSection = ({video, image, setVideo, setImage, edit_mode=false}
                <Image 
                 src={image.source} 
                 className="z-0 w-[100%] max-w-[70vw]"
+                alt="post image"
               />
 
               :
                <Image 
                 src={imgDrawer.isOpen && image.image} 
                 className="z-0 w-[100%] max-w-[70vw]"
+                alt="post image"
               />
             }
               <Spacer/>
