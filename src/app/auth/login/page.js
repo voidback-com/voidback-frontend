@@ -52,7 +52,7 @@ const Login = () => {
   const [loginBtnDisabled, setLoginBtnDisabled] = useState(false);
 
 
-  const { auth_login } = useContext(AuthContext);
+  const { auth_login, account } = useContext(AuthContext);
 
 
   
@@ -133,7 +133,7 @@ const Login = () => {
 
 
   useEffect(()=> {
-    if(isAuthenticated())
+    if(account)
       return router.replace("/home/foryou");
   }, [])
 

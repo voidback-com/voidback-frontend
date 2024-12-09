@@ -1,7 +1,6 @@
 "use client"
 import { 
   VStack,
-  Button,
   useColorMode,
   Spacer,
   HStack,
@@ -36,6 +35,7 @@ import {
   DatePicker
 } from "@nextui-org/react";
 import { isAuthenticated } from "@/app/configs/api";
+import { Button } from "@nextui-org/react";
 
 
 
@@ -72,7 +72,8 @@ const Signup = () => {
 
 
   const { 
-    auth_signup
+    auth_signup,
+    account
   } = useContext(AuthContext);
 
 
@@ -80,6 +81,8 @@ const Signup = () => {
 
 
   const signupUser = async () => {
+
+    setAuthLoading(true);
 
     setUsernameError(null);
     setFullNameError(null);
@@ -142,7 +145,6 @@ const Signup = () => {
 
     else{
 
-      setAuthLoading(true);
 
       const response = await auth_signup(username, email, password, fullName, birthDate.toString());
 
@@ -173,11 +175,12 @@ const Signup = () => {
       setAuthLoading(false);
     }
 
+      setAuthLoading(false);
   }
 
 
   useEffect(()=> {
-    if(isAuthenticated()) return router.replace("/home/foryou");
+    if(account) return router.replace("/home/foryou");
   }, [])
 
 
@@ -205,7 +208,7 @@ const Signup = () => {
   return (
     <div
       overflow={"hidden"}
-      className="bg-background h-[100vh] w-full flex flex-col justify-around p-2"
+      className="bg-background h-[100vh] w-full flex flex-col justify-around p-2 max-h-[100vh]"
     >
 
     <form
@@ -389,7 +392,8 @@ const Signup = () => {
         >
           <Button
             marginTop={5}
-            onClick={signupUser}
+            onPress={signupUser}
+            variant="solid"
             type="button"
             isDisabled={!username || !fullName || !birthDate || !email || !password}
           >
@@ -411,11 +415,11 @@ const Signup = () => {
         >
           <Text>
             By signing up, you agree to our <Link
-            onClick={()=>router.push("/terms")}
+            onClick={()=>router.push("/legal/tos")}
             fontWeight="600"
-            >Terms of Service</Link>, <Link fontWeight="600" onClick={()=>router.push("/privacyPolicy")}
+            >Terms of Service</Link>, <Link fontWeight="600" onClick={()=>router.push("/legal/pp")}
             >Privacy Policy
-            </Link> and <Link fontWeight="600" onClick={()=>router.push("/cookiesPolicy")}>Cookies Policy.</Link>
+            </Link>
           </Text>
         </SkeletonText>
       </HStack>
