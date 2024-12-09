@@ -20,7 +20,6 @@ import { Autocomplete, AutocompleteItem, Avatar, CardFooter, Chip, ScrollShadow,
 import VoidBackEditor from "@/app/editor/editorDrawer";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaHashtag } from "@react-icons/all-files/fa/FaHashtag";
-import { Touchable } from "@/app/auth/components";
 import { Home as HomeIcon, Inbox as InboxIcon, BookOpen as ResearchIcon, Settings as SettingsIcon, Moon as MoonIcon, Sun as SunIcon, Feather, Bell as NotificationsIcon, RefreshCcw, Activity, LogIn  } from '@geist-ui/icons'
 import { BsGraphUp } from "@react-icons/all-files/bs/BsGraphUp";
 import { Search } from '@geist-ui/icons';
@@ -183,10 +182,8 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
         <Tab
           key={"/data-hub"}
-          isDisabled={true}
           className="flex flex-row justify-start"
           title={
-            <Tooltip content="Coming soon!">
             <HStack spacing={5}>
               <BsGraphUp size={25} />
 
@@ -194,7 +191,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
                 <Text fontSize={"medium"} fontWeight={600}>Data Hub</Text>
               </Show>
             </HStack>
-            </Tooltip>
           }
         />
 

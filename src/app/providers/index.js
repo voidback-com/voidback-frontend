@@ -10,6 +10,7 @@ import SidebarContextProvider from "./FeedsProvider/SidebarProvider.js";
 import {NextUIProvider} from "@nextui-org/react";
 import GreedyFetchContextProvider from "./greedyFetch/index.js";
 import AnalyticsContextProvider from "./AnalyticsProvider/index.js";
+import DataHubContextProvider from "./DataHubProvider/index.js";
  
 
         
@@ -28,7 +29,9 @@ export default function Providers ({children}) {
                   <SidebarContextProvider>
                     <LeftFeedContextProvider>
                       <EditorContextProvider>
-                        {children}
+                        <DataHubContextProvider>
+                          {children}
+                        </DataHubContextProvider>
                       </EditorContextProvider>
                     </LeftFeedContextProvider>
                   </SidebarContextProvider>

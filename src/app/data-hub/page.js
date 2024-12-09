@@ -1,16 +1,30 @@
 'use client'
+import { useState, useEffect } from "react";
 import { 
   VStack,
   Container,
   Show,
 } from "@chakra-ui/react";
-import { HashtagSentimentQueryCard, KeywordSentimentQueryCard, SymbolSentimentQueryCard } from "./components/Cards";
+import { FeedBackPollCard, HashtagSentimentQueryCard, KeywordSentimentQueryCard, PositionPollCard, SymbolSentimentQueryCard } from "./components/Cards";
 import { NavBarTop } from "./components/NavBar";
-
+import { useDisclosure } from "@nextui-org/react";
+import { Drawers } from "./components/drawers";
 
 
 
 const Page = () => {
+
+  const [refresh, setRefresh] = useState(false);
+  const [myQueries, setMyQueries] = useState(false);
+  const [ticker, setTicker] = useState(null);
+
+  useEffect(()=> {
+    if(refresh)
+      setRefresh(false);
+  }, [refresh])
+
+
+  const myQueriesDrawer = useDisclosure();
 
   return (
     <Container 
@@ -20,17 +34,29 @@ const Page = () => {
       padding={0}
       className="bg-background flex flex-col"
     >
-      <NavBarTop />
+      <NavBarTop 
+        refresh={refresh} 
+        myQueriesDrawer={myQueriesDrawer}
+        setMyQueries={setMyQueries}
+      />
       <div
-        className="w-full h-full flex flex-row bg-red-200"
+        className="w-full h-full flex flex-row"
       >
-        <SymbolSentimentQueryCard />
-        <HashtagSentimentQueryCard />
+        <SymbolSentimentQueryCard setRefresh={setRefresh} setTicker={setTicker} />
 
         <Show breakpoint="(min-width: 1000px)">
-          <KeywordSentimentQueryCard />
+          <PositionPollCard ticker={ticker} />
+
+          <FeedBackPollCard ticker={ticker} />
         </Show>
       </div>
+
+
+      <Drawers 
+        myQueriesDrawer={myQueriesDrawer}
+        myQueriesData={myQueries}
+      />
+
     </Container>
   )
 }

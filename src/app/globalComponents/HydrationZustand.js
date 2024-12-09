@@ -7,7 +7,7 @@ const HydrationZustand = ({children}) => {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(()=> {
-    setIsHydrated(true)
+    setIsHydrated(true);
   }, [])
 
 
