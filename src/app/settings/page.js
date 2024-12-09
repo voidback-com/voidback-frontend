@@ -142,6 +142,7 @@ const SettingsPage = () => {
   }
 
 
+  const router = useRouter();
 
   const handleDeleteAccount = async () => {
 
@@ -157,6 +158,7 @@ const SettingsPage = () => {
 
       logoutUser();
       deleteAccountModal.onClose();
+      router.replace("/home");
     }
 
     else if(response.status===404)

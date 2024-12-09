@@ -1,7 +1,7 @@
 'use client'
 import { HStack, Text, VStack, Spacer, useToast } from "@chakra-ui/react";
 import { Avatar, Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
-import { MessageCircle, Mail, Bell, Trash2 } from '@geist-ui/icons';
+import { MessageCircle, Mail, Bell, Trash2, AtSign } from '@geist-ui/icons';
 import { IoHeartDislikeSharp } from "@react-icons/all-files/io5/IoHeartDislikeSharp";
 import { Touchable } from "@/app/auth/components";
 import { FaHeart } from "@react-icons/all-files/fa/FaHeart";
@@ -16,7 +16,8 @@ const icons = {
   "message": <MessageCircle size={20} color="default" />,
   "inbox": <Mail size={20} color="default" />,
   "like": <FaHeart size={20} color="tomato" />,
-  "dislike": <IoHeartDislikeSharp size={20} color="tomato" />
+  "dislike": <IoHeartDislikeSharp size={20} color="tomato" />,
+  "mention": <AtSign size={20} color="default" />
 }
 
 

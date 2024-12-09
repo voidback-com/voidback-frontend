@@ -61,7 +61,7 @@ const ProfilePage = () => {
   useEffect(()=> {
     if(!isAuthenticated())
     {
-      router.push("/auth/login");
+      router.replace("/auth/login");
     }
   }, [])
 
@@ -93,7 +93,7 @@ const ProfilePage = () => {
   const handleLogout = () => {
     logoutUser();
 
-    return router.push("/home");
+    return router.replace("/home");
   }
 
 

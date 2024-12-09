@@ -298,7 +298,7 @@ const Login = () => {
           <Link 
             fontWeight={600}
             color="grey"
-            onClick={()=>router.push("/auth/signup")}
+            onClick={()=>router.replace("/auth/signup")}
           >
             Signup
           </Link>
@@ -325,7 +325,7 @@ const Login = () => {
           <Link 
             fontWeight={600}
             color="grey"
-            onClick={()=>router.push("/auth/resetPassword")}
+            onClick={()=>router.replace("/auth/resetPassword")}
           >
             Reset password
           </Link>
