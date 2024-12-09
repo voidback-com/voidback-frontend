@@ -14,28 +14,19 @@ import {
   HStack,
   Text
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { TopSection } from "./components/topSection";
 import { SidebarContext } from "../providers/FeedsProvider/SidebarProvider";
 import { ResearchPaperCard } from "./components/components";
-import InfiniteScroll from "react-infinite-scroller";
 import { Pagination, Spinner } from "@nextui-org/react";
 import { errorToReadable } from "../configs/api";
-import { LeftSection } from "../home/components/Sections";
-
-
-export const metdata = {
-  title: "Research",
-  description: "Voidback's research page.",
-  referrer: "origin-when-cross-origin",
-  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
-}
 
 
 
 
 
 export const renderPapers = (papers) => {
+
+  
 
   const renderItems = () => {
     if(papers && papers.length)
@@ -52,6 +43,7 @@ export const renderPapers = (papers) => {
 
 
 const ResearchPage = () => {
+  document.title = "Research";
 
   const { searchPapers, loadTopPapers } = useContext(SidebarContext);
 

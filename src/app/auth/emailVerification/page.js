@@ -36,6 +36,7 @@ import { API_URL, errorToReadable, isAuthenticated } from "@/app/configs/api";
 
 const Page = () => {
 
+  document.title = "Email Verification";
 
   const { colorMode, toggleColorMode } = useColorMode();
 

@@ -23,17 +23,10 @@ import { errorToReadable, isAuthenticated } from "../configs/api";
 import { Spinner } from "@nextui-org/react";
 
 
-export const metdata = {
-  title: "Inbox",
-  description: "Voidback's inbox page.",
-  referrer: "origin-when-cross-origin",
-  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
-}
-
-
-
 
 const InboxPage = () => {
+
+  document.title = "Inbox";
 
   const router = useRouter();
   const toast = useToast();

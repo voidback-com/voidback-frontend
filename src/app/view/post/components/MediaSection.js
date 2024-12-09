@@ -3,38 +3,22 @@ import {
   Container,
   HStack,
   Spacer,
-  Tabs,
-  TabPanels,
-  TabPanel,
-  Stack,
-  Button,
   useDisclosure,
   Drawer,
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-  IconButton,
   VStack
 } from "@chakra-ui/react";
 import { Image } from "@nextui-org/react";
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
-import ReactPlayer from "react-player/youtube";
-import { PlayFill } from '@geist-ui/icons';
 
 
 
 
 const VideoPlayer = ({url}) => {
 
-  return (
-    <ReactPlayer 
-      url={url} 
-      height={300}
-      className={`border-1 rounded-md bg-background`}
-      playIcon={<PlayFill size={20} />}
-      controls
-    />
-  )
+  return null;
 }
 
 

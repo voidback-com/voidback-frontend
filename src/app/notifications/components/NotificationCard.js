@@ -25,6 +25,7 @@ const icons = {
 
 const NotificationCard = ({data, handleRemove}) => {
 
+
   const { deleteNotification } = useContext(SidebarContext);
 
   const mediaUrl = "https://media.voidback.com/media/"

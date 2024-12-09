@@ -1,27 +1,8 @@
 import { NavBack } from "@/app/research/components/topSection";
 import { 
-  VStack,
-  Stack,
   Spacer,
-  HStack,
   Text,
-  Skeleton,
-  useColorMode,
-  useDisclosure,
-  Alert,
-  Show,
-  AlertIcon
 } from "@chakra-ui/react";
-
-
-export const metdata = {
-  title: "Privacy Policy",
-  description: "Voidback's privacy policy page.",
-  referrer: "origin-when-cross-origin",
-  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
-}
-
-
 
 
 
@@ -29,6 +10,7 @@ export const metdata = {
 
 export const Page = async () => {
   
+  document.title = "Privacy Policy";
 
   const fs = require("fs");
   const path = require("path");

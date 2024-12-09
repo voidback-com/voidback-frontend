@@ -2,16 +2,8 @@ import { Text } from '@chakra-ui/react';
 import { Image, Link } from '@nextui-org/react';
 import { NavBack } from './research/components/topSection';
 
-
-export const metdata = {
-  title: "Not Found",
-  description: "Voidback's 404 page.",
-  referrer: "origin-when-cross-origin",
-  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
-}
-
-
 export default async function NotFound() {
+  document.title = "Not Found";
   return (
     <div className='bg-background'>
 

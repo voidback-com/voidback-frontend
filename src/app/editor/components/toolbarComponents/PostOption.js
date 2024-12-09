@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import { AuthContext } from '@/app/providers/AuthProvider';
 import { EditorContext } from '@/app/providers/FeedsProvider/PostEditorProvider';
 import { Button } from '@nextui-org/react';
 import { BiSend } from "@react-icons/all-files/bi/BiSend";

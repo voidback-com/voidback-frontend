@@ -25,6 +25,7 @@ export const Page = async () => {
   const fullpath = path.join("src/app/legal/tos/", "terms.html");
   const contents = fs.readFileSync(fullpath, "utf8");
 
+  document.title = "Terms of Service";
 
   return (  
     <div

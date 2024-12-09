@@ -25,7 +25,6 @@ import { useRouter } from "next/navigation";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { PostTopBar, PostBottomBar } from "../components/postbars";
 import { LeftSection, RightSection } from "@/app/home/components/Sections";
-import { AuthContext } from "@/app/providers/AuthProvider";
 import { ReadonlyEditor } from "@/app/editor/components/editor";
 import { errorToReadable, isAuthenticated, isError } from "@/app/configs/api";
 import { Replies } from "../components/replies";
@@ -34,17 +33,11 @@ import { ParentPostCard, ReplyEditor } from "../components/components";
 import { NavBack } from "@/app/research/components/topSection";
 
 
-export const metdata = {
-  title: "Voidback Post",
-  description: "Voidback post.",
-  referrer: "origin-when-cross-origin",
-  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
-}
-
-
 
 
 const ViewPost = ({ params }) => {
+
+  document.title = "View Post";
 
   const { id } = params;
 

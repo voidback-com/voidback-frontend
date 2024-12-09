@@ -1,4 +1,4 @@
-import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
+'use client'
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { 
@@ -17,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 import PostOption from "@/app/editor/components/toolbarComponents/PostOption";
 import ImageOption from "@/app/editor/components/toolbarComponents/ImageOption";
-import VideoOption from "@/app/editor/components/toolbarComponents/VideoOption";
 import Editor, { ReadonlyEditor } from "@/app/editor/components/editor";
 import CharLimit from "@/app/editor/components/toolbarComponents/charLimit";
 import { MediaSection } from "./MediaSection";
@@ -218,7 +217,6 @@ export const ReplyEditor = ({parent_post_id}) => {
 
               <div className="flex flex-row gap-4">
                 <ImageOption image={image} setImage={setImage} />
-                <VideoOption video={video} setVideo={setVideo} />
                 <CharLimit text={text} />
               </div>
 

@@ -11,19 +11,10 @@ import { useRouter } from "next/navigation";
 import { isAuthenticated } from "../configs/api";
 
 
-export const metdata = {
-  title: "Notifications",
-  description: "Voidback's notifications page.",
-  referrer: "origin-when-cross-origin",
-  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
-}
-
-
-
-
-
 const NotificationsPage = () => {
 
+
+  document.title = "Notifications";
 
   const router = useRouter();
 

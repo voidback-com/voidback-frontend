@@ -25,20 +25,15 @@ import { PostCard } from "@/app/home/components/postCard";
 import { RefreshCcw } from "@geist-ui/icons";
 
 
-export const metdata = {
-  title: "Symbol",
-  description: "Voidback's symbol/ticker page.",
-  referrer: "origin-when-cross-origin",
-  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
-}
-
-
 
 
 
 const Symbol = ({ params }) => {
 
+
   const { symbol } = params;
+
+  document.title = symbol;
 
   const { 
     getSymbolPosts, 

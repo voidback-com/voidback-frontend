@@ -3,13 +3,11 @@ import {
   useState,
   useContext,
   useEffect,
-  useRef
 } from "react";
 import { 
   VStack,
   Spacer,
   HStack,
-  Stack,
   Skeleton,
   Alert,
   AlertIcon,
@@ -23,14 +21,12 @@ import {
   CloseButton,
   DrawerHeader,
   DrawerBody,
-  DrawerFooter
 } from "@chakra-ui/react";
 import {EditorContext} from "@/app/providers/FeedsProvider/PostEditorProvider";
 import PostOption from "./components/toolbarComponents/PostOption";
 import ImageOption from "./components/toolbarComponents/ImageOption";
 import Editor from "./components/editor";
 import CharLimit from "./components/toolbarComponents/charLimit";
-import VideoOption from "./components/toolbarComponents/VideoOption";
 import { MediaSection } from "../view/post/components/MediaSection";
 
 
@@ -182,7 +178,6 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
                   <div className="flex flex-row gap-4">
                     <ImageOption image={image} setImage={setImage} />
-                    <VideoOption video={video} setVideo={setVideo} />
                     <CharLimit text={text} />
                   </div>
 

@@ -15,17 +15,10 @@ import { useRouter } from "next/navigation";
 
 
 
-export const metdata = {
-  title: "Data-Hub",
-  description: "Voidback's Data-Hub page.",
-  referrer: "origin-when-cross-origin",
-  keywords: ["finance", "quant", "voidback", "social media", "platform", "voidback login", "fintech", "data-hub", "data broker", "financial data", "realtime data", "stocks", "options", "stock market", "investments", "models", "quantitative analysis"]
-}
-
-
 
 const Page = () => {
 
+  document.title = "Data-Hub";
 
   const router = useRouter();
 
