@@ -30,7 +30,10 @@ export default function RootLayout({ children }) {
 
   <link href="https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&display=swap" rel="stylesheet"/>
 
-        </head>
+      <meta name="description" content="Voidback is a social media platform for traders and finance oriented people who seek out edge and want a pure and safe environment to do so." />
+      <meta name="keywords" content="$VB, Finance, Voidback, Quant, Fintech, " />
+
+  </head>
 
         <body>
           <DynamicProviders>

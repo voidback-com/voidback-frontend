@@ -1,16 +1,7 @@
 import { NavBack } from "@/app/research/components/topSection";
 import { 
-  VStack,
-  Stack,
   Spacer,
-  HStack,
   Text,
-  Skeleton,
-  useColorMode,
-  useDisclosure,
-  Alert,
-  Show,
-  AlertIcon
 } from "@chakra-ui/react";
 
 
