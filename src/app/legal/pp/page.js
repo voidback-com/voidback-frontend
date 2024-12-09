@@ -6,11 +6,15 @@ import {
 
 
 
+export const metadata = {
+  "title": "Privacy Policy"
+}
+
+
 
 
 export const Page = async () => {
   
-  document.title = "Privacy Policy";
 
   const fs = require("fs");
   const path = require("path");
