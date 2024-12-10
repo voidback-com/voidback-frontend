@@ -9,6 +9,7 @@ import { jwtDecode } from "jwt-decode";
 
 export const API_URL = process.env.API_URL;
 export const WS_NOTIFICATIONS_COUNT = process.env.WS_NOTIFICATIONS_COUNT;
+export const WS_ANALYTICS = process.env.WS_ANALYTICS;
 
 
 export const isAuthenticated = () => {
@@ -34,10 +35,10 @@ export const toAuthHeaders = (headers) => {
     if(token)
     {
       headers["Authorization"] = `Bearer ${token.access}`
-
       return headers;
     }
   }
+
 
   return headers;
 }

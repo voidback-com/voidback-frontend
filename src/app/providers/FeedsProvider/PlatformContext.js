@@ -1,6 +1,6 @@
 'use client'
 import { createContext, useState, useContext, useEffect } from "react";
-import { API_URL, toAuthHeaders } from "@/app/configs/api";
+import { API_URL, isAuthenticated, toAuthHeaders } from "@/app/configs/api";
 
 
 
@@ -14,6 +14,8 @@ const PlatformContext = () => {
 
 
   const getPlatformMessage = async () => {
+
+    if(!isAuthenticated()) return setFetched(true);
 
     const response = await fetch(
       API_URL+`platform/message`,

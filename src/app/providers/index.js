@@ -22,9 +22,9 @@ export default function Providers ({children}) {
     <ChakraProvider theme={chakraTheme}>
       <ColorModeScript initialColorMode={chakraTheme.config.initialColorMode}/>
         <NextUIProvider>
-          <GreedyFetchContextProvider>
-            <AuthContextProvider>
-              <AnalyticsContextProvider>
+          <AnalyticsContextProvider>
+            <GreedyFetchContextProvider>
+              <AuthContextProvider>
                 <RightFeedContextProvider>
                   <SidebarContextProvider>
                     <LeftFeedContextProvider>
@@ -36,9 +36,9 @@ export default function Providers ({children}) {
                     </LeftFeedContextProvider>
                   </SidebarContextProvider>
                 </RightFeedContextProvider>
-              </AnalyticsContextProvider>
-            </AuthContextProvider>
-          </GreedyFetchContextProvider>
+              </AuthContextProvider>
+            </GreedyFetchContextProvider>
+          </AnalyticsContextProvider>
         </NextUIProvider>
     </ChakraProvider>
   )

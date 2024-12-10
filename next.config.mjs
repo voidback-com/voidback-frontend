@@ -5,6 +5,7 @@ const nextConfig = {
   env: {
     "API_URL": process.env.API_URL,
     "WS_NOTIFICATIONS_COUNT":  process.env.WS_NOTIFICATIONS_COUNT,
+    "WS_ANALYTICS":  process.env.WS_ANALYTICS,
     "GFETCH_URL": process.env.GFETCH_URL
   },
   

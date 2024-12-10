@@ -14,7 +14,7 @@ const DynamicProviders = dynamic(
 export default function RootLayout({ children }) {
 
   return (
-    <HydrationZustand>
+
       <html lang="en">
         <head>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
@@ -36,11 +36,13 @@ export default function RootLayout({ children }) {
   </head>
 
         <body>
-          <DynamicProviders>
-            {children}
-          </DynamicProviders>
+          <HydrationZustand>
+            <DynamicProviders>
+              {children}
+            </DynamicProviders>
+          </HydrationZustand>
         </body>
+
       </html>
-    </HydrationZustand>
   );
 }
