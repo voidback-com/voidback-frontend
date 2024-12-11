@@ -185,12 +185,11 @@ export const PositiveEvents = () => {
           if(ws.readyState!==WebSocket.CLOSED)
           {
             ws.send(JSON.stringify({"token": getAccessToken()}));
-            setLoading(true);
           }
         }catch(err){
           //
         }
-      }, 5000); 
+      }, 8000); 
     
       return ()=> clearInterval(interval);
 
@@ -301,12 +300,11 @@ export const NegativeEvents = () => {
           if(ws.readyState!==WebSocket.CLOSED)
           {
             ws.send(JSON.stringify({"token": getAccessToken()}));
-            setLoading(true);
           }
         }catch(err){
           //
         }
-      }, 5000); 
+      }, 8000); 
     
       return ()=> clearInterval(interval);
 
@@ -405,12 +403,11 @@ export const NeutralEvents = () => {
           if(ws.readyState!==WebSocket.CLOSED)
           {
             ws.send(JSON.stringify({"token": getAccessToken()}));
-            setLoading(true);
           }
         }catch(err){
           //
         }
-      }, 5000); 
+      }, 8000); 
     
       return ()=> clearInterval(interval);
 

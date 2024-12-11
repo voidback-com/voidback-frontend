@@ -16,8 +16,7 @@ export const EditorContext = createContext();
 
 const EditorContextProvider = ({children}) => {
 
-  env.allowLocalModels = false;
-
+  env.allowLocalModels = false; // loading from huggingFace hub
 
 
   const [postError, setPostError] = useState(null);
@@ -91,6 +90,7 @@ const EditorContextProvider = ({children}) => {
 
       formData.append("image", image.file);
       const imgSafe = await checkImage(image);
+
 
       if(!imgSafe)
       {

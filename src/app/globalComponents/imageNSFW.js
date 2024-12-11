@@ -1,16 +1,15 @@
 'use client'
-import * as tf from "@tensorflow/tfjs";
-import * as nsfwjs from "nsfwjs";
+import { env, pipeline } from "@xenova/transformers";
 
-tf.enableProdMode();
+
 
 
 const checkImage = async (image) => {
 
-  tf.setBackend("cpu");
+  env.allowLocalModels = false;
 
+const classifier = await pipeline('image-classification', 'AdamCodd/vit-base-nsfw-detector');
 
-  const model = await nsfwjs.load("/models/mobilenet_v2/model.json");
 
   var img = new Image();
 
@@ -19,13 +18,14 @@ const checkImage = async (image) => {
   img.height = 244;
 
 
-  const p = await model.classify(img);
+  const res = await classifier([img.src]);
 
 
-  if(p[0].className!=="Neutral")
+  if(res[0].label==="sfw")
+    return true;
+  else
     return false;
 
-  return true;
 }
 
 

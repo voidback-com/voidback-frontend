@@ -125,6 +125,7 @@ export const Editor = ({setContent, setAttributes, setText}) => {
     editorProps: {
       attributes: {
         class: "focus:outline-none w-full h-[30vh] max-h-[30vh] p-3 border-1 rounded-lg overflow-auto",
+        'aria-label': 'editor-label', 
       },
     },
 
