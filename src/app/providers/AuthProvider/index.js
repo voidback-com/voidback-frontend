@@ -25,7 +25,7 @@ const AuthContextProvider = ({ children }) => {
 
   const auth_signup = async (username, email, password, full_name, birth_date) => {
 
-    logEvent("auth-signup", window.location.href, {username: username, email: email});
+    await logEvent("auth-signup", window.location.href, {username: username, email: email});
 
     const body = {
       full_name: full_name,
@@ -63,7 +63,7 @@ const AuthContextProvider = ({ children }) => {
 
   const auth_sendOtp = async () => {
 
-    logEvent("auth-send-otp", window.location.href);
+    await logEvent("auth-send-otp", window.location.href);
 
     return fetch(API_URL+"account/sendOtp", {
       method: "POST",
@@ -102,7 +102,7 @@ const AuthContextProvider = ({ children }) => {
 
   const auth_verifyOtp = async (token) => {
 
-    logEvent("auth-verify-otp", window.location.href);
+    await logEvent("auth-verify-otp", window.location.href);
 
     return fetch(API_URL+"account/verifyOtp", {
       method: "POST",
@@ -121,7 +121,7 @@ const AuthContextProvider = ({ children }) => {
 
   const auth_login = async (email, password) => {
 
-    logEvent("auth-login", window.location.href, {email});
+    await logEvent("auth-login", window.location.href, {email});
 
     const body = {
       email: email,
@@ -157,7 +157,7 @@ const AuthContextProvider = ({ children }) => {
   }
 
   const logoutUser = async () => {
-    logEvent("auth-logout", window.location.href);
+    await logEvent("auth-logout", window.location.href);
     blackListToken();
     deleteCookie("authTok");
     deleteLocalCached("accInfo");
@@ -211,7 +211,7 @@ const AuthContextProvider = ({ children }) => {
 
   const updateAccount = async (data) => {
 
-    logEvent("auth-account-update", window.location.href, {data});
+    await logEvent("auth-account-update", window.location.href, {data});
 
     return await fetch(API_URL+`account`, {
       method: "PATCH",
@@ -224,7 +224,7 @@ const AuthContextProvider = ({ children }) => {
 
 
   const deleteAccount = async (otp) => {
-    logEvent("auth-delete-account", window.location.href);
+    await logEvent("auth-delete-account", window.location.href);
 
 
     return await fetch(API_URL+`account`, {
@@ -241,7 +241,7 @@ const AuthContextProvider = ({ children }) => {
 
   const follow = async (username) => {
 
-    logEvent("auth-follow", window.location.href, {"following": username});
+    await logEvent("auth-follow", window.location.href, {"following": username});
 
     return await fetch(API_URL+`account/follow?username=${username}`, {
       method: "GET",
@@ -260,7 +260,7 @@ const AuthContextProvider = ({ children }) => {
 
  
   const unfollow = async (username) => {
-    logEvent("auth-unfollow", window.location.href, {"unfollowing": username});
+    await logEvent("auth-unfollow", window.location.href, {"unfollowing": username});
 
     return await fetch(API_URL+`account/unfollow?username=${username}`, {
       method: "GET",
@@ -411,7 +411,7 @@ const AuthContextProvider = ({ children }) => {
 
   const submitAccountReport = async (uid, description, priority, disturbance) => {
 
-    logEvent("auth-account-report", window.location.href, {"user_id": uid});
+    await logEvent("auth-account-report", window.location.href, {"user_id": uid});
 
     return fetch(API_URL+"report", {
       method: "POST",

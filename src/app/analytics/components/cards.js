@@ -1,14 +1,8 @@
 'use client'
 import { 
-  Spacer,
   HStack,
   Text,
-  Skeleton,
-  VStack,
-  Show
 } from "@chakra-ui/react";
-import { API_URL, toAuthHeaders, WS_ANALYTICS } from "@/app/configs/api";
-import { useEffect, useState, useContext } from "react";
 import { 
   Card,
   CardHeader,
@@ -16,19 +10,23 @@ import {
   CardFooter,
   Chip
 } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
-import { Flag, Lock, LogIn, LogOut, Unlock, UserMinus, UserPlus, Users } from "@geist-ui/icons";
-import { AutoAwesomeMosaicTwoTone } from "@mui/icons-material";
+import { BarChart2, Eye, Flag, Heart, Lock, LogIn, LogOut, Plus, Trash, Unlock, User, UserMinus, UserPlus } from "@geist-ui/icons";
 
 
 const ICONS = {
-  "login": <LogIn size={30} color="lightgreen" />,
-  "logout": <LogOut size={30} color="tomato" />,
-  "deleted-account": <UserMinus size={30} color="tomato" />,
-  "otp": <Lock size={30} color="mediumpurple" />,
-  "otp-verified": <Unlock size={30} color="lightgreen" />,
-  "follows": <UserPlus size={30} color="lightgreen" />,
-  "reports": <Flag size={30} color="tomato" />
+  "login": <LogIn size={30} />,
+  "logout": <LogOut size={30} />,
+  "deleted-account": <UserMinus size={30} />,
+  "otp": <Lock size={30} />,
+  "otp-verified": <Unlock size={30} />,
+  "follows": <UserPlus size={30} />,
+  "reports": <Flag size={30} />,
+  "plus": <Plus size={30} />,
+  "eye": <Eye size={30} />,
+  "heart": <Heart size={30} />,
+  "chart": <BarChart2 size={30} />,
+  "user": <User size={30} />,
+  "trash": <Trash size={30} />
 };
 
 

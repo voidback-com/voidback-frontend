@@ -201,7 +201,7 @@ const RightFeedContextProvider = ({children}) => {
 
   const insertSearchQuery = async (query) => {
 
-    logEvent("explore-search-query", window.location.href, {"query": query});
+    await logEvent("explore-search-query", window.location.href, {"query": query});
 
 
     const data = await fetch(API_URL+'searchQuery', {
@@ -317,7 +317,7 @@ const RightFeedContextProvider = ({children}) => {
 
  
       if (skip===0)
-        logEvent("explore-category-search-query", window.location.href, {"query": query, "category": category});
+        await logEvent("explore-category-search-query", window.location.href, {"query": query, "category": category});
 
 
     }

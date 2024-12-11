@@ -33,7 +33,7 @@ const researchPaperContext = () => {
 
   const insertSearchQuery = async (query) => {
 
-    logEvent("search-query", window.location.href, {"query": query});
+    await logEvent("search-query", window.location.href, {"query": query});
 
     const data = await fetch(API_URL+'searchQuery', {
       method: "POST",
@@ -49,7 +49,7 @@ const researchPaperContext = () => {
 
   const searchPapers = async (query) => {
 
-    logEvent("search-papers", window.location.href, {"query": query});
+    await logEvent("search-papers", window.location.href, {"query": query});
 
     return await fetch(API_URL+`researchPaper/search?query=${query}`, {
       method: "GET"
@@ -68,7 +68,7 @@ const researchPaperContext = () => {
 
   const publishResearch = async (title, thumbnail, research_pdf) => {
 
-    logEvent("publish-research-paper", window.location.href, {"title": title});
+    await logEvent("publish-research-paper", window.location.href, {"title": title});
 
     let data = new FormData();
 
@@ -92,7 +92,7 @@ const researchPaperContext = () => {
 
   const myResearch = async (skip, limit) => {
 
-    logEvent("view-myresearch", window.location.href, null);
+    await logEvent("view-myresearch", window.location.href, null);
 
     return await fetch(API_URL+`researchPaper/myResearch?skip=${skip}&limit=${limit}`, {
       method: "GET",
@@ -103,7 +103,7 @@ const researchPaperContext = () => {
 
   const accountResearch = async (username, skip, limit) => {
 
-    logEvent("view-account-research", window.location.href, {"account": username});
+    await logEvent("view-account-research", window.location.href, {"account": username});
 
     return await fetch(API_URL+`researchPaper/accountResearch?username=${username}&skip=${skip}&limit=${limit}`, {
       method: "GET"
@@ -113,7 +113,7 @@ const researchPaperContext = () => {
 
   const deleteResearchPaper = async (id) => {
 
-    logEvent("delete-research-paper", window.location.href, {"paper": id});
+    await logEvent("delete-research-paper", window.location.href, {"paper": id});
 
     return await fetch(API_URL+`researchPaper/myResearch`, {
       method: "DELETE",
@@ -144,7 +144,7 @@ const researchPaperContext = () => {
 
   const makeImpression = async (paperId, impression) => {
 
-    logEvent("make-research-impression", window.location.href, {"paper": paperId, "impression": impression});
+    await logEvent("make-research-impression", window.location.href, {"paper": paperId, "impression": impression});
 
     return await fetch(API_URL+`researchPaper/makeImpression/${paperId}`, {
       method: "POST",
@@ -158,7 +158,7 @@ const researchPaperContext = () => {
 
   const getPaperById = async (paper_id) => {
 
-    logEvent("view-research-paper", window.location.href, {"paper": paper_id});
+    await logEvent("view-research-paper", window.location.href, {"paper": paper_id});
 
     return await fetch(API_URL+`researchPaper/getPaper/${paper_id}`, {
       method: "GET"
@@ -169,7 +169,7 @@ const researchPaperContext = () => {
   const submitResearchReport = async (research_id, description, priority, disturbance, username) => {
 
 
-    logEvent("submit-research-report", window.location.href, {"paper": research_id});
+    await logEvent("submit-research-report", window.location.href, {"paper": research_id});
 
     return fetch(API_URL+"report", {
       method: "POST",

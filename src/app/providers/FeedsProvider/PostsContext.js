@@ -21,7 +21,7 @@ const PostsContext = () => {
 
   const deletePost = async (id) => {
 
-    logEvent("delete-post", window.location.href, {"id": id});
+    await logEvent("delete-post", window.location.href, {"id": id});
 
     return gfetch(
       "/api/post",
@@ -41,7 +41,7 @@ const PostsContext = () => {
   const viewPost = async (post_id) => {
 
 
-    logEvent("view-post", window.location.href, {"id": post_id});
+    await logEvent("view-post", window.location.href, {"id": post_id});
 
     return gfetch(
       `/api/post/account/impression/${post_id}`, 
@@ -56,7 +56,7 @@ const PostsContext = () => {
 
   const likePost = async (post_id) => {
 
-    logEvent("like-post", window.location.href, {"id": post_id});
+    await logEvent("like-post", window.location.href, {"id": post_id});
 
     return gfetch(
       `/api/post/account/impression/${post_id}`, 
@@ -71,7 +71,7 @@ const PostsContext = () => {
 
   const deleteLikePost = async (post_id) => {
 
-    logEvent("unlike-post", window.location.href, {"id": post_id});
+    await logEvent("unlike-post", window.location.href, {"id": post_id});
 
     return gfetch(
       `/api/post/account/impression/${post_id}`, 
@@ -85,7 +85,7 @@ const PostsContext = () => {
 
   const dislikePost = async (post_id) => {
 
-    logEvent("dislike-post", window.location.href, {"id": post_id});
+    await logEvent("dislike-post", window.location.href, {"id": post_id});
 
     return gfetch(
       `/api/post/account/impression/${post_id}`, 
@@ -99,7 +99,7 @@ const PostsContext = () => {
 
   const deleteDislikePost = async (post_id) => {
 
-    logEvent("undislike-post", window.location.href, {"id": post_id});
+    await logEvent("undislike-post", window.location.href, {"id": post_id});
     return gfetch(
       `/api/post/account/impression/${post_id}`, 
       "POST", 
@@ -147,6 +147,9 @@ const PostsContext = () => {
 
 
   const submitPostReport = async (post_id, description, priority, disturbance, username) => {
+
+    await logEvent("submit-post-report", window.location.href, {"id": post_id});
+
     return fetch(
       API_URL+"report",
         {
@@ -169,7 +172,7 @@ const PostsContext = () => {
   const getAccountPosts = async (username, page, post_type) => {
 
     // viewed another account's posts
-    logEvent("view-account-posts", window.location.href, {"account": username});
+    await logEvent("view-account-posts", window.location.href, {"account": username});
 
     return await fetch(
       API_URL+`post/author?username=${username}&page=${page}&page_size=5&type=${post_type}`,
@@ -185,7 +188,7 @@ const PostsContext = () => {
   // all the liked post by this username
   const getAccountLikedPosts = async (username, skip, limit) => {
 
-    logEvent("view-account-liked-posts", window.location.href, {"account": username});
+    await logEvent("view-account-liked-posts", window.location.href, {"account": username});
 
     return await fetch(
       API_URL+`post/account/liked?username=${username}&skip=${skip}&limit=${limit}`,
@@ -284,7 +287,7 @@ const PostsContext = () => {
 
   // posts symbol
   const getSymbolPosts = async (symbol, skip, limit) => {
-    logEvent("view-symbol-posts", window.location.href, {"symbol": symbol});
+    await logEvent("view-symbol-posts", window.location.href, {"symbol": symbol});
 
     return fetch(
       API_URL+`symbol/${symbol}?skip=${skip}&limit=${limit}`,
@@ -298,7 +301,7 @@ const PostsContext = () => {
   // posts hashtag
   const getHashtagPosts = async (hashtag, skip, limit) => {
 
-    logEvent("view-hashtag-posts", window.location.href, {"hashtag": hashtag});
+    await logEvent("view-hashtag-posts", window.location.href, {"hashtag": hashtag});
 
 
     return fetch(

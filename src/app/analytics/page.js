@@ -11,8 +11,8 @@ import { API_URL, toAuthHeaders } from "@/app/configs/api";
 import { useEffect, useState } from "react";
 import { Tab, Tabs } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { Home, Users } from "@geist-ui/icons";
-import { UsersActivity } from "./components/LeftBarOptions";
+import { BarChart2, Home, Users } from "@geist-ui/icons";
+import { NegativeEvents, NeutralEvents, PositiveEvents, UsersActivity } from "./components/LeftBarOptions";
 
 
 
@@ -61,7 +61,7 @@ const LeftSection = ({currentSelection, setCurrentSelection}) => {
             <HStack spacing={5}>
               <Users size={25} />
               <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>Users Events</Text>
+                <Text fontSize={"medium"} fontWeight={600}>Users Activty</Text>
               </Show>
           </HStack>
           }
@@ -69,8 +69,52 @@ const LeftSection = ({currentSelection, setCurrentSelection}) => {
 
 
 
+
+        <Tab
+          key={"positiveEvents"}
+          className="flex flex-row justify-start"
+          title={
+            <HStack spacing={5}>
+              <BarChart2 size={25} />
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>Positive Events</Text>
+              </Show>
+          </HStack>
+          }
+        />
+
+
+
+        <Tab
+          key={"negativeEvents"}
+          className="flex flex-row justify-start"
+          title={
+            <HStack spacing={5}>
+              <BarChart2 size={25} />
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>Negative Events</Text>
+              </Show>
+          </HStack>
+          }
+        />
+
+
+
+        <Tab
+          key={"neutralEvents"}
+          className="flex flex-row justify-start"
+          title={
+            <HStack spacing={5}>
+              <BarChart2 size={25} />
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>Neutral Events</Text>
+              </Show>
+          </HStack>
+          }
+        />
+
+
       </Tabs>
-      <Spacer />
       <Spacer />
       <Spacer />
     </VStack>
@@ -95,6 +139,14 @@ const Analytics = () => {
       case "home":
         return router.replace("/home");
 
+      case "positiveEvents":
+          return <PositiveEvents />;
+
+      case "negativeEvents":
+        return <NegativeEvents />;
+
+      case 'neutralEvents':
+        return <NeutralEvents />;
     }
 
   }
@@ -107,7 +159,9 @@ const Analytics = () => {
     >
       <LeftSection currentSelection={currentSelection} setCurrentSelection={setCurrentSelection} />
 
-      {renderSelection()}
+      <div className="w-full flex flex-col justify-around place-items-center">
+        {renderSelection()}
+      </div>
 
       </HStack>
   )

@@ -9,6 +9,7 @@ export const DataHubContext = createContext();
 const DataHubContextProvider = ({children}) => {
 
   const querySymbolSentiments = async (data) => {
+
     return fetch(API_URL+'data-hub/query', {
       method: "POST",
       headers: toAuthHeaders({"Content-Type": "application/json"}),
