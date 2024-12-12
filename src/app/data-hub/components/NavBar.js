@@ -15,7 +15,7 @@ import {
 } from "@nextui-org/react";
 
 import { useState, useContext, useEffect } from "react";
-import { Home, Inbox, Bell, MessageCircle, Folder, Database, ShoppingCart, Info } from '@geist-ui/icons'
+import { Home, Inbox, Bell, MessageCircle, Folder, Database, ShoppingCart, Info, TrendingUp } from '@geist-ui/icons'
 import { useRouter } from "next/navigation";
 import { DataHubContext } from "@/app/providers/DataHubProvider";
 import { SidebarContext } from "@/app/providers/FeedsProvider/SidebarProvider";
@@ -142,9 +142,9 @@ export const NavBarTop = ({
         />
 
         <NavButton 
-          icon={<MessageCircle />} 
+          icon={<TrendingUp />} 
           disabled
-          label={"Chat"}  
+          label={"Investor Hub"}  
           popoverText={"This feature is currently in development."}
         />
 
