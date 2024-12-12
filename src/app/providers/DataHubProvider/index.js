@@ -8,6 +8,7 @@ export const DataHubContext = createContext();
 
 const DataHubContextProvider = ({children}) => {
 
+
   const querySymbolSentiments = async (data) => {
 
     return fetch(API_URL+'data-hub/query', {
@@ -24,6 +25,13 @@ const DataHubContextProvider = ({children}) => {
     });
   }
 
+  const deleteQuery = async (qid) => {
+    return fetch(API_URL+'data-hub/query', {
+      method: "DELETE",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({id: qid})
+    });
+  }
 
   const getFeedbackVotes = async (ticker) => {
     return fetch(API_URL+`data-hub/poll/feedback?ticker=${ticker}`, {
@@ -70,7 +78,9 @@ const DataHubContextProvider = ({children}) => {
     getPositionVotes,
 
     voteFeedback,
-    votePosition
+    votePosition,
+
+    deleteQuery
   }
 
   return (

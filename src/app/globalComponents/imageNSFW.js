@@ -21,7 +21,7 @@ const classifier = await pipeline('image-classification', 'AdamCodd/vit-base-nsf
   const res = await classifier([img.src]);
 
 
-  if(res[0].label==="sfw")
+  if(res[0].label==="sfw" && res[0].score>=0.90) // 90% minimum
     return true;
   else
     return false;
