@@ -72,7 +72,8 @@ export const NavButton = ({icon, handler, label, disabled, popoverText, badgeVal
 
 export const NavBarTop = ({
   refresh, 
-  myQueriesDrawer
+  myQueriesDrawer,
+  helpDrawer
 }) => {
 
   const [queries, setQueries] = useState(null);
@@ -146,6 +147,7 @@ export const NavBarTop = ({
           disabled
           label={"Investor Hub"}  
           popoverText={"This feature is currently in development."}
+          handler={()=>router.push("/investor-hub")}
         />
 
 
@@ -168,7 +170,7 @@ export const NavBarTop = ({
           popoverText={"This feature is currently in development."}
         />
 
-        <NavButton icon={<Info />} label={"Help"} popoverText={"This feature is currentrly in development."} disabled  />
+        <NavButton icon={<Info />} label={"Help"} handler={helpDrawer.onOpenChange}  />
 
     </div>
   )

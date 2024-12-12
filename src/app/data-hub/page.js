@@ -53,6 +53,9 @@ const Page = () => {
 
   const myQueriesDrawer = useDisclosure();
 
+  const helpDrawer = useDisclosure();
+
+
   return (
     <Container 
       minW={"100%"} 
@@ -65,6 +68,7 @@ const Page = () => {
         refresh={refresh} 
         myQueriesDrawer={myQueriesDrawer}
         setMyQueries={setMyQueries}
+        helpDrawer={helpDrawer}
       />
       <div
         className="w-full h-full flex flex-row"
@@ -82,6 +86,7 @@ const Page = () => {
       <Drawers 
         myQueriesDrawer={myQueriesDrawer}
         myQueriesData={myQueries}
+        helpDrawer={helpDrawer}
       />
 
     </Container>

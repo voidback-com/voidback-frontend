@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useContext } from "react";
-import { VStack, Text, useToast } from "@chakra-ui/react";
+import { VStack, Text, useToast, HStack } from "@chakra-ui/react";
 import { 
   Button, 
   Skeleton, 
@@ -11,7 +11,13 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  DrawerFooter
+  DrawerFooter,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+  useDisclosure
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { DataHubContext } from "@/app/providers/DataHubProvider";
@@ -504,11 +510,99 @@ export const MyQueryDrawer = ({myQueriesDrawer}) => {
 }
 
 
+export const HelpDrawer = ({drawer}) => {
+
+  return (
+    <Drawer
+      isOpen={drawer.isOpen}
+      onOpenChange={drawer.onOpenChange} 
+      placement="bottom"
+      size="full"
+    >
+      <DrawerContent
+        className="bg-background h-full overflow-y-scroll w-full"
+      >
+        {(onClose)=> (
+          <>
+            <DrawerBody className="w-full h-full flex flex-col justify-around place-items-center overflow-y-scroll p-10">
+                <Card
+                  className="border-0 p-4 bg-background min-h-fit"
+                >
+                  <CardHeader>
+                    <Text
+                      fontSize={"large"}
+                    >
+                      1) Get started by typing the symbol you want to query
+                    </Text>
+                  </CardHeader>
+
+                  <CardBody className="w-full h-full border-1 rounded-md">
+                    <Image 
+                      src="https://static.voidback.com/static/help/data-hub/1.png" 
+                      className="object-fill w-[50vw] rounded-md border-1"
+                    />
+                  </CardBody>
+                </Card>
+
+
+                <Card
+                  className="border-0 p-4 bg-background min-h-fit"
+                >
+                  <CardHeader>
+                    <Text
+                      fontSize={"large"}
+                      maxW="50vw"
+                    >
+                    2) Filter the query and adjust the time range of your results as well as any specific keywords your looking for in the posts
+                    </Text>
+                  </CardHeader>
+
+                  <CardBody className="w-full h-full border-1 rounded-md">
+                    <Image 
+                      src="https://static.voidback.com/static/help/data-hub/2.png" 
+                      className="object-fill w-[50vw] rounded-md border-1"
+                    />
+                  </CardBody>
+                </Card>
+
+
+                <Card
+                  className="border-0 p-4 bg-background min-h-fit"
+                >
+                  <CardHeader>
+                    <Text
+                      fontSize={"large"}
+                      maxW="50vw"
+                    >
+                    3) Finally click search to retrieve the results of your query
+                  </Text>
+                  </CardHeader>
+
+                  <CardBody className="w-fit h-fit border-1 rounded-md">
+                    <Image 
+                      src="https://static.voidback.com/static/help/data-hub/3.png" 
+                      className="object-fill max-w-[50vw] max-h-[50vh] rounded-md border-1"
+                    />
+                  </CardBody>
+                </Card>
+            </DrawerBody>
+          </>
+        )}
+
+    </DrawerContent>
+    </Drawer>
+  )
+}
+
 
 export const Drawers = ({
   myQueriesDrawer,
+  helpDrawer,
 }) => {
   return (
-    <MyQueryDrawer myQueriesDrawer={myQueriesDrawer} />
+    <>
+      <MyQueryDrawer myQueriesDrawer={myQueriesDrawer} />
+      <HelpDrawer drawer={helpDrawer} />
+    </>
   )
 }
