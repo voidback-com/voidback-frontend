@@ -384,13 +384,41 @@ const Symbol = ({symbol, count}) => {
       className="w-full rounded-md shadow-none my-3 h-fit p-2 flex flex-col bg-background"
       isPressable
     >
-      <Text
-        fontSize={14}
-        fontWeight="600"
-        className="place-self-start text-emerald-500"
-      >
-        ${symbol.symbol}
-      </Text>
+      <div className="w-full flex flex-row justify-around">
+        <Text
+          fontSize={14}
+          fontWeight="600"
+          className="place-self-start text-emerald-500"
+        >
+          ${symbol.symbol}
+        </Text>
+
+        <Spacer />
+
+        {symbol.location && symbol.location.length>0 &&
+          <div
+            className="w-fit flex flex-row gap-1"
+          >
+            <Text  
+              color="lightslategrey"
+              fontSize={11}
+              fontFamily={"sans-serif"}
+              fontWeight={600}
+            >
+              trending in
+            </Text>
+            <Text  
+              fontSize={11}
+              fontFamily={"sans-serif"}
+              fontWeight={600}
+            >
+              {symbol.location}
+            </Text>
+          </div>
+        }
+
+      </div>
+
 
       <Skeleton isLoaded={count} className="w-full flex flex-row gap-1 justify-start">
           <Text  
@@ -432,14 +460,41 @@ const Hashtag = ({hashtag, count}) => {
       className="w-full rounded-md shadow-none my-3 h-fit p-2 flex flex-col bg-background"
       isPressable
     >
-      <Text
-        isTruncated={hashtag.hashtag.length>15}
-        fontSize={14}
-        fontWeight="600"
-        className="place-self-start text-primary-500"
-      >
-        #{hashtag.hashtag}
-      </Text>
+      <div className="w-full flex flex-row justify-around">
+        <Text
+          isTruncated={hashtag.hashtag.length>15}
+          fontSize={14}
+          fontWeight="600"
+          className="place-self-start text-primary-500"
+        >
+          #{hashtag.hashtag}
+        </Text>
+
+        <Spacer />
+
+        {hashtag.location && hashtag.location.length>0 &&
+          <div
+            className="w-fit flex flex-row gap-1"
+          >
+            <Text  
+              color="lightslategrey"
+              fontSize={11}
+              fontFamily={"sans-serif"}
+              fontWeight={600}
+            >
+              trending in
+            </Text>
+            <Text  
+              fontSize={11}
+              fontFamily={"sans-serif"}
+              fontWeight={600}
+            >
+              {hashtag.location}
+            </Text>
+          </div>
+        }
+
+      </div>
 
 
       <Skeleton isLoaded={count} className="w-full flex flex-row gap-1 justify-start">

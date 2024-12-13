@@ -355,6 +355,8 @@ const AuthContextProvider = ({ children }) => {
 
 
   const getAccountRecommendations = async () => {
+    if(!isAuthenticated()) return;
+
     return await fetch(API_URL+`account/recommendations`, {
       method: "GET",
       headers: toAuthHeaders({})
