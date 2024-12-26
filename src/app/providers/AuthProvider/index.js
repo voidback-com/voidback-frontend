@@ -408,7 +408,7 @@ const AuthContextProvider = ({ children }) => {
       return ()=> clearInterval(id);
     }
 
-  }, [account, checkToken])
+  }, [account, !checkToken])
 
 
   const submitAccountReport = async (uid, description, priority, disturbance) => {
