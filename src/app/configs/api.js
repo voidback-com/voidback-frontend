@@ -56,7 +56,7 @@ export const shouldRefresh = () => {
       const d = jwtDecode(token.access);
 
       if(d){
-        if(Date.now() >= d.exp * 1000)
+        if(Date.now() > d.exp * 1000)
         {
           return true;
         }

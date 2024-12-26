@@ -401,9 +401,9 @@ const AuthContextProvider = ({ children }) => {
     {
       const id = setInterval(()=> {
         setCheckToken(true);
-      }, 5000);
+      }, 3000);
 
-      // check every 5 seconds
+      // check every 3 seconds
 
       return ()=> clearInterval(id);
     }

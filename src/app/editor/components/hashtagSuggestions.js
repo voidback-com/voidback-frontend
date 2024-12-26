@@ -86,19 +86,6 @@ const HashtagList = forwardRef((props, ref)=> {
 const Items = async (query) => {
 
 
-  const stringToLikeAnyOf = (txt) => {
-    let t = txt.replace("#", "").split("");
-
-    let res = []
-
-    t.forEach((f)=> {
-      res.push(`%${f}%`)
-    })
-
-
-    return res;
-  }
-
 
   const hashtagAutocomplete = async (text) => {
 

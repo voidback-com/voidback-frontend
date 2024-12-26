@@ -92,20 +92,6 @@ const MentionList = forwardRef((props, ref)=> {
 const Items = async (query) => {
 
 
-  const stringToLikeAnyOf = (txt) => {
-    let t = txt.replace("@", "").split("");
-
-    let res = []
-
-    t.forEach((f)=> {
-      res.push(`%${f}%`)
-    })
-
-
-    return res;
-  }
-
-
   const mentionAutocomplete = async (text) => {
 
     const data = await fetch(API_URL+`account/search?username=${text}`, {

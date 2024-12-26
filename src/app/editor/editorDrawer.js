@@ -70,7 +70,6 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
 
 
-
   return (
     <Drawer
       isOpen={isOpen} 

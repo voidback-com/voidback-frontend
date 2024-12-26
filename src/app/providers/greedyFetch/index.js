@@ -23,7 +23,7 @@ const GreedyFetchContextProvider = ({children}) => {
         return o.response;
       }
       else{
-        localStorage.removeItem(requestObject);
+        localStorage.removeItem(JSON.stringify(requestObject));
       }
     }
     return null;
