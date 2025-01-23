@@ -8,6 +8,7 @@ import hashtagSuggestions from "./hashtagSuggestions";
 import mentionSuggestions from "./mentionSuggestions";
 import symbolSuggestions from "./symbolSuggestions";
 import CharacterCount from "@tiptap/extension-character-count";
+import Link from "@tiptap/extension-link";
 
 
 
@@ -49,7 +50,6 @@ export const Editor = ({setContent, setAttributes, setText}) => {
   }
 
 
-
   const getAttributes = (content) => {
 
     let m = extractMentions(content);
@@ -83,6 +83,17 @@ export const Editor = ({setContent, setAttributes, setText}) => {
         placeholder: "thoughts...",
       }),
 
+      Link.configure({
+        linkOnPaste: true,
+        openOnClick: true,
+        autolink: true,
+        defaultProtocols: 'https',
+        protocols: ['http', "https"],
+        HTMLAttributes: {
+          class: "text-primary-400"
+        },
+        optionalSlashes: true
+      }),
 
       Mention.extend({name: "hashtagSuggestions"}).configure({
         renderHTML({ options, node }) {
@@ -118,8 +129,6 @@ export const Editor = ({setContent, setAttributes, setText}) => {
 
         suggestion: symbolSuggestions
       }),
-
-
     ],
 
     editorProps: {
@@ -164,6 +173,20 @@ export const ReadonlyEditor = ({content}) => {
       Placeholder.configure({
         placeholder: "thoughts...",
       }),
+
+
+      Link.configure({
+        linkOnPaste: true,
+        openOnClick: true,
+        autolink: true,
+        defaultProtocols: 'https',
+        protocols: ['http', "https"],
+        HTMLAttributes: {
+          class: "text-primary-400"
+        },
+        optionalSlashes: true
+      }),
+
 
 
       Mention.extend({name: "hashtagSuggestions"}).configure({

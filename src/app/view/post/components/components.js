@@ -25,11 +25,58 @@ import { AnalyticsContext } from "@/app/providers/AnalyticsProvider";
 import { UserCard } from "@/app/profile/components/components";
 import { PostBottomBar, PostTopBar } from "./postbars";
 import { Card, CardBody, CardFooter, CardHeader, Divider } from "@nextui-org/react";
+import { renderNodes } from "@/app/editor/components/mobileEditorRenderer";
+
+
+
+
+export const MobileParentPostCard = ({post}) => {
+
+
+  return (
+  
+    <Card
+      width="100%"
+      variant={"unstyled"}
+      backgroundColor={"default"}
+      className="bg-background w-full shadow-none border-0"
+    >
+      {
+        post.parent_post
+        &&
+        <VStack className="w-full h-full">
+          <ParentPostCard post={post.parent_post} />
+        </VStack>
+      }
+      <CardHeader>
+
+        <PostTopBar post={post} />
+    </CardHeader>
+
+      <CardBody>
+        <MediaSection video={post.video} image={post.image} />
+
+        <div className="w-full px-10 flex flex-row">
+          {renderNodes(post.content)}
+        </div>
+    </CardBody>
+
+
+    <CardFooter className="my-5 flex flex-col">
+      <PostBottomBar post={post} />
+        <Divider orientation="vertical" style={{height: "10vh"}} />
+    </CardFooter>
+
+    </Card>
+  )
+}
 
 
 
 export const ParentPostCard = ({post}) => {
 
+  if(post.from_mobile)
+    return <MobileParentPostCard post={post} />
 
   return (
   

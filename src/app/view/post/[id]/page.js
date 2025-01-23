@@ -31,6 +31,7 @@ import { Replies } from "../components/replies";
 import { MediaSection } from "../components/MediaSection";
 import { ParentPostCard, ReplyEditor } from "../components/components";
 import { NavBack } from "@/app/research/components/topSection";
+import { renderNodes } from "@/app/editor/components/mobileEditorRenderer";
 
 
 
@@ -162,9 +163,15 @@ const ViewPost = ({ params }) => {
             {
               post
                 &&
-                <div className="w-full px-10">
-                  <ReadonlyEditor content={post.content} />
+                post.from_mobile
+                ?
+                <div className="px-10 flex flex-wrap gap-1" style={{flexShrink: 1}}>
+                  {renderNodes(post.content)}
                 </div>
+                  :
+                    post
+                      &&
+                    <ReadonlyEditor content={post.content} />
             }
 
             </CardBody>
