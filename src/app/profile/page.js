@@ -507,7 +507,7 @@ const ProfilePage = () => {
 
         <Skeleton isLoaded={followers}>
           <Touchable
-              onClick={followersModal.onOpen}
+              onPress={followersModal.onOpen}
             >
             <Text
               fontSize={"small"}
@@ -539,7 +539,7 @@ const ProfilePage = () => {
 
         <Skeleton isLoaded={following}>
           <Touchable
-            onClick={followingModal.onOpen}
+            onPress={followingModal.onOpen}
           >
             <Text
               fontSize={"small"}
@@ -730,7 +730,7 @@ const ProfilePage = () => {
                   <Skeleton
                     isLoaded={!loading}
                   >
-                    <Touchable onClick={()=>selectNewAvatar({"multiple": false, "accept": true})}>
+                    <Touchable onPress={()=>selectNewAvatar({"multiple": false, "accept": true})}>
                       <Avatar 
                         className="border-1"
                         src={newAvatar ? newAvatar.source : account.avatar} 
@@ -876,13 +876,13 @@ const ProfilePage = () => {
 
                   <HStack spacing={4} width={"fit-content"} padding={2}>
                     <Button
-                      onClick={checkOTPAndSave}
+                      onPress={checkOTPAndSave}
                     >
                       verify
                     </Button>
 
                     <Button
-                      onClick={sendOtp}
+                      onPress={sendOtp}
                     >
                       resend
                     </Button>

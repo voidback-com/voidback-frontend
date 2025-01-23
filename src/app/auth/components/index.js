@@ -1,10 +1,11 @@
 'use client';
 import styled from "@emotion/styled";
+import { Button } from "@nextui-org/react";
 import { pipeline } from "@xenova/transformers";
 
 
 
-export const Touchable = styled.button`
+export const Touchable = styled(Button)`
   background-color: transparent;
   width: fit-content;
   height: fit-content;

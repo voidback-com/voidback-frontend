@@ -259,14 +259,13 @@ export const PostTopBar = ({post}) => {
             
             <DropdownMenu aria-label="menu-post">
 
-
             {
               followed===2 && post.author.username !== account?.username ?
             
              <DropdownItem
                 key={"unfollow"}
                 endContent={<FaUserAltSlash size={25}/>}
-                onClick={()=> {
+                onPress={()=> {
                     setFollowed(1);
                     unfollow(post.author.username);
                 }}
@@ -291,7 +290,7 @@ export const PostTopBar = ({post}) => {
               <DropdownItem
                 key={"share"}
                 endContent={<Share size={20}/>}
-                onClick={shareModal.onOpen}
+                onPress={shareModal.onOpen}
               >
                 Share
               </DropdownItem>
@@ -300,7 +299,7 @@ export const PostTopBar = ({post}) => {
               <DropdownItem
                 key={"report"}
                 endContent={<AlertCircle size={20}/>}
-                onClick={report.onOpen}
+                onPress={report.onOpen}
                 isDisabled={!isAuthenticated()}
               >
                 Report

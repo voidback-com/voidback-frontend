@@ -26,6 +26,7 @@ import { Search } from '@geist-ui/icons';
 import { NavBack } from "@/app/research/components/topSection";
 import { SidebarContext } from "@/app/providers/FeedsProvider/SidebarProvider";
 import AccountRecommendations from "@/app/globalComponents/AccountRecommendations";
+import Link from "next/link";
 
 
 
@@ -137,6 +138,20 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
           }
         />
 
+        <Tab
+          key={"/research"}
+          className="flex flex-row justify-start"
+          title={
+            <HStack spacing={5}>
+              <ResearchIcon size={25} />
+
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>Research</Text>
+              </Show>
+            </HStack>
+          }
+        />
+
 
         <Tab
           key={"/notifications"}
@@ -159,20 +174,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
                   &&
                 <Text fontSize={"medium"} className="justify-self-end" fontWeight={600}>Notifications</Text>
                 }
-              </Show>
-            </HStack>
-          }
-        />
-
-        <Tab
-          key={"/research"}
-          className="flex flex-row justify-start"
-          title={
-            <HStack spacing={5}>
-              <ResearchIcon size={25} />
-
-              <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>Research</Text>
               </Show>
             </HStack>
           }
@@ -229,7 +230,7 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
       <Show breakpoint="(min-width: 1000px)">
       <Button 
-        onClick={account ? editor.onOpen : ()=>router.push("/auth/login")}
+        onPress={account ? editor.onOpen : ()=>router.push("/auth/login")}
         size="md"
         variant="light"
       >
@@ -249,7 +250,7 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
       <Show breakpoint="(min-width: 1000px)">
        <Button
-          onClick={toggleColorMode}
+          onPress={toggleColorMode}
           size="md"
           variant="light"
         >
@@ -313,10 +314,11 @@ const CenterSection = ({ActiveFeed}) => {
         borderWidth={0}
       >
         <Button
-          variant={"unstyled"}
           _hover={{opacity: "70%"}}
           marginLeft={3}
-          onClick={()=>router.push("/profile")}
+          onPress={()=>router.push("/profile")}
+          variant="unstyled"
+          size="md"
         >
           <Avatar 
             size={"md"} 
@@ -349,7 +351,7 @@ const CenterSection = ({ActiveFeed}) => {
           (account)
           ?
           <Button 
-            onClick={editor.onOpen}
+            onPress={editor.onOpen}
             variant={"unstyled"}
             _hover={{opacity: "70%"}}
           >
@@ -357,7 +359,8 @@ const CenterSection = ({ActiveFeed}) => {
           </Button>
         :
           <Button 
-            onClick={()=>router.push("/auth/login")}
+            size="sm"
+            onPress={()=>router.push("/auth/login")}
             variant={"unstyled"}
             _hover={{opacity: "70%"}}
           >
@@ -398,7 +401,7 @@ const Symbol = ({symbol, count}) => {
 
   return (
     <Card
-      onClick={()=>router.push(`/symbol/${symbol.symbol}`)}
+      onPress={()=>router.push(`/symbol/${symbol.symbol}`)}
       className="w-full rounded-md shadow-none my-3 h-fit p-2 flex flex-col bg-background"
       isPressable
     >

@@ -25,7 +25,6 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { Input, Image, Button } from "@nextui-org/react";
 import { setCookie } from "cookies-next";
-import { isAuthenticated } from "@/app/configs/api";
 
 
 
@@ -140,8 +139,8 @@ const Login = () => {
   
   return (
      <div
-      overflow={"hidden"}
-      className="bg-background h-[100vh] w-full flex flex-col justify-around p-2"
+      style={{overflow: "hidden"}}
+      className="bg-background h-[100vh] w-full h-[100h] flex flex-col justify-around p-2 flex-wrap"
     >
 
     <form
@@ -250,7 +249,7 @@ const Login = () => {
                 isLoaded={!auth_loading}
               >
                 <InputRightElement paddingRight={4} paddingTop={2}>
-                  <Touchable type="button" onClick={()=>setShow(!show)}>
+                  <Touchable type="button" onPress={()=>setShow(!show)}>
                     { show ?
                     <FaEye size={28} />
                       :
@@ -270,7 +269,7 @@ const Login = () => {
           <Button
             variant="solid"
             marginTop={5}
-            onClick={loginUser}
+            onPress={loginUser}
             isDisabled={!email || !password || loginBtnDisabled}
           >
             Login
@@ -338,7 +337,6 @@ const Login = () => {
     </VStack>
   </form>
 
-  <Spacer />
 
   <div className="w-full flex flex-row justify-center py-4">
     <HStack

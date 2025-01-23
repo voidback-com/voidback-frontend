@@ -1,5 +1,5 @@
 'use client'
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
  
 
@@ -23,24 +23,6 @@ export const isAuthenticated = () => {
 
   return false;
 
-}
-
-
-export const toAuthHeaders = (headers) => {
-  const tok = getCookie("authTok");
-
-  if(tok)
-  {
-    let token = JSON.parse(tok);
-    if(token)
-    {
-      headers["Authorization"] = `Bearer ${token.access}`
-      return headers;
-    }
-  }
-
-
-  return headers;
 }
 
 
@@ -70,6 +52,54 @@ export const shouldRefresh = () => {
     }
   }
   return false;
+}
+
+
+export const toAuthHeaders = (headers) => {
+  if(shouldRefresh()){
+     const r = getRefresh();
+
+      if(r)
+      {
+        fetch(API_URL+"token/refresh", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({"refresh": r})
+        }).then((res)=> {
+          if(res.status===200)
+            return res.json();
+        }).then( (response)=> {
+          if(response)
+          {
+            setCookie("authTok", JSON.stringify(response));
+          }
+          else{
+            logoutUser();
+          }
+        }).catch((err)=> {
+        })
+      }
+  }
+   
+
+  try{
+    const tok = JSON.parse(getCookie("authTok"));
+  
+
+    if(tok)
+    {
+      if(tok)
+      {
+        headers["Authorization"] = `Bearer ${tok.access}`
+        return headers;
+      }
+    }
+
+  } catch(err){
+
+  }
+
+  return headers;
 }
 
 

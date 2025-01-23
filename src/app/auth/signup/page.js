@@ -208,7 +208,7 @@ const Signup = () => {
   return (
     <div
       overflow={"hidden"}
-      className="bg-background h-[100vh] w-full flex flex-col justify-around p-2 max-h-[100vh]"
+      className="bg-background h-[100vh] w-full flex flex-col justify-around p-2 max-h-[100vh] flex-wrap"
     >
 
     <form
@@ -374,7 +374,7 @@ const Signup = () => {
           </Skeleton>
 
           <InputRightElement paddingRight={4}>
-            <Touchable type="button" onClick={()=>setShow(!show)}>
+            <Touchable type="button" onPress={()=>setShow(!show)}>
               { show ?
               <FaEye size={28} />
                 :
@@ -456,7 +456,6 @@ const Signup = () => {
   </form>
 
 
-  <Spacer />
 
     <div className="w-full flex flex-row justify-center py-4">
       <HStack
