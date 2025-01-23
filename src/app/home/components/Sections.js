@@ -16,11 +16,11 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/app/providers/AuthProvider/index.js";
 import { RightFeedContext } from "@/app/providers/FeedsProvider/RightFeedProvider.js";
 import { useRouter } from "next/navigation.js";
-import { Autocomplete, AutocompleteItem, Avatar, CardFooter, Chip, ScrollShadow, Tooltip, Card, Tabs, Tab, Button } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Avatar, Chip, Card, Tabs, Tab, Button } from "@nextui-org/react";
 import VoidBackEditor from "@/app/editor/editorDrawer";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaHashtag } from "@react-icons/all-files/fa/FaHashtag";
-import { Home as HomeIcon, Inbox as InboxIcon, BookOpen as ResearchIcon, Settings as SettingsIcon, Moon as MoonIcon, Sun as SunIcon, Feather, Bell as NotificationsIcon, RefreshCcw, Activity, LogIn, TrendingUp  } from '@geist-ui/icons'
+import { Home as HomeIcon, BookOpen as ResearchIcon, Settings as SettingsIcon, Moon as MoonIcon, Sun as SunIcon, Feather, Bell as NotificationsIcon, RefreshCcw, Activity, LogIn, TrendingUp, MessageCircle  } from '@geist-ui/icons'
 import { BsGraphUp } from "@react-icons/all-files/bs/BsGraphUp";
 import { Search } from '@geist-ui/icons';
 import { NavBack } from "@/app/research/components/topSection";
@@ -124,18 +124,16 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
           }
         />
 
-
-
         <Tab
-          key={"/inbox"}
+          key={"/dm"}
           className="flex flex-row justify-start"
           title={
             <HStack spacing={5}>
-              <InboxIcon size={25} />
+              <MessageCircle size={25} />
               <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>Inbox</Text>
+                <Text fontSize={"medium"} fontWeight={600}>DMs</Text>
               </Show>
-            </HStack>
+          </HStack>
           }
         />
 
@@ -229,6 +227,7 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
       </Tabs>
 
 
+      <Show breakpoint="(min-width: 1000px)">
       <Button 
         onClick={account ? editor.onOpen : ()=>router.push("/auth/login")}
         size="md"
@@ -242,9 +241,13 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
           </Show>
         </HStack>
       </Button>
+      </Show>
+
 
       <VoidBackEditor isOpen={editor.isOpen} onOpen={editor.onOpen} onClose={editor.onClose} />
 
+
+      <Show breakpoint="(min-width: 1000px)">
        <Button
           onClick={toggleColorMode}
           size="md"
@@ -258,7 +261,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
               :
                 <MoonIcon size={25} color="lightslategray" />
             }
-            <Show breakpoint="(min-width: 1000px)">
               {
                 colorMode==="light"
                 ?
@@ -266,9 +268,9 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
                 :
                 <Text fontSize={"medium"} fontWeight={600} color={"lightslategray"}>Light Theme</Text>
               }
-            </Show>
           </HStack>
         </Button>
+        </Show>
 
         <AccountRecommendations />
 

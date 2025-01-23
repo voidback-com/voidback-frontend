@@ -39,7 +39,6 @@ import { FaHeart } from "@react-icons/all-files/fa/FaHeart";
 import { FaRegHeart } from "@react-icons/all-files/fa/FaRegHeart";
 import { IoHeartDislikeSharp } from "@react-icons/all-files/io5/IoHeartDislikeSharp";
 import { IoHeartDislikeOutline } from "@react-icons/all-files/io5/IoHeartDislikeOutline";
-import { InboxEditorMany } from "@/app/inbox/components/components";
 import { UserCard } from "@/app/profile/components/components";
 import { MessageCircle, Eye, Share, AlertCircle, Copy, Mail } from '@geist-ui/icons';
 import { isAuthenticated, isError } from "@/app/configs/api";
@@ -254,17 +253,18 @@ export const PostTopBar = ({post}) => {
           <Dropdown className="bg-background border-1">
             <DropdownTrigger>
               <Button variant={"light"}>
-                <MdMoreHoriz size={20} />
+                <MdMoreHoriz size={25} />
               </Button>
             </DropdownTrigger>
             
-            <DropdownMenu>
+            <DropdownMenu aria-label="menu-post">
 
 
             {
               followed===2 && post.author.username !== account?.username ?
             
              <DropdownItem
+                key={"unfollow"}
                 endContent={<FaUserAltSlash size={25}/>}
                 onClick={()=> {
                     setFollowed(1);
@@ -289,6 +289,7 @@ export const PostTopBar = ({post}) => {
 
 
               <DropdownItem
+                key={"share"}
                 endContent={<Share size={20}/>}
                 onClick={shareModal.onOpen}
               >
@@ -297,6 +298,7 @@ export const PostTopBar = ({post}) => {
 
 
               <DropdownItem
+                key={"report"}
                 endContent={<AlertCircle size={20}/>}
                 onClick={report.onOpen}
                 isDisabled={!isAuthenticated()}
@@ -309,6 +311,7 @@ export const PostTopBar = ({post}) => {
               {
                 account && post.author.username===account.username &&
                 <DropdownItem
+                  key={"delete"}
                   endContent={<MdDelete color="tomato" size={25}/>}
                   onClick={deleteModal.onOpen}
                   className="text-red-400"
@@ -333,6 +336,7 @@ export const PostTopBar = ({post}) => {
               backgroundColor={"default"}
               className="bg-background"
               width="100%"
+                key={"h"}
             >
               <ModalCloseButton />
 
@@ -371,12 +375,14 @@ export const PostTopBar = ({post}) => {
                 <Button
                   size="sm"
                   onClick={()=>setToggleForwardMessage(!toggleForwardMessage)}
-                  isDisabled={!isAuthenticated()}
+                  // isDisabled={!isAuthenticated()}
+                  isDisabled
+                  // dm not yet implemented
                 >
                     Forward to friends
                     <Spacer width="1vw" />
 
-                    <Mail size={20} />
+                    <MessageCircle size={20} />
                   </Button>
 
                   <Spacer />
@@ -386,15 +392,7 @@ export const PostTopBar = ({post}) => {
 
                     ?
                       <VStack>
-                        <InboxEditorMany
-                          from={account.username}
-                          post_id={post.id}
-                        />
-                        <Text
-                          fontSize={"small"}
-                          color={"lightslategrey"}
-                        >the post and the message will be visible to you and the people you mention in the message.
-                        </Text>
+                      {/* implement an editor and send a dm message with the post attached */}
                       </VStack>
                     :
                     null

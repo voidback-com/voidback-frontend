@@ -1,6 +1,5 @@
 'use client'
-import { createContext, useEffect, useState, useContext } from "react";
-import inboxContext from "./InboxContext";
+import { createContext } from "react";
 import researchPaperContext from "./ResearchPaperContext";
 import notificatitonsContext from "./NotificationsContext";
 
@@ -15,7 +14,6 @@ const SidebarContextProvider = ({children}) => {
  
 
   const value = {
-    ...inboxContext(),
     ...researchPaperContext(),
     ...notificatitonsContext()
   };
