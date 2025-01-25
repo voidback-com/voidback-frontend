@@ -137,9 +137,11 @@ export const NavBarTop = ({
         />
 
         <NavButton 
-          icon={<Inbox />} 
-          label={"Inbox"}  
-          handler={()=>router.push("/inbox")}
+          icon={<MessageCircle />} 
+          label={"DMs"}  
+          handler={()=>router.push("/dm")}
+          disabled
+          popoverText={"This feature is currently in development."}
         />
 
         <NavButton 

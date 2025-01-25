@@ -1,6 +1,6 @@
 'use client'
-import { API_URL, isAuthenticated, toAuthHeaders } from "@/app/configs/api";
-import { createContext, useEffect, useContext } from "react";
+import { API_URL, toAuthHeaders } from "@/app/configs/api";
+import { createContext } from "react";
 
 
 

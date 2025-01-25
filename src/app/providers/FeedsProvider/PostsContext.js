@@ -1,6 +1,5 @@
 'use client'
 import { createContext, useState, useContext } from "react";
-import { AuthContext } from "../AuthProvider";
 import { API_URL, toAuthHeaders } from "@/app/configs/api";
 import { GreedyFetchContext } from "../greedyFetch";
 import { AnalyticsContext } from "../AnalyticsProvider";

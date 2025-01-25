@@ -18,7 +18,6 @@ import {
   VStack,
   DrawerHeader,
   useToast,
-  Wrap,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { Touchable } from "@/app/auth/components";
@@ -34,17 +33,13 @@ import { useFileUpload } from "use-file-upload";
 import { RenderMyResearch } from "./components";
 import { errorToReadable, isAuthenticated } from "@/app/configs/api";
 import { Search } from '@geist-ui/icons';
-import checkImage from "@/app/globalComponents/imageNSFW";
-
+import { getImageClass, isTextSafe } from "@/app/providers/helpers/nsfw";
 
 
 
 export const NavBack = ({home}) => {
 
   const router = useRouter();
-
-  const color = useColorMode();
-
 
   return (
 
@@ -131,24 +126,25 @@ export const TopSection = ({searchPapers}) => {
     setProgressValue(100);
     setProgressLabel("Just a sec, uploading these files takes some time.");
 
-    let thumbnailSafe = await checkImage(thumbnail);
-
     setPublishLoading(true);
 
+    let thumbnailClass = await getImageClass(thumbnail);
 
-    if(!thumbnailSafe){
+    if(thumbnailClass==="NSFW")
+    {
       toast({
         status: "error",
         title: "Thumbnail is not safe for work!",
         description: "Please respect our terms of service.",
         duration: 3000
       })
+      setPublishLoading(false);
+      return;
     }
 
     if(title.length < 3 | title.length > 100)
     {
       setPublishLoading(false);
-
       toast({
         status: "info",
         title: "Title must be more than 2 characters long and less than or equal to 100 characters!",
@@ -156,6 +152,19 @@ export const TopSection = ({searchPapers}) => {
       })
 
     }
+
+    else if(!(await isTextSafe(title)))
+    {
+      setPublishLoading(false);
+      toast({
+       status: "error",
+       title: "Title was classified as not safe for work!",
+        description: "Please respect our terms of service.",
+        duration: 3000
+      })
+      return;
+    }
+
 
     else if(!thumbnail)
     {

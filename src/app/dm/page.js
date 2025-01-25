@@ -1,4 +1,5 @@
 'use client'
+import { Center, Container, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 
 
@@ -15,6 +16,11 @@ const Page = () => {
       padding={0}
       className="bg-background flex flex-col"
     >
+      <Center>
+        <Text>
+          Under Development
+        </Text>
+      </Center>
     </Container>
   )
 }

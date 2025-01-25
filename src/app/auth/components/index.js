@@ -1,7 +1,8 @@
 'use client';
+import { isTextSafe } from "@/app/providers/helpers/nsfw";
 import styled from "@emotion/styled";
 import { Button } from "@nextui-org/react";
-import { pipeline } from "@xenova/transformers";
+
 
 
 
@@ -38,14 +39,7 @@ export const isUsernameValid = async (username) => {
 
   if(usernameRegex.test(username)) {
 
-    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
-    const res = await toxicity_model(username, {topk: null}).then((res)=> {
-      if(res)
-        return res[0].score;
-    })
-
-
-    if(res && res >= 0.05)
+    if(await isTextSafe(username))
       return "nsfw";
 
     return true;
@@ -61,14 +55,7 @@ export const isFullNameValid = async (fullName) => {
 
   if(fullnameRegex.test(fullName)) {
 
-    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
-    const res = await toxicity_model(fullName, {topk: null}).then((res)=> {
-      if(res)
-        return res[0].score;
-    })
-
-
-    if(res && res >= 0.05)
+    if(await isTextSafe(fullName))
       return "nsfw";
 
 
@@ -83,14 +70,7 @@ export const isBioValid = async (bio) => {
 
   if(bio.length<=300) {
 
-    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
-    const res = await toxicity_model(bio, {topk: null}).then((res)=> {
-      if(res)
-        return res[0].score;
-    })
-
-
-    if(res && res >= 0.05)
+    if(await isTextSafe(bio))
       return "nsfw";
 
     return true;
@@ -107,14 +87,7 @@ export const isLinkValid = async (link) => {
 
   if(linkrgx.test(link)) {
 
-    let toxicity_model = await pipeline("text-classification", "Xenova/toxic-bert");
-    const res = await toxicity_model(link, {topk: null}).then((res)=> {
-      if(res)
-        return res[0].score;
-    })
-
-
-    if(res && res >= 0.05)
+    if(await isTextSafe(link))
       return "nsfw";
 
     return true;

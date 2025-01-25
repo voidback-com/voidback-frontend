@@ -1,6 +1,5 @@
 'use client'
-import { createContext, useEffect, useState, useContext } from "react";
-import { AuthContext } from "../AuthProvider";
+import { createContext, useContext } from "react";
 import PostsContext from "./PostsContext";
 import PlatformContext from "./PlatformContext";
 

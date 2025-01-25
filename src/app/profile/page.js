@@ -14,20 +14,19 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AuthContext } from "../providers/AuthProvider";
-import { Input, User, Link, Button, Divider, useDisclosure, Modal, ModalHeader, ModalContent, ModalBody, Avatar, Textarea, Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react";
-import { LeftFeedContext } from "../providers/FeedsProvider/LeftFeedProvider";
+import { Input, Link, Button, useDisclosure, Modal, ModalHeader, ModalContent, ModalBody, Avatar, Textarea, Tooltip } from "@nextui-org/react";
 import { MdEdit, MdLink } from "react-icons/md";
 import { isBioValid, isLinkValid, Touchable } from "../auth/components";
 import InfiniteScroll from "react-infinite-scroller";
 import { useFileUpload } from "use-file-upload";
-import { isFullNameValid, isEmailValid, isUsernameValid, isLink } from "../auth/components";
+import { isFullNameValid, isEmailValid } from "../auth/components";
 import { TabBar, UserCard } from "./components/components";
 import { NavBack } from "../research/components/topSection";
 import { errorToReadable, isAuthenticated } from "../configs/api";
 import AccountCard from "./components/accountCard";
 import { LogOut } from "@geist-ui/icons";
 import { useRouter } from "next/navigation";
-import checkImage from "../globalComponents/imageNSFW";
+import { getImageClass } from "../providers/helpers/nsfw";
 
 
 
@@ -239,9 +238,9 @@ const ProfilePage = () => {
 
     if(newAvatar)
     {
-      const avatarSafe = await checkImage(newAvatar);
+      const avatarClass = await getImageClass(newAvatar);
 
-      if(avatarSafe)
+      if(avatarClass==="NSFW")
         await saveElement(newAvatar.file, "avatar", true);
       else{
         toast({
@@ -492,54 +491,55 @@ const ProfilePage = () => {
       width={"100%"}
     >
       <HStack
-        spacing={1}
+        spacing={0}
       >
         <Skeleton isLoaded={followers}>
-          <Touchable>
             <Text
               fontSize={"small"}
               fontWeight={900}
             >
               {followersCount > 0 ? format.toHumanString(followersCount) : "0"}
             </Text>
-          </Touchable>
         </Skeleton>
 
-        <Skeleton isLoaded={followers}>
-          <Touchable
-              onPress={followersModal.onOpen}
-            >
-            <Text
-              fontSize={"small"}
-              color={"lightslategrey"}
-              fontFamily={"sans-serif"}
-              fontWeight={600}
-            >
-              Followers
-            </Text>
-          </Touchable>
-        </Skeleton>
+        <Touchable
+            onPress={followersModal.onOpen}
+            size="sm"
+            variant="light"
+          >
+          <Skeleton isLoaded={followers} className="w-fit">
+              <Text
+                fontSize={"small"}
+                color={"lightslategrey"}
+                fontFamily={"sans-serif"}
+                fontWeight={600}
+              >
+                Followers
+              </Text>
+          </Skeleton>
+        </Touchable>
+
       </HStack>
 
 
        <HStack
-        spacing={1}
-        width={"100%"}
+        spacing={0}
       >
         <Skeleton isLoaded={following}>
-          <Touchable>
             <Text
               fontSize={"small"}
               fontWeight={900}
             >
               {followingCount > 0 ? format.toHumanString(followingCount) : "0"}
             </Text>
-          </Touchable>
         </Skeleton>
 
         <Skeleton isLoaded={following}>
           <Touchable
             onPress={followingModal.onOpen}
+            size="sm"
+            variant="light"
+            className="w-fit"
           >
             <Text
               fontSize={"small"}
@@ -573,7 +573,6 @@ const ProfilePage = () => {
             </Button>
           </Tooltip>
         </Skeleton>
-        <Spacer />
 
     </HStack>
 

@@ -317,18 +317,19 @@ const ViewAccount = ({ params }) => {
     >
       {/* Followers */}
       <HStack
-        spacing={1}
+        spacing={0}
       >
+
         <Skeleton isLoaded={followers}>
-          <Touchable>
             <Text
               fontSize={"small"}
               fontWeight={900}
             >
               {followersCount > 0 ? format.toHumanString(followersCount) : "0"}
             </Text>
-          </Touchable>
         </Skeleton>
+
+
 
         <Skeleton isLoaded={followers}>
           <Touchable
@@ -349,18 +350,15 @@ const ViewAccount = ({ params }) => {
 
       {/* Following */}
        <HStack
-        spacing={1}
-        width={"100%"}
+        spacing={0}
       >
         <Skeleton isLoaded={following}>
-          <Touchable>
-            <Text
-              fontSize={"small"}
-              fontWeight={900}
-            >
-              {followingCount > 0 ? format.toHumanString(followingCount) : "0"}
-            </Text>
-          </Touchable>
+          <Text
+            fontSize={"small"}
+            fontWeight={900}
+          >
+            {followingCount > 0 ? format.toHumanString(followingCount) : "0"}
+          </Text>
         </Skeleton>
 
         <Skeleton isLoaded={following}>
@@ -399,7 +397,6 @@ const ViewAccount = ({ params }) => {
           </Button>
         </Tooltip>
       </Skeleton>
-      <Spacer />
 
     </HStack>
 

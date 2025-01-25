@@ -26,7 +26,6 @@ import { Search } from '@geist-ui/icons';
 import { NavBack } from "@/app/research/components/topSection";
 import { SidebarContext } from "@/app/providers/FeedsProvider/SidebarProvider";
 import AccountRecommendations from "@/app/globalComponents/AccountRecommendations";
-import Link from "next/link";
 
 
 
@@ -46,6 +45,8 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
   const editor = useDisclosure();
 
+  const buttons = ["editor", "theme"];
+  const buttonsHandlers = [account ? editor.onOpen : ()=>router.push("/auth/login"), toggleColorMode];
 
 
   return (
@@ -81,10 +82,17 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
         fullWidth
         selectedKey={currentSelection}
         onSelectionChange={(e)=> {
-          if(e!==currentSelection)
+
+          if(buttons.indexOf(e)!==-1)
+          {
+            return buttonsHandlers[buttons.indexOf(e)]();
+          }
+
+          else if(e!==currentSelection)
           {
             return router.push(e);
           }
+
           else if(e==="/home")
             return router.push('/home/foryou');
         }}
@@ -127,12 +135,17 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
         <Tab
           key={"/dm"}
+          isDisabled
+          popoverTarget="Hi"
           className="flex flex-row justify-start"
           title={
             <HStack spacing={5}>
               <MessageCircle size={25} />
               <Show breakpoint="(min-width: 1000px)">
                 <Text fontSize={"medium"} fontWeight={600}>DMs</Text>
+                <Chip size="sm">
+                  in-dev
+                </Chip>
               </Show>
           </HStack>
           }
@@ -180,22 +193,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
         />
 
 
-        {/* later implement investor-hub */}
-        <Tab
-          key={"/investor-hub"}
-          className="flex flex-row justify-start"
-          title={
-            <HStack spacing={5}>
-              <TrendingUp size={25} />
-
-              <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>Investor Hub</Text>
-              </Show>
-            </HStack>
-          }
-        />
-
-
         <Tab
           key={"/data-hub"}
           className="flex flex-row justify-start"
@@ -212,6 +209,27 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
 
 
+        {/* later implement investor-hub */}
+        <Tab
+          isDisabled
+          key={"/investor-hub"}
+          className="flex flex-row justify-start"
+          title={
+            <HStack spacing={5}>
+              <TrendingUp size={25} />
+
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>Investor Hub</Text>
+                <Chip size="sm">
+                  in-dev
+                </Chip>
+              </Show>
+
+            </HStack>
+          }
+        />
+
+
         <Tab
           key={"/settings"}
           className="flex flex-row justify-start"
@@ -225,55 +243,59 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
           }
         />
 
-      </Tabs>
+      <Tab
+        key={"editor"}
+
+        className="flex flex-row justify-start"
+          title={
+            <HStack width="100%" spacing={5}>
+              <Feather size={25}  />
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>New post</Text>
+                <Spacer/>
+              </Show>
+            </HStack>
+          }
+      />
 
 
-      <Show breakpoint="(min-width: 1000px)">
-      <Button 
-        onPress={account ? editor.onOpen : ()=>router.push("/auth/login")}
-        size="md"
-        variant="light"
-      >
-        <HStack spacing={5}>
-          <Feather size={25} color="lightslategray" />
-          <Show breakpoint="(min-width: 1000px)">
-            <Text fontSize={"medium"} fontWeight={600} color={"lightslategray"}>New post</Text>
-            <Spacer/>
-          </Show>
-        </HStack>
-      </Button>
-      </Show>
+      <Tab
+        key={"theme"}
 
-
-      <VoidBackEditor isOpen={editor.isOpen} onOpen={editor.onOpen} onClose={editor.onClose} />
-
-
-      <Show breakpoint="(min-width: 1000px)">
-       <Button
-          onPress={toggleColorMode}
-          size="md"
-          variant="light"
-        >
-          <HStack spacing={5}>
+        className="flex flex-row justify-start"
+        title={
+          <HStack width="100%" spacing={5}>
             {
               colorMode==="dark"
               ?
-                <SunIcon size={25} color="lightslategray" />
+                <SunIcon size={25} />
               :
-                <MoonIcon size={25} color="lightslategray" />
+                <MoonIcon size={25} />
             }
-              {
+
+
+
+            <Show breakpoint="(min-width: 1000px)">
+                {
                 colorMode==="light"
                 ?
-                  <Text fontSize={"medium"} fontWeight={600} color={"lightslategray"}>Dark Theme</Text>
+                  <Text fontSize={"medium"} fontWeight={600}>Dark Theme</Text>
                 :
-                <Text fontSize={"medium"} fontWeight={600} color={"lightslategray"}>Light Theme</Text>
-              }
+                <Text fontSize={"medium"} fontWeight={600}>Light Theme</Text>
+                }
+            <Spacer/>
+            </Show>
           </HStack>
-        </Button>
-        </Show>
+        }
+      />
 
-        <AccountRecommendations />
+
+
+      </Tabs>
+
+      <VoidBackEditor isOpen={editor.isOpen} onOpen={editor.onOpen} onClose={editor.onClose} />
+
+      <AccountRecommendations />
 
       <Spacer />
       <Spacer />

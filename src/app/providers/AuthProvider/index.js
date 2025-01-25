@@ -1,9 +1,8 @@
 'use client'
 import { createContext, useState, useEffect, useContext } from "react";
-import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { deleteCookie, setCookie } from "cookies-next";
 import { API_URL, getRefresh, isAuthenticated, shouldRefresh, toAuthHeaders } from "@/app/configs/api";
 import { GreedyFetchContext } from "../greedyFetch";
-import { useRouter } from "next/navigation";
 import { AnalyticsContext } from "../AnalyticsProvider";
 
 
