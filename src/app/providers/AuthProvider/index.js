@@ -60,6 +60,15 @@ const AuthContextProvider = ({ children }) => {
   }
 
 
+  const getAccountStatus = async (username) => {
+    return await fetch(API_URL+`account/status?account=${username}`, {
+      method: "GET",
+      headers: await toAuthHeaders({})
+    }).catch((err)=> {
+      })
+  }
+
+
   const auth_sendOtp = async () => {
 
     await logEvent("auth-send-otp", window.location.href);
@@ -470,6 +479,8 @@ const AuthContextProvider = ({ children }) => {
 
 
     submitAccountReport,
+
+    getAccountStatus,
 
     logoutUser
 

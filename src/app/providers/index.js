@@ -11,6 +11,7 @@ import {NextUIProvider} from "@nextui-org/react";
 import GreedyFetchContextProvider from "./greedyFetch/index.js";
 import AnalyticsContextProvider from "./AnalyticsProvider/index.js";
 import DataHubContextProvider from "./DataHubProvider/index.js";
+import DirectMessageContextProvider from "./DirectMessageProvider/index.js";
  
 
         
@@ -30,7 +31,9 @@ export default function Providers ({children}) {
                     <LeftFeedContextProvider>
                       <EditorContextProvider>
                         <DataHubContextProvider>
-                          {children}
+                          <DirectMessageContextProvider>
+                            {children}
+                          </DirectMessageContextProvider>
                         </DataHubContextProvider>
                       </EditorContextProvider>
                     </LeftFeedContextProvider>

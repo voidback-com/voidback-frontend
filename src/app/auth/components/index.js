@@ -39,7 +39,7 @@ export const isUsernameValid = async (username) => {
 
   if(usernameRegex.test(username)) {
 
-    if(await isTextSafe(username))
+    if(!await isTextSafe(username))
       return "nsfw";
 
     return true;
@@ -55,7 +55,7 @@ export const isFullNameValid = async (fullName) => {
 
   if(fullnameRegex.test(fullName)) {
 
-    if(await isTextSafe(fullName))
+    if(!await isTextSafe(fullName))
       return "nsfw";
 
 
@@ -70,7 +70,7 @@ export const isBioValid = async (bio) => {
 
   if(bio.length<=300) {
 
-    if(await isTextSafe(bio))
+    if(!await isTextSafe(bio))
       return "nsfw";
 
     return true;
@@ -87,7 +87,7 @@ export const isLinkValid = async (link) => {
 
   if(linkrgx.test(link)) {
 
-    if(await isTextSafe(link))
+    if(!await isTextSafe(link))
       return "nsfw";
 
     return true;

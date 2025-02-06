@@ -8,7 +8,7 @@ import { RenderAccountResearch, RenderMyResearch } from "@/app/research/componen
 import { MediaSection } from "@/app/view/post/components/MediaSection";
 import { PostBottomBar, PostTopBar } from "@/app/view/post/components/postbars";
 import { HStack, VStack, Spacer, Text, useConst, useToast } from "@chakra-ui/react";
-import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Link, ScrollShadow, Skeleton, Spinner, Tab, Tabs, Tooltip } from "@nextui-org/react";
+import { Avatar, Badge, Button, Card, CardBody, CardFooter, CardHeader, Link, ScrollShadow, Skeleton, Spinner, Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useContext, useState, useEffect, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -19,43 +19,71 @@ import { MdVerified } from "react-icons/md";
 
 
 
-export const UserCard = ({username, fullName, avatarUrl, avatar_size, name_size, username_size, isVerified, verified_size}) => {
+export const UserCard = ({username, fullName, avatarUrl, avatar_size, name_size, username_size, isVerified, verified_size, getFollowStatus, isFollowed, hideUsername, textUnderName, isActive, isRound, isPressable, handlePress}) => {
+
+
 
   return (
-    <HStack spacing={2}>
-      <Avatar className="border-1" size={avatar_size ? avatar_size : "md"} src={avatarUrl} radius="md" />
-
-      <VStack spacing={0} alignItems={"center"} width={"fit-content"}>
-
-        <div className="w-full gap-2 flex flex-row left-1 relative">
-          <Text
-            fontSize={name_size ? name_size : "medium"}
-            fontFamily={"sans-serif"}
-            fontWeight={600}
-          >
-            {fullName}
-          </Text>
-
-          {
-            isVerified
-          ?
-            <div className="flex flex-col min-h-[100%] justify-center">
-              <MdVerified color="#efca64" size={verified_size} />
-            </div>
+    <Card className="min-w-fit h-fit border-none bg-transparent" shadow="none" isPressable={isPressable} onPress={handlePress}>
+    <CardBody>
+      <HStack spacing={2}>
+          { isActive
+            ?
+          <Badge content="" color="success" placement="bottom-right" shape="circle">
+            <Avatar className="border-1" name={fullName ? fullName[0] : null} size={avatar_size ? avatar_size : "md"} src={avatarUrl} radius={isRound ?  "full" : "md"} />
+          </Badge>
           :
-            null
+            <Avatar className="border-1" name={fullName ? fullName[0] : null} size={avatar_size ? avatar_size : "md"} src={avatarUrl} radius={isRound ?  "full" : "md"} />
           }
 
-      </div>
+        <VStack spacing={0} alignItems={"center"}>
+
+          <div className="w-full gap-2 flex flex-row left-1 relative">
+            <Text
+              className="w-full"
+              fontSize={name_size ? name_size : "medium"}
+              fontFamily={"sans-serif"}
+              fontWeight={600}
+            >
+              {fullName}
+            </Text>
+
+            {
+              isVerified
+            ?
+              <div className="flex flex-col min-h-[100%] justify-center">
+                <MdVerified color="#efca64" size={verified_size} />
+              </div>
+            :
+              null
+            }
+
+        </div>
 
 
-        <Link href={`/view/account/${username}`} size={username_size ? username_size : "md"} style={{width: "100%"}}>
-            @{username}
-        </Link>
+          {
+            hideUsername
+              ?
+              null
+              :
+          <Link href={`/view/account/${username}`} size={username_size ? username_size : "md"} style={{width: "100%"}}>
+              @{username}
+          </Link>
+          }
 
-      </VStack>
+          {
+            textUnderName
+            ?
+              textUnderName
+            :
+              null
+          }
 
-    </HStack>
+        </VStack>
+
+      </HStack>
+    </CardBody>
+    </Card>
   )
 }
 

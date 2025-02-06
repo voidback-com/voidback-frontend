@@ -18,8 +18,6 @@ export const isTextSafe = async (text) => {
     {
       return false;
     }
-
-
     else
       return true;
   }
