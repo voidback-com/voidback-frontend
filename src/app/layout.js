@@ -2,6 +2,7 @@
 import "./globals.css";
 import dynamic from 'next/dynamic'
 import HydrationZustand from "./globalComponents/HydrationZustand";
+import MobileAlert from "./globalComponents/mobileAlert";
 
 
 const DynamicProviders = dynamic(
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
         <body>
           <HydrationZustand>
             <DynamicProviders>
+            <MobileAlert />
               {children}
             </DynamicProviders>
           </HydrationZustand>

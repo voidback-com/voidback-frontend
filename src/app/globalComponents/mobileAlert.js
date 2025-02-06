@@ -9,9 +9,9 @@ const MobileAlert = () => {
   const router = useRouter();
 
 
-  if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i) && !window.location.href.includes("/mobile"))
+  if(navigator.userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile/i) && !window.location.href.includes("/mobile"))
   {
-    // do nothing
+    return router.replace("/mobile");
   }
 }
 
