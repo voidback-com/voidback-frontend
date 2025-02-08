@@ -35,7 +35,7 @@ const Page = () => {
 
   useEffect(()=> {
     fetchSessions();
-  }, [])
+  }, [!messages.length])
 
   document.title = "DMs";
 
@@ -64,7 +64,7 @@ const Page = () => {
       {
         selected
           ?
-        <DmScreen messageStr={selected} messages={messages} />
+        <DmScreen messageStr={selected} />
         :
 
         <Show breakpoint="(min-width: 1000px)">

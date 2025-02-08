@@ -1,8 +1,6 @@
 import { IconButton, Spacer, VStack } from "@chakra-ui/react"
-import { Archive, PlusSquare, Search, Settings } from "@geist-ui/icons"
-import { Button, Autocomplete, AutocompleteItem, Input } from "@nextui-org/react"
-import { RiChatNewFill } from "@react-icons/all-files/ri/RiChatNewFill"
-
+import { Archive, PlusSquare, Search } from "@geist-ui/icons"
+import { Autocomplete } from "@nextui-org/react"
 
 
 export const SessionHeader = () => {
@@ -22,7 +20,7 @@ export const SessionHeader = () => {
       <Autocomplete
         size="md"
         className="w-[80%] py-1"
-        placeholder="Search Direct Messages"
+        placeholder="Search for a conversation..."
         startContent={<Search />}
       >
       

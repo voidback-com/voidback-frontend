@@ -420,7 +420,7 @@ const ProfilePage = () => {
 
 
   return (
-    <VStack
+   <VStack
       background={"default"} 
       className="bg-background"
       overflowX={"hidden"} 

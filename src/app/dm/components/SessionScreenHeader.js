@@ -1,11 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/app/providers/AuthProvider"
 import { Circle, HStack, IconButton, Spacer, Text, VStack } from "@chakra-ui/react"
-import { Archive, PlusSquare, Search, Settings, Trash2 } from "@geist-ui/icons"
-import { Button, Autocomplete, AutocompleteItem, Input, DropdownMenu, DropdownTrigger, Dropdown, Spinner, DropdownItem, DropdownSection } from "@nextui-org/react"
-import { RiChatNewFill } from "@react-icons/all-files/ri/RiChatNewFill"
+import { Spinner } from "@nextui-org/react"
 import { UserCard } from "@/app/profile/components/components";
-import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
+import { SessionEditor } from "./dmEditor";
 
 
 export const SessionScreenHeader = ({message}) => {
@@ -17,8 +15,6 @@ export const SessionScreenHeader = ({message}) => {
 
 
   const getStatus = async () => {
-
-    if(!message) return;
 
     let username = message.session.initiator.username;
 
@@ -67,20 +63,19 @@ export const SessionScreenHeader = ({message}) => {
 
 
   useEffect(()=> {
-    getStatus();
-  }, [isActive, !lastActive])
+    if(message && !lastActive)
+      getStatus();
+  }, [message, isActive, !lastActive])
 
 
-  if(!account || !message)
-    return <Spinner />
+  if(!account || !message || !lastActive)
+    return <Spinner className="my-10" />
 
 
   const hdate = require("human-date");
 
-  console.log(lastActive);
-
   return (
-    <div className="w-full my-5 min-w-[400px] h-fit p-2 border-0 rounded-lg place-self-center flex flex-row">
+    <div className="w-full min-w-[400px] h-fit p-2 border-0 rounded-lg place-self-center flex flex-row border-b-1 rounded-none">
       <HStack className="flex flex-row justify-between w-full h-fit">
       {
         account.username===message.session.initiator.username
