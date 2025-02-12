@@ -8,12 +8,13 @@ import { DirectMessageContext } from "@/app/providers/DirectMessageProvider";
 
 
 
-export const SessionEditor = ({messageSession, setMessages}) => {
+export const SessionEditor = ({sessionId, setMessages}) => {
 
   const [text, setText] = useState("");
   const [selectedImage, selectImage] = useFileUpload();
   const [imageObj, setImageObj] = useState(null);
   const [post, setPost] = useState(null);
+  const [locked, setLocked] = useState(false);
 
 
   useEffect(()=> {
@@ -33,28 +34,31 @@ export const SessionEditor = ({messageSession, setMessages}) => {
     if(!tempid)
     {
       tempid = new Date().getMilliseconds();
-      console.log(tempid);
       setMessages(p=>[{message: text, post, image: imageObj, local: true, id: tempid, failed: false, retry: sendMessage}, ...p]);
     }
 
+    setLocked(true);
 
-    setText("");
-    setPost(null);
-    setImageObj(null);
+    const response = await sendDM(sessionId, text, post, imageObj);
 
-    // const response = await sendDM(messageSession.id, text, post, imageObj);
-    //
-    // const data = await response.json();
-    //
-    // if(response.status===200)
-    // {
-    //   setMessages(p=>p.filter((x)=> x.id!==tempid));
-    //   setMessages(p=>[data, ...p]);
-    // } else {
-    //   setMessages(p=>p.filter((x)=> x.id!==tempid));
-    //   setMessages(p=>[{message: text, post, image: imageObj, voiceNote, local: true, id: tempid, failed: true}, ...p]);
-    // }
-    //
+    const data = await response.json();
+
+    if(response.status===200)
+    {
+
+      setText("");
+      setPost(null);
+      setImageObj(null);
+      setLocked(false);
+
+      setMessages(p=>p.filter((x)=> x.id!==tempid));
+      setMessages(p=>[data, ...p]);
+    } else {
+      setMessages(p=>p.filter((x)=> x.id!==tempid));
+      setMessages(p=>[{message: text, post, image: imageObj, local: true, id: tempid, failed: true}, ...p]);
+      setLocked(false);
+    }
+
   }
 
 
@@ -87,7 +91,7 @@ export const SessionEditor = ({messageSession, setMessages}) => {
               </HStack>
               <Image 
                 src={imageObj.source}
-                className="w-[100%] h-[100%]"
+                className="w-[100%] h-[100%] max-h-[30vh]"
                 style={{position: "relative", bottom: 10}}
               />
             </VStack>
@@ -95,6 +99,7 @@ export const SessionEditor = ({messageSession, setMessages}) => {
           null
         }
         <Textarea
+          isDisabled={locked}
           className="max-w-full"
           variant="solid"
           placeholder="message..."

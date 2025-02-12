@@ -25,7 +25,7 @@ const DirectMessageContextProvider = ({children}) => {
   const getSessions = async () => {
     return fetch(API_URL+'dm/get/sessions', {
       method: "GET",
-      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      headers: toAuthHeaders({}),
     });
   }
 
@@ -33,7 +33,7 @@ const DirectMessageContextProvider = ({children}) => {
   const viewSession = async (sessionID, page) => {
     return fetch(API_URL+`dm/view/session?session=${sessionID}&page=${page}&page_size=15`, {
       method: "GET",
-      headers: toAuthHeaders({"Content-Type": "application/json"})
+      headers: toAuthHeaders({})
     });
   }
 

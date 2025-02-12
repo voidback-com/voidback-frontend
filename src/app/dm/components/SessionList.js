@@ -50,8 +50,8 @@ export const SessionsList = ({messages, setMessages, selected, setSelected, load
           loading
             ?
             <Tab key={"none"}>
-          <Spinner className="my-10" />
-          </Tab>
+              <Spinner color="default" className="my-10" />
+            </Tab>
           :
             null
         }

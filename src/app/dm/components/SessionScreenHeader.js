@@ -12,9 +12,14 @@ export const SessionScreenHeader = ({message}) => {
 
   const [lastActive, setLastActive] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const getStatus = async () => {
+
+    if(lastActive || isActive || loading) return;
+    
+    setLoading(true);
 
     let username = message.session.initiator.username;
 
@@ -57,7 +62,10 @@ export const SessionScreenHeader = ({message}) => {
       else{
         setIsActive(true);
       }
+
+      setLoading(false);
     }
+
 
   }
 
@@ -69,7 +77,7 @@ export const SessionScreenHeader = ({message}) => {
 
 
   if(!account || !message || !lastActive)
-    return <Spinner className="my-10" />
+    return <Spinner color="default" className="my-10" />
 
 
   const hdate = require("human-date");

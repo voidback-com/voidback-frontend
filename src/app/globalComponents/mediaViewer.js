@@ -4,7 +4,7 @@ import { Touchable } from "../auth/components";
 
 
 
-export const MediaSection = ({video, image, setImage, edit_mode=false, small=false}) => {
+export const MediaSection = ({video, image, setImage, edit_mode=false, toRight, small=false}) => {
 
 
 
@@ -12,8 +12,6 @@ export const MediaSection = ({video, image, setImage, edit_mode=false, small=fal
   {
 
      return(
-      <VStack className="h-fit">
-        {
           edit_mode ?
 
           /* image stack  */
@@ -29,10 +27,10 @@ export const MediaSection = ({video, image, setImage, edit_mode=false, small=fal
                 null
               }
 
-            <HStack className="w-full flex flex-row justify-center">
+            <HStack className="w-full flex flex-row justify-end">
               <Image 
                 src={image.source}
-                className="rounded-md border-1"
+                className="rounded-md w-[50%] h-fit"
                 alt="post-image"
                 contentFit="contain"
               />
@@ -41,41 +39,21 @@ export const MediaSection = ({video, image, setImage, edit_mode=false, small=fal
 
 
        : 
-          small
-              ?
-            <HStack className="w-fit flex flex-row justify-center pb-2">
-              <Image 
-                src={image.source}
-                size="xl"
-                className="rounded-md border-1"
-                alt="dm-image"
-                contentFit="contain"
-              />
-            </HStack>
-              :
         /* remote image stack  */
-          <HStack className="w-full flex flex-row justify-center pb-10 py-5">
-           
-            <Touchable
-              className="w-fit h-fit"
-              activeOpacity={1}
-              >
-                <Image 
-                  source={image.image}
-                  size="xl"
-                  className="rounded-md aspect-[1/1] w-full h-fit border-10"
-                  alt="dm-image"
-                  contentFit="cover"
-                  transition={1000}
-                />
-            </Touchable>
-
+        <HStack
+          className={`w-full flex flex-row ${toRight ? "justify-end" : "justify-start"}`}
+        >
+            <Image 
+              src={image.image}
+              removeWrapper
+              className="rounded-md w-[50%] h-fit"
+              alt="dm-image"
+              contentFit="cover"
+              transition={1000}
+            />
           </HStack>
 
 
-        }
-
-      </VStack>
     )
   }
 
