@@ -9,7 +9,6 @@ import LeftFeedContextProvider from "./FeedsProvider/LeftFeedProvider.js";
 import SidebarContextProvider from "./FeedsProvider/SidebarProvider.js";
 import {NextUIProvider} from "@nextui-org/react";
 import AnalyticsContextProvider from "./AnalyticsProvider/index.js";
-import DataHubContextProvider from "./DataHubProvider/index.js";
 import DirectMessageContextProvider from "./DirectMessageProvider/index.js";
  
 
@@ -28,11 +27,9 @@ export default function Providers ({children}) {
                 <SidebarContextProvider>
                   <LeftFeedContextProvider>
                     <EditorContextProvider>
-                      <DataHubContextProvider>
-                        <DirectMessageContextProvider>
-                          {children}
-                        </DirectMessageContextProvider>
-                      </DataHubContextProvider>
+                      <DirectMessageContextProvider>
+                        {children}
+                      </DirectMessageContextProvider>
                     </EditorContextProvider>
                   </LeftFeedContextProvider>
                 </SidebarContextProvider>
