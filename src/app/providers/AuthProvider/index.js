@@ -2,7 +2,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { deleteCookie, setCookie } from "cookies-next";
 import { API_URL, getRefresh, isAuthenticated, shouldRefresh, toAuthHeaders } from "@/app/configs/api";
-import { GreedyFetchContext } from "../greedyFetch";
 import { AnalyticsContext } from "../AnalyticsProvider";
 
 
@@ -16,8 +15,6 @@ const AuthContextProvider = ({ children }) => {
   const [checkToken, setCheckToken] = useState(false);
 
 
-
-  const { getLocalCached, setLocalCached, deleteLocalCached } = useContext(GreedyFetchContext);
 
   const { logEvent } = useContext(AnalyticsContext);
 
@@ -99,7 +96,6 @@ const AuthContextProvider = ({ children }) => {
       if(acc)
       {
           setAccount(acc);
-          setLocalCached("accInfo", acc);
       }
       }).catch((err)=> {
         //
@@ -168,7 +164,6 @@ const AuthContextProvider = ({ children }) => {
     await logEvent("auth-logout", window.location.href);
     blackListToken();
     deleteCookie("authTok");
-    deleteLocalCached("accInfo");
   }
 
 
@@ -202,18 +197,7 @@ const AuthContextProvider = ({ children }) => {
 
 
   const getAccount = async () => {
-    const acc = await getLocalCached("accInfo")
-
-    if(acc)
-    {
-      setAccount(acc);
-    }
-
-    else{
-      refreshAccount();
-    }
-
-    return account;
+    refreshAccount();
   }
 
 
@@ -255,11 +239,6 @@ const AuthContextProvider = ({ children }) => {
       method: "GET",
       headers: toAuthHeaders({"Content-Type": "application/json"})
     }).then((res)=> {
-        if(res.status===200)
-          setLocalCached(username, true)
-        else{
-          setLocalCached(username, false)
-        }
         return res;
       }).catch((err)=> {
       })
@@ -274,8 +253,6 @@ const AuthContextProvider = ({ children }) => {
       method: "GET",
       headers: toAuthHeaders({"Content-Type": "application/json"})
     }).then((res)=> {
-        if(res.status===200)
-          setLocalCached(username, false);
         return res;
       }).catch((err)=> {
       })
@@ -314,32 +291,21 @@ const AuthContextProvider = ({ children }) => {
 
 
   const isFollowed = async (username) => {
-
-    const res = await getLocalCached(username);
-
-    if(res!==null){
-      return res;
-    }
-
-    else{
       return await fetch(API_URL+`account/isFollowed?username=${username}`, {
         method: "GET",
         headers: toAuthHeaders({"Content-Type": "application/json"})
       }).then((res)=> {
           if(res.status===200)
           {
-            setLocalCached(username, true);
             return true;
           }
           else{
-            setLocalCached(username, false);
             return false;
           }
 
         }).catch((err)=> {
       })
     
-    }
   }
 
 

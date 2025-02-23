@@ -33,7 +33,7 @@ const PostOption = ({content, attributes, text, image, video, parent_post}) => {
       }
     }
 
-    handlePost(content, text, attributes, image, video, parent_post);
+    handlePost(content, attributes, image, video, parent_post);
 
   }
 

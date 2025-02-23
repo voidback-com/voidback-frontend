@@ -4,7 +4,6 @@ import { errorToReadable } from "@/app/configs/api";
 import { ReadonlyEditor } from "@/app/editor/components/editor";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
-import { RenderAccountResearch, RenderMyResearch } from "@/app/research/components/components";
 import { MediaSection } from "@/app/view/post/components/MediaSection";
 import { PostBottomBar, PostTopBar } from "@/app/view/post/components/postbars";
 import { HStack, VStack, Spacer, Text, useConst, useToast } from "@chakra-ui/react";
@@ -376,15 +375,6 @@ export const MyReplies = ({account}) => {
 
 
 
-export const MyResearch = ({account}) => {
-
-  return (
-    <RenderMyResearch account={account} />
-  )
-
-}
-
-
 
 export const MyLikes = ({account}) => {
   const { getAccountLikedPosts } = useContext(LeftFeedContext);
@@ -570,16 +560,6 @@ export const TabBar = ({account, isDifferentAccount}) => {
       return <MyPosts account={account} />
     }
 
-    else if(current==="research"){
-      if(!isDifferentAccount){
-        return <MyResearch />
-      }
-      else{
-        return <RenderAccountResearch username={account.username} />
-      }
-    }
-
-
     else if(current==="likes"){
       return <MyLikes account={account} />
     }
@@ -601,8 +581,6 @@ export const TabBar = ({account, isDifferentAccount}) => {
           <Tab title="Posts" onFocus={(e)=>{setCurrent("posts")}} />
 
           <Tab title="Replies" onFocus={(e)=>{setCurrent("replies")}} />
-
-          <Tab title="Research" onFocus={(e)=>{setCurrent("research")}} />
 
           <Tab title="Likes" onFocus={(e)=>{setCurrent("likes")}} />
         </Tabs>

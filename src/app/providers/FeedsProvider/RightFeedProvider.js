@@ -1,7 +1,6 @@
 'use client'
 import { createContext, useContext, useEffect, useState } from "react";
 import { API_URL, errorToReadable, isError, toAuthHeaders } from "@/app/configs/api";
-import { GreedyFetchContext } from "../greedyFetch";
 import { AnalyticsContext } from "../AnalyticsProvider";
 
 
@@ -15,12 +14,12 @@ const RightFeedContextProvider = ({children}) => {
   const [topSymbols, setTopSymbols] = useState(null);
   const [topSymbolsLoading, setTopSymbolsLoading] = useState(false);
   const [topSymbolsError, setTopSymbolsError] = useState(null);
-  const [topSymbolsPostsCount, setTopSymbolsPostsCount] = useState(false);
+  const [topSymbolsPostsCount, setTopSymbolsPostsCount] = useState([]);
 
   const [topHashtags, setTopHashtags] = useState(null);
   const [topHashtagsLoading, setTopHashtagsLoading] = useState(false);
   const [topHashtagsError, setTopHashtagsError] = useState(null);
-  const [topHashtagsPostsCount, setTopHashtagsPostsCount] = useState(false);
+  const [topHashtagsPostsCount, setTopHashtagsPostsCount] = useState([]);
 
   const [searchLoading, setSearchLoading] = useState(false);
 
@@ -35,42 +34,18 @@ const RightFeedContextProvider = ({children}) => {
   const [accountEndReached, setAccountEndReached] = useState(false);
 
 
-  const { gfetches, gRequest } = useContext(GreedyFetchContext);
-
 
   const { logEvent } = useContext(AnalyticsContext);
 
 
-  // symbols posts count
-  const getSymbolsPostsCount = async (symbols) => {
-    let requests = [];
-    let endpoints = [];
+  const getSymbolPostsCount = async (symbolID) => {
 
-
-    for(let j = 0; j < symbols.length; j++)
-    {
-      let k = `/api/symbols/postCount/${symbols[j].id}`;
-
-      requests.push(gRequest(k, "GET", {}, {}, true));
-
-      endpoints.push(k);
-
-    }
-
-    const responses = await gfetches(requests);
-
-
-    let data = [];
-
-    for(let i = 0; i < endpoints.length; i++)
-    {
-      data.push(responses[endpoints[i]]);
-    }
-
-    return data;
+    return fetch(API_URL+`symbols/postCount/${symbolID}`, {
+      method: "GET"
+    }).then((res)=>res.json());
   }
 
-
+  
   // trending symbols
   const getTopSymbols = async () => {
     setTopSymbolsLoading(true);
@@ -89,13 +64,17 @@ const RightFeedContextProvider = ({children}) => {
         {
           setTopSymbols(response);
 
-          const data = await getSymbolsPostsCount(response);
+          response.map(async (s)=> {
+            const data = await getSymbolPostsCount(s.id);
 
-          if(!isError(data))
-            setTopSymbolsPostsCount(data);
-          else{
-            setTopSymbolsError(errorToReadable(data));
-          }
+            if(!isError(data))
+              setTopSymbolsPostsCount(p=>[...p, data]);
+
+            else{
+              setTopSymbolsError(errorToReadable(data));
+            }
+        })
+          
         }
         setTopSymbolsLoading(false);
       }).catch(()=>{
@@ -108,33 +87,10 @@ const RightFeedContextProvider = ({children}) => {
 
 
   // hashtags posts count
-  const getHashtagsPostsCount = async (hashtags) => {
-    let requests = [];
-    let endpoints = [];
-
-    for(let j = 0; j < hashtags.length; j++)
-    {
-      let k = `/api/hashtags/postCount/${hashtags[j].id}`;
-
-      requests.push(gRequest(k, "GET", {}, {}, true));
-
-      endpoints.push(k);
-
-    }
-
-    const responses = await gfetches(requests);
-
-    let data = [];
-
-    if(responses)
-    {
-      for(let i = 0; i < endpoints.length; i++)
-      {
-        data.push(responses[endpoints[i]]);
-      }
-    }
-
-    return data;
+  const getHashtagPostsCount = async (hashtagID) => {
+    return fetch(API_URL+`hashtags/postCount/${hashtagID}`, {
+      method: "GET"
+    }).then((res)=>res.json());
   }
 
 
@@ -158,15 +114,17 @@ const RightFeedContextProvider = ({children}) => {
         {
           setTopHashtags(response);
 
-          const data = await getHashtagsPostsCount(response);
+          response.map(async (h)=> {
+            const data = await getHashtagPostsCount(h.id);
 
-          if(!isError(data))
-            setTopHashtagsPostsCount(data);
-          else{
-            setTopHashtagsError(errorToReadable(data));
-          }
+            if(!isError(data))
+              setTopHashtagsPostsCount(p=>[...p, data]);
+            else{
+              setTopHashtagsError(errorToReadable(data));
+            }
 
-        }
+        })
+      }
 
         setTopHashtagsLoading(false);
       })
@@ -355,7 +313,6 @@ const RightFeedContextProvider = ({children}) => {
     topHashtagsPostsCount,
 
     getTopHashtags,
-    getHashtagsPostsCount,
     getTopSymbols,
 
 

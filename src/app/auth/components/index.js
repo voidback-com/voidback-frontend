@@ -1,5 +1,4 @@
 'use client';
-import { isTextSafe } from "@/app/providers/helpers/nsfw";
 import styled from "@emotion/styled";
 import { Button } from "@nextui-org/react";
 
@@ -38,10 +37,6 @@ export const isUsernameValid = async (username) => {
   let usernameRegex = /^[a-zA-Z0-9]+([a-zA-Z0-9](_)[a-zA-Z0-9])*[a-zA-Z0-9]+$/;
 
   if(usernameRegex.test(username)) {
-
-    if(!await isTextSafe(username))
-      return "nsfw";
-
     return true;
   }
 
@@ -54,11 +49,6 @@ export const isFullNameValid = async (fullName) => {
   let fullnameRegex = /^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/;
 
   if(fullnameRegex.test(fullName)) {
-
-    if(!await isTextSafe(fullName))
-      return "nsfw";
-
-
     return true;
   };
 
@@ -69,12 +59,7 @@ export const isFullNameValid = async (fullName) => {
 export const isBioValid = async (bio) => {
 
   if(bio.length<=300) {
-
-    if(!await isTextSafe(bio))
-      return "nsfw";
-
     return true;
-
   };
 
   return false;
@@ -86,12 +71,7 @@ export const isLinkValid = async (link) => {
   let linkrgx = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   if(linkrgx.test(link)) {
-
-    if(!await isTextSafe(link))
-      return "nsfw";
-
     return true;
-
   };
 
   return false;

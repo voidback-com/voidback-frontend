@@ -1,7 +1,7 @@
 'use client'
 import { ReactRenderer } from "@tiptap/react";
 import tippy from "tippy.js";
-import { forwardRef, useState, useEffect, useImperativeHandle, useContext } from "react";
+import { forwardRef, useState, useEffect, useImperativeHandle } from "react";
 import { PluginKey } from "prosemirror-state";
 import { API_URL } from "@/app/configs/api";
 
@@ -119,7 +119,7 @@ export default {
 
   decorationClass: "rounded-md p-1 font-semibold text-primary-500", 
 
-  decorationTag: "p",
+  decorationTag: "span",
 
   pluginKey: new PluginKey("hashtags"),
 

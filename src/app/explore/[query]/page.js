@@ -49,7 +49,6 @@ const ExplorePage = ({ params }) => {
     exploreAccounts,
     exploreResearchPapers,
     postsEndReached,
-    researchEndReached,
     accountEndReached
   } = useContext(RightFeedContext);
 

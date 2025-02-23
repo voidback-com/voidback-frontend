@@ -21,12 +21,13 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useFileUpload } from "use-file-upload";
 import { isFullNameValid, isEmailValid } from "../auth/components";
 import { TabBar, UserCard } from "./components/components";
-import { NavBack } from "../research/components/topSection";
 import { errorToReadable, isAuthenticated } from "../configs/api";
 import AccountCard from "./components/accountCard";
 import { LogOut } from "@geist-ui/icons";
 import { useRouter } from "next/navigation";
 import { getImageClass } from "../providers/helpers/nsfw";
+import { NavBack } from "../globalComponents/buttonFunctions";
+
 
 
 

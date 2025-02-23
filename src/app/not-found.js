@@ -1,6 +1,7 @@
 import { Text } from '@chakra-ui/react';
 import { Image, Link } from '@nextui-org/react';
-import { NavBack } from './research/components/topSection';
+import { NavBack } from './globalComponents/buttonFunctions';
+
 
 export default async function NotFound() {
   return (

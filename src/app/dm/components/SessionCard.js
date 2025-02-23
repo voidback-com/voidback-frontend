@@ -5,18 +5,37 @@ import { UserCard } from "@/app/profile/components/components";
 import { Archive, Circle, Mic, Trash2 } from "@geist-ui/icons";
 import { Avatar, Skeleton, Button, Divider, Card, Dropdown, DropdownMenu, DropdownTrigger, DropdownSection, DropdownItem, Tab } from "@nextui-org/react";
 import { TextTrim } from "@/app/globalComponents/textTrim";
-import { Touchable } from "@/app/auth/components";
 import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
+import { DirectMessageContext } from "@/app/providers/DirectMessageProvider";
 
 
 
-export const SessionCard = ({message}) => {
+export const SessionCard = ({message, setSessionCards}) => {
 
   const { account, getAccountStatus } = useContext(AuthContext);
 
+  const { deleteSession } = useContext(DirectMessageContext);
 
   const [lastActive, setLastActive] = useState(false);
   const [isActive, setIsActive] = useState(false);
+
+
+  const handleDelete = async () => {
+    const response = await deleteSession(message.session.id);
+
+    const data = await response.json();
+    
+    console.log(data);
+
+    if(response.status===200)
+    {
+      setSessionCards(p=>p.filter((x)=>x.session.id!=message.session.id));
+    }
+
+    else{
+      // toast error
+    }
+  }
 
   const getStatus = async () => {
     let username = message.session.initiator.username;
@@ -121,7 +140,7 @@ export const SessionCard = ({message}) => {
                     >
                       { message.message
                         ?
-                        message.sender.username==account.username && !message.seen ? `you: ${TextTrim(message.message, 20)}` : message.sender.username==account.username && message.seen ? "seen" : `${TextTrim(message.message, 20)}`
+                        message.sender.username==account.username && !message.seen ? `you: ${TextTrim(message.message, 15)}` : message.sender.username==account.username && message.seen ? "seen" : `${TextTrim(message.message, 15)}`
                         :
                         messageIcon(message)
                     }
@@ -145,7 +164,7 @@ export const SessionCard = ({message}) => {
                   >
                     { message.message
                       ?
-                      message.sender.username==account.username && !message.seen ? `you: ${TextTrim(message.message, 20)}` : message.sender.username==account.username && message.seen ? "seen" : `${TextTrim(message.message, 20)}`
+                      message.sender.username==account.username && !message.seen ? `you: ${TextTrim(message.message, 15)}` : message.sender.username==account.username && message.seen ? "seen" : `${TextTrim(message.message, 15)}`
                       :
                       messageIcon(message)
                   }
@@ -219,6 +238,7 @@ export const SessionCard = ({message}) => {
               key="new"
               description="Delete DM Session"
               endContent={<Trash2 color="tomato" />}
+              onPress={handleDelete}
             >
                 Delete
             </DropdownItem>

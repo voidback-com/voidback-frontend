@@ -9,6 +9,8 @@ import mentionSuggestions from "./mentionSuggestions";
 import symbolSuggestions from "./symbolSuggestions";
 import CharacterCount from "@tiptap/extension-character-count";
 import Link from "@tiptap/extension-link";
+import FontFamily from "@tiptap/extension-font-family";
+
 
 
 
@@ -73,6 +75,10 @@ export const Editor = ({setContent, setAttributes, setText}) => {
     extensions: [
 
       StarterKit,
+
+      FontFamily.configure({
+        types: ['textStyle'],
+      }),
 
       CharacterCount.configure({
         limit: 3000
@@ -175,6 +181,11 @@ export const ReadonlyEditor = ({content}) => {
       }),
 
 
+      FontFamily.configure({
+        types: ['textStyle'],
+      }),
+
+
       Link.configure({
         linkOnPaste: true,
         openOnClick: true,
@@ -227,6 +238,7 @@ export const ReadonlyEditor = ({content}) => {
 
     ],
 
+
     editorProps: {
       attributes: {
         class: "focus:outline-none",
@@ -243,9 +255,10 @@ export const ReadonlyEditor = ({content}) => {
   return (
     <EditorContent 
       editor={editor} 
-      className="w-full"
+      className={"w-[90%] place-self-center"}
       readOnly
       label="editor"
+      style={{textAlign: "center", fontWeight: 500}}
     />
   )
 }

@@ -2,8 +2,7 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { API_URL, errorToReadable, toAuthHeaders } from "@/app/configs/api";
 import { AuthContext } from "../AuthProvider";
-import { AnalyticsContext } from "../AnalyticsProvider";
-import { getImageClass, getTextToxicity } from "../helpers/nsfw";
+import { getImageClass } from "../helpers/nsfw";
 
 
 
@@ -23,15 +22,13 @@ const EditorContextProvider = ({children}) => {
   const { account } = useContext(AuthContext);
 
 
-  const handlePost = async (content, text, attributes, image, video, parent_post) => {
+  const handlePost = async (content, attributes, image, video, parent_post) => {
 
     if(!account) return;
 
     setPostLoading(true);
 
     let formData = new FormData(); 
-
-    let rank = 0;
     
     if(image)
     {
@@ -39,21 +36,13 @@ const EditorContextProvider = ({children}) => {
 
       const imgClass = await getImageClass(image);
 
-      if(imgClass==="NSFW")
+
+      if(imgClass==="nsfw")
       {
         setPostError("The image was classified as not safe for work, please respect our terms of service.");
         setPostLoading(false);
         return;
       }
-    }
-
-    // toxicity analysis
-    const toxicity = await getTextToxicity(text);
-
-
-    if(toxicity.label==="nsfw" && toxicity.score >= 0.5)
-    {
-      rank = -1*(toxicity.score*100);
     }
 
 
@@ -64,7 +53,7 @@ const EditorContextProvider = ({children}) => {
       symbols: attributes.symbols,
       video: video,
       parent_post: parent_post,
-      rank: rank
+      rank: 0
     }));
 
 

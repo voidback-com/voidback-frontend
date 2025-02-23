@@ -28,6 +28,7 @@
     "@react-scroll-inverted/react-scroll": "^2.0.8",
     "@react-spring/web": "^9.7.5",
     "@tiptap/extension-character-count": "^2.8.0",
+    "@tiptap/extension-font-family": "^2.11.5",
     "@tiptap/extension-link": "^2.11.3",
     "@tiptap/extension-mention": "^2.7.4",
     "@tiptap/extension-placeholder": "^2.7.4",

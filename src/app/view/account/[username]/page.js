@@ -6,7 +6,6 @@ import {
   useEffect,
   useRef
 } from "react";
-
 import { 
   VStack,
   Text,
@@ -33,9 +32,10 @@ import { Touchable } from "@/app/auth/components";
 import { Input, User, Link, Button, Divider, useDisclosure, Modal, ModalHeader, ModalContent, ModalBody, Avatar, Textarea, Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react";
 import InfiniteScroll from "react-infinite-scroller";
 import { errorToReadable, isAuthenticated } from "@/app/configs/api";
-import { NavBack } from "@/app/research/components/topSection";
 import AccountCard from "@/app/profile/components/accountCard";
 import { Flag } from "@geist-ui/icons";
+import { NavBack } from "@/app/globalComponents/buttonFunctions";
+
 
 
 
@@ -413,7 +413,7 @@ const ViewAccount = ({ params }) => {
 
 
 
-    {/* posts, research, likes */}
+    {/* posts, likes */}
     <Skeleton height={"100%"} width={"100%"} isLoaded={!account ? false : true}>
         { account &&
         <TabBar account={account} isDifferentAccount />

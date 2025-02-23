@@ -20,12 +20,14 @@ import { Autocomplete, AutocompleteItem, Avatar, Chip, Card, Tabs, Tab, Button }
 import VoidBackEditor from "@/app/editor/editorDrawer";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
 import { FaHashtag } from "@react-icons/all-files/fa/FaHashtag";
-import { Home as HomeIcon, BookOpen as ResearchIcon, Settings as SettingsIcon, Moon as MoonIcon, Sun as SunIcon, Feather, Bell as NotificationsIcon, RefreshCcw, Activity, LogIn, TrendingUp, MessageCircle  } from '@geist-ui/icons'
+import { Home as HomeIcon, Settings as SettingsIcon, Moon as MoonIcon, Sun as SunIcon, Feather, Bell as NotificationsIcon, RefreshCcw, Activity, LogIn, TrendingUp, MessageCircle  } from '@geist-ui/icons'
 import { BsGraphUp } from "@react-icons/all-files/bs/BsGraphUp";
 import { Search } from '@geist-ui/icons';
-import { NavBack } from "@/app/research/components/topSection";
 import { SidebarContext } from "@/app/providers/FeedsProvider/SidebarProvider";
 import AccountRecommendations from "@/app/globalComponents/AccountRecommendations";
+import { FaStarOfLife } from "@react-icons/all-files/fa/FaStarOfLife";
+import { NavBack } from "@/app/globalComponents/buttonFunctions";
+import { FaBrain } from "@react-icons/all-files/fa/FaBrain";
 
 
 
@@ -152,18 +154,41 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
         />
 
         <Tab
-          key={"/research"}
+          key={"/rooms"}
           className="flex flex-row justify-start"
           title={
             <HStack spacing={5}>
-              <ResearchIcon size={25} />
+              <FaStarOfLife size={25} />
 
               <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>Research</Text>
+                <Text fontSize={"medium"} fontWeight={600}>Edge Rooms</Text>
               </Show>
             </HStack>
           }
         />
+
+
+
+        {/* Machine Learning Hub (open source data and models) */}
+        <Tab
+          isDisabled
+          key={"/investor-hub"}
+          className="flex flex-row justify-start"
+          title={
+            <HStack spacing={5}>
+              <FaBrain size={25} />
+
+              <Show breakpoint="(min-width: 1000px)">
+                <Text fontSize={"medium"} fontWeight={600}>ML Hub</Text>
+                <Chip size="sm">
+                  in-dev
+                </Chip>
+              </Show>
+
+            </HStack>
+          }
+        />
+
 
 
         <Tab
@@ -203,28 +228,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
               <Show breakpoint="(min-width: 1000px)">
                 <Text fontSize={"medium"} fontWeight={600}>Data Hub</Text>
               </Show>
-            </HStack>
-          }
-        />
-
-
-
-        {/* later implement investor-hub */}
-        <Tab
-          isDisabled
-          key={"/investor-hub"}
-          className="flex flex-row justify-start"
-          title={
-            <HStack spacing={5}>
-              <TrendingUp size={25} />
-
-              <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>Investor Hub</Text>
-                <Chip size="sm">
-                  in-dev
-                </Chip>
-              </Show>
-
             </HStack>
           }
         />

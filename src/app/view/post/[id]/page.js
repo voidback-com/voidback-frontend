@@ -21,6 +21,7 @@ import {
   CardBody,
   CardFooter
 } from "@chakra-ui/react";
+import { Chip } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { PostTopBar, PostBottomBar } from "../components/postbars";
@@ -30,8 +31,10 @@ import { errorToReadable, isAuthenticated, isError } from "@/app/configs/api";
 import { Replies } from "../components/replies";
 import { MediaSection } from "../components/MediaSection";
 import { ParentPostCard, ReplyEditor } from "../components/components";
-import { NavBack } from "@/app/research/components/topSection";
 import { renderNodes } from "@/app/editor/components/mobileEditorRenderer";
+import { NavBack } from "@/app/globalComponents/buttonFunctions";
+import Link from "next/link";
+import { FaStarOfLife } from "@react-icons/all-files/fa/FaStarOfLife";
 
 
 
@@ -91,9 +94,6 @@ const ViewPost = ({ params }) => {
 
 
 
-  const color = useColorMode();
-
-
   return (
     <Stack
       className="bg-background"
@@ -122,11 +122,12 @@ const ViewPost = ({ params }) => {
             width="80%"
             minW="100%"
             overflow={"hidden"}
+            className="background"
           >
             <HStack
               width={"100%"}
               borderRadius={4}
-              padding={1}
+              padding={2}
             >
               <NavBack />
               <Spacer />
@@ -137,13 +138,34 @@ const ViewPost = ({ params }) => {
             }
 
             <Card
-              width="50vw"
-              variant={"unstyled"}
+              width="100%"
               backgroundColor={"default"}
-              className="bg-background"
             >
 
               <CardHeader>
+
+              <HStack className="w-full flex flex-row">
+              
+                  {post && post.room &&
+                   <Link href={`/room/${post.room.name}`} className="h-fit w-fit">
+                      <Chip
+                        className="border-1 bg-background rounded-md "
+                      >
+                      <HStack className="w-full">
+                        <FaStarOfLife size={12} />
+                        <Text
+                          className="font-semibold text-sm"
+                        >
+                          {post.room.name}
+                        </Text>
+                      </HStack>
+                    </Chip>
+                  </Link>
+                  }
+
+                </HStack>
+
+
                 {
                   post
                   &&
@@ -152,6 +174,28 @@ const ViewPost = ({ params }) => {
             </CardHeader>
 
               <CardBody>
+
+
+            { post && post.room
+            &&
+
+               <VStack    
+                className="h-fit w-full flex flex-col p-2 gap-0"
+                >
+                    <Text
+                    fontWeight={600}
+                    fontSize={16}
+                    className={"w-[80%]"}
+                    fontFamily="sans-serif"
+                    >
+                      {post.title && (post.title.endsWith(".") || post.title.endsWith("?") || post.title.endsWith("!")) ? post.title : post.title+'.'}
+                    </Text>
+              </VStack>
+
+          }
+
+
+
             {
               post
               ?

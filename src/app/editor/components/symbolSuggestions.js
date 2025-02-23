@@ -116,9 +116,9 @@ export default {
 
   char: "$",
 
-  decorationClass: "font-semibold text-emerald-500", 
+  decorationClass: "font-semibold text-emerald-500 p-1 font-semibold", 
 
-  decorationTag: "p",
+  decorationTag: "span",
 
   pluginKey: new PluginKey("symbols"),
 

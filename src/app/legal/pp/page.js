@@ -1,4 +1,4 @@
-import { NavBack } from "@/app/research/components/topSection";
+import { NavBack } from "@/app/globalComponents/buttonFunctions";
 import { 
   Spacer,
   Text,

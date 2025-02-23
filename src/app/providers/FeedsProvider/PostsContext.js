@@ -1,7 +1,6 @@
 'use client'
 import { createContext, useState, useContext } from "react";
 import { API_URL, toAuthHeaders } from "@/app/configs/api";
-import { GreedyFetchContext } from "../greedyFetch";
 import { AnalyticsContext } from "../AnalyticsProvider";
 
 
@@ -10,8 +9,6 @@ import { AnalyticsContext } from "../AnalyticsProvider";
 
 const PostsContext = () => {
 
-
-  const { gfetch, gRequest, gfetches } = useContext(GreedyFetchContext);
 
 
   const { logEvent } = useContext(AnalyticsContext);
@@ -22,15 +19,15 @@ const PostsContext = () => {
 
     await logEvent("delete-post", window.location.href, {"id": id});
 
-    return gfetch(
-      "/api/post",
-      "DELETE",
-      toAuthHeaders({"Content-Type": "application/json"}),
-      {"id": id},
-    )
+    return fetch(API_URL+"post",
+      {
+      method: "DELETE",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({"id": id}),
+    })
       .then((res)=> {
-        if(res)
-          return res;
+        if(res.status===200)
+          return res.json();
       })
   }
 
@@ -42,11 +39,13 @@ const PostsContext = () => {
 
     await logEvent("view-post", window.location.href, {"id": post_id});
 
-    return gfetch(
-      `/api/post/account/impression/${post_id}`, 
-      "POST", 
-      toAuthHeaders({"Content-Type": "application/json"}), 
-      {impression: 0}
+    return fetch(
+      API_URL+`post/account/impression/${post_id}`, 
+      {
+      method: "POST", 
+      headers: toAuthHeaders({"Content-Type": "application/json"}), 
+      body: JSON.stringify({impression: 0})
+      }
     );
 
   };
@@ -57,11 +56,13 @@ const PostsContext = () => {
 
     await logEvent("like-post", window.location.href, {"id": post_id});
 
-    return gfetch(
-      `/api/post/account/impression/${post_id}`, 
-      "POST", 
-      toAuthHeaders({"Content-Type": "application/json"}), 
-      {impression: 1}
+    return fetch(
+      API_URL+`post/account/impression/${post_id}`, 
+      {
+      method: "POST", 
+      headers: toAuthHeaders({"Content-Type": "application/json"}), 
+      body: JSON.stringify({impression: 1})
+      }
     );
 
 
@@ -72,11 +73,13 @@ const PostsContext = () => {
 
     await logEvent("unlike-post", window.location.href, {"id": post_id});
 
-    return gfetch(
-      `/api/post/account/impression/${post_id}`, 
-      "POST", 
-      toAuthHeaders({"Content-Type": "application/json"}), 
-      {impression: 0}
+    return fetch(
+      API_URL+`post/account/impression/${post_id}`, 
+      {
+      method: "POST", 
+      headers: toAuthHeaders({"Content-Type": "application/json"}), 
+      body: JSON.stringify({impression: 0})
+      }
     );
 
   }
@@ -86,11 +89,13 @@ const PostsContext = () => {
 
     await logEvent("dislike-post", window.location.href, {"id": post_id});
 
-    return gfetch(
-      `/api/post/account/impression/${post_id}`, 
-      "POST", 
-      toAuthHeaders({"Content-Type": "application/json"}), 
-      {impression: -1}
+    return fetch(
+      API_URL+`post/account/impression/${post_id}`, 
+      {
+      method: "POST", 
+      headers: toAuthHeaders({"Content-Type": "application/json"}), 
+      body: JSON.stringify({impression: -1})
+      }
     );
 
   }
@@ -99,49 +104,22 @@ const PostsContext = () => {
   const deleteDislikePost = async (post_id) => {
 
     await logEvent("undislike-post", window.location.href, {"id": post_id});
-    return gfetch(
-      `/api/post/account/impression/${post_id}`, 
-      "POST", 
-      toAuthHeaders({"Content-Type": "application/json"}),
-      {impression: 0}
+
+    return fetch(
+      API_URL+`post/account/impression/${post_id}`, 
+      {
+      method: "POST", 
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({impression: 0})
+      }
     );
 
   }
 
 
-  
-  // get impressions of an array of posts
-  const postsImpressions = async (posts) => {
-
-    let requests = [];
-    let endpoints = [];
-
-    for(let j = 0; j < posts.length; j++)
-    {
-      let k = `/api/post/impressions/${posts[j].id}`;
-
-      requests.push(gRequest(k, "GET"));
-
-      endpoints.push(k);
-
-    }
-
-    const responses = await gfetches(requests);
-
-    let data = [];
-
-    if(responses)
-      for(let i = 0; i < endpoints.length; i++)
-      {
-        data.push(responses[endpoints[i]]);
-      }
-
-    return data;
-  }
-
 
   const postImpressions = async (post_id) => {
-    return gfetch(`/api/post/impressions/${post_id}`, "GET");
+    return fetch(API_URL+`post/impressions/${post_id}`, {method: "GET"}).then((res)=>res.json());
   }
 
 
@@ -201,10 +179,12 @@ const PostsContext = () => {
   // my impression on a certain post
   const postAccountImpression = async (post_id) => {
 
-    return gfetch(
-      `/api/post/account/impression/${post_id}`,
-      "GET",
-      toAuthHeaders({})
+    return fetch(
+      API_URL+`post/account/impression/${post_id}`,
+      {
+        method: "GET",
+      headers: toAuthHeaders({})
+      }
     ).then((res)=> {
         if(res)
           return res;
@@ -216,12 +196,14 @@ const PostsContext = () => {
   // get the "for-you" posts
   const getForYouPosts = async (exclude) => {
 
-    return gfetch(
-      `/api/foryou`,
-      "POST",
-      toAuthHeaders({"Content-Type": "application/json"}),
-      {"exclude": exclude}
-    );
+    return fetch(
+      API_URL+`foryou`,
+      {
+      method: "POST",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({"exclude": exclude})
+      }
+    ).then((res)=>res.json());
 
   }
 
@@ -229,50 +211,26 @@ const PostsContext = () => {
 
   // get post by id
   const getPostById = async (post_id) => {
-    return gfetch(
-      `/api/post/get/${post_id}`,
-      "GET"
-    );
+    return fetch(
+      API_URL+`post/get/${post_id}`,
+      {
+        method: "GET"
+      }
+    ).then((res)=>res.json());
   }
 
 
 
   // post replies count
   const getPostRepliesCount = async (parent_post) => {
-    return gfetch(
-      `/api/post/repliesCount/${parent_post}`,
-      "GET"
-    )
+    return fetch(
+      API_URL+`post/repliesCount/${parent_post}`,
+      {
+        method: "GET"
+      }
+    ).then((res)=>res.json())
   }
 
-
-  // an array of post replies
-  const getPostsRepliesCount = async (posts) => {
-
-    let requests = [];
-    let endpoints = [];
-
-    for(let j = 0; j < posts.length; j++)
-    {
-      let k = `/api/post/repliesCount/${posts[j].id}`;
-
-      requests.push(gRequest(k, "GET"));
-
-      endpoints.push(k);
-
-    }
-
-    const responses = await gfetches(requests);
-
-    let data = [];
-
-    for(let i = 0; i < endpoints.length; i++)
-    {
-      data.push(responses[endpoints[i]]);
-    }
-
-    return data;
-  }
 
 
 
@@ -327,7 +285,6 @@ const PostsContext = () => {
 
     // my impression on a post and all the impressions on a post
     postAccountImpression,
-    postsImpressions, // get the impressions of the all the fetched posts
     postImpressions, // get the impressions of one specific post via it's id
 
 
@@ -344,7 +301,6 @@ const PostsContext = () => {
 
     getPostRepliesCount,
     getPostReplies,
-    getPostsRepliesCount,
 
 
     // SYMBOL

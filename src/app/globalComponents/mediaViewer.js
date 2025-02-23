@@ -46,7 +46,7 @@ export const MediaSection = ({video, image, setImage, edit_mode=false, toRight, 
             <Image 
               src={image.image}
               removeWrapper
-              className="rounded-md w-[50%] h-fit"
+              className="rounded-md w-full h-fit"
               alt="dm-image"
               contentFit="cover"
               transition={1000}

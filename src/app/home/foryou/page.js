@@ -1,16 +1,10 @@
 'use client'
 import { 
   Container, 
-  Box,
   VStack,
-  Input,
-  useColorMode,
   Spacer,
   Stack,
   HStack,
-  Text,
-  Skeleton,
-  SkeletonText,
   Alert,
   AlertIcon
 } from "@chakra-ui/react";
@@ -21,7 +15,6 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useContext, useState, useEffect, useRef } from "react";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { PostCard } from "../components/postCard";
-import { HashLoader, SkewLoader, SquareLoader } from "react-spinners";
 import { AiOutlineRedo } from "@react-icons/all-files/ai/AiOutlineRedo";
 import { Button, Divider, Spinner } from "@nextui-org/react";
 import { errorToReadable, isError } from "@/app/configs/api";
@@ -40,8 +33,6 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
   const { 
     getForYouPosts,
-    postsImpressions,
-    getPostsRepliesCount,
 
     platformMessage
 
@@ -52,11 +43,9 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
 
   const [posts, setPosts] = useState([]);
-  const [impressions, setImpressions] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [end, setEnd] = useState(false);
-  const [repliesCount, setRepliesCount] = useState([]);
 
 
   const router = useRouter();
@@ -72,8 +61,6 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
   useEffect(()=> {
     setPosts([]);
-    setRepliesCount([]);
-    setImpressions([]);
     setEnd(false);
     setError(false);
     setRefresh(false);
@@ -110,31 +97,6 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
         }
         else
           setPosts([...data]);
-
-        const imps = await postsImpressions(data);
-
-        if(imps)
-        {
-          if(posts.length)
-            setImpressions(i=>[...i, ...imps]);
-          else
-            setImpressions(imps);
-        }
-
-
-        const reps = await getPostsRepliesCount(data);
-
-        if(reps)
-        {
-          if(posts.length)
-          {
-            setRepliesCount(i=>[...i, ...reps]);
-          }
-          else{
-            setRepliesCount(reps);
-          }
-        }
-
       }
       else{
         setEnd(true);
@@ -156,8 +118,9 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
   const renderPosts = () => {
 
+    console.log(posts);
     return posts.map((post, i)=> {
-      return <Stack direction={"column"} className="w-8/12 h-full shadow-none" key={i}><PostCard post={post} impressions={impressions[i]} post_replies={repliesCount[i]}  /></Stack>
+      return <Stack direction={"column"} className="w-[80%] h-full shadow-none my-5" key={i}><PostCard post={post} isInFeed={false}  /></Stack>
   })
   }
 

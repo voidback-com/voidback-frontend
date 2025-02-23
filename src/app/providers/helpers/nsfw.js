@@ -1,71 +1,24 @@
 import { API_URL } from "@/app/configs/api";
+import * as nsfwjs from "nsfwjs";
 
 
-
-export const isTextSafe = async (text) => {
-  const response = await fetch(API_URL+"nsfw/text", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({text})
-  });
-
-  const data = await response.json();
-
-
-  if(response.status===200)
-  {
-    if(data.label==="nsfw" && data.score >= 0.5)
-    {
-      return false;
-    }
-    else
-      return true;
-  }
-
-  return false;
-}
-
-
-
-export const getTextToxicity = async (text) => {
-  const response = await fetch(API_URL+"nsfw/text", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({text})
-  });
-
-  const data = await response.json();
-
-
-  if(response.status===200)
-  {
-    return data;
-  }
-
-  return null;
-}
 
 
 export const getImageClass = async (image) => {
 
-  const formData = new FormData();
+  const img = new Image(400, 400);
 
-    formData.append("image", image.file);
+  img.src = image.source;
 
-    const response = await fetch(API_URL+"nsfw/image", {
-      method: "POST",
-      body: formData
-    });
+  const model = await nsfwjs.load();
 
+  const predictions = await model.classify(img);
 
-  const data = await response.json();
-
-
-  if(response.status===200)
+  if(predictions[0].className==="Neutral" || predictions[0].className==="Drawing")
   {
-    return data.label;
+    return "sfw";
   }
 
-  return null;
+  return "nsfw";
 }
 

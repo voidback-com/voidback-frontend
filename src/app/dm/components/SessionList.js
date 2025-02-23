@@ -16,7 +16,7 @@ export const SessionsList = ({messages, setMessages, selected, setSelected, load
            key={JSON.stringify(message)}
            className="h-[12vh] w-full"
            aria-label={message.id}
-           title={<SessionCard message={message} />}
+           title={<SessionCard message={message} setSessionCards={setMessages} />}
         />
       )
     })
