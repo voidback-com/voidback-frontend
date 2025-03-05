@@ -605,7 +605,7 @@ export const PostTopBar = ({post}) => {
 
 
 
-export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
+export const PostBottomBar = ({post, isInFeed}) => {
 
   const { 
     // insert: like, dislike, viewedPost
@@ -629,12 +629,11 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
 
 
 
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [impression, setImpression] = useState(0);
+  const [likes, setLikes] = useState(null);
+  const [dislikes, setDislikes] = useState(null);
+  const [impression, setImpression] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [repliesCount, setRepliesCount] = useState(0);
-  const [dataFetched, setDataFetched] = useState(false);
+  const [repliesCount, setRepliesCount] = useState(null);
 
   const [views, setViews] = useState(0);
 
@@ -646,9 +645,11 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
 
     const myImpression = await postAccountImpression(post.id);
 
+    const imp = await myImpression.json();
+
     if(myImpression)
     {
-      setImpression(myImpression.impression);
+      setImpression(imp.impression);
     }
     else{
       if(!isInFeed)
@@ -683,56 +684,38 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
     if(!isError(data))
     {
       setRepliesCount(data.replies);
-      setDataFetched(true);
     }
 
   }
 
 
   useEffect(()=> {
-    if(isInFeed && impressions && !dataFetched)
+    if(likes===null || dislikes===null || views===null)
     {
-      setLikes(impressions.likes);
-      setDislikes(impressions.dislikes);
-      setViews(impressions.views);
-
-      setLoading(false);
-    }
-    else if(isInFeed && !dataFetched){
-      setLoading(true);
-    }
-  }, [impressions, isInFeed])
-
-
-
-  useEffect(()=> {
-    if(isInFeed && post_replies && !dataFetched)
-    {
-      setRepliesCount(post_replies.replies);
-      setLoading(false);
-    }
-    else if(isInFeed && !dataFetched){
-      setLoading(true);
-    }
-  }, [post_replies, isInFeed])
-
-
-  useEffect(()=> {
-    if(!loading && !dataFetched)
-    {
-      setLoading(true);
-
-      if(!isInFeed)
-      {
+      if(!loading)
         getImpressions();
-        getRepliesCount();
-      }
-
-      // my impression on this post (as the authencated user)
-      getMyImpression();
     }
+  }, [!likes, !dislikes, !views])
 
-  }, [post, !dataFetched])
+
+
+  useEffect(()=> {
+    if(repliesCount===null)
+    {
+      if(!loading)
+        getRepliesCount();
+    }
+  }, [!repliesCount])
+
+
+
+  useEffect(()=> {
+    if(impression===false)
+    {
+      if(!loading)
+        getMyImpression();
+    }
+  }, [!impression])
 
 
 
@@ -849,6 +832,7 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
   const router = useRouter();
 
 
+  console.log(impression)
 
   return (
     <VStack
@@ -859,7 +843,7 @@ export const PostBottomBar = ({post, isInFeed, impressions, post_replies}) => {
 
       <Spacer/>
 
-      <Skeleton width={"100%"} isLoaded={!loading}>
+      <Skeleton width={"100%"} isLoaded={(!loading && likes!==null && dislikes!==null && views!==null)}>
           <HStack
             width="100%"
           >

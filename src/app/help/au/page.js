@@ -7,13 +7,6 @@ import {
   Spacer,
   HStack,
   Text,
-  Skeleton,
-  useColorMode,
-  useDisclosure,
-  Alert,
-  Show,
-  AlertIcon,
-  useColorModeValue
 } from "@chakra-ui/react";
 import { errorToReadable } from "@/app/configs/api";
 import { Button, Card, CardBody, CardFooter, CardHeader, Image, Spinner } from "@nextui-org/react";

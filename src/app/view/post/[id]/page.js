@@ -141,6 +141,7 @@ const ViewPost = ({ params }) => {
             <Card
               width="100%"
               backgroundColor={"default"}
+              shadow={"none"}
             >
 
               <CardHeader>

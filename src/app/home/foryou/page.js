@@ -119,7 +119,7 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
   const renderPosts = () => {
 
     return posts.map((post, i)=> {
-      return <Stack direction={"column"} className="w-[80%] h-full shadow-none my-5" key={i}><PostCard post={post} isInFeed={false}  /></Stack>
+      return <Stack direction={"column"} className="w-[80%] h-full shadow-none my-5" key={i}><PostCard post={post} isInFeed={true}  /></Stack>
   })
   }
 
