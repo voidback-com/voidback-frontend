@@ -148,7 +148,7 @@ export const PostTopBar = ({post}) => {
 
 
     deletePost(post.id).then((res)=> {
-        if(res && res.error)
+        if(res.status!==200)
         {
           toast({
             title: "Failed to delete the post",

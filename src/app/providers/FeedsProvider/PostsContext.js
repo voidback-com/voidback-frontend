@@ -25,10 +25,6 @@ const PostsContext = () => {
       headers: toAuthHeaders({"Content-Type": "application/json"}),
       body: JSON.stringify({"id": id}),
     })
-      .then((res)=> {
-        if(res.status===200)
-          return res.json();
-      })
   }
 
 
