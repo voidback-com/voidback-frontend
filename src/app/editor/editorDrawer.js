@@ -186,7 +186,9 @@ const VoidBackEditor = ({isOpen, onClose, onOpen, room}) => {
 
             {/* Implement Select menu for selecting the room inwhich this post belongs (only rooms am a member of and can post in)*/}
 
-            <Input label="Post Title" onChange={(e)=>setTitle(e.target.value)} maxLength={60} isRequired variant="bordered" size="lg" className="w-1/2 max-w-[500px]" placeholder="title..." />
+            <Skeleton className="w-full flex flex-row justify-center" isLoaded={!postLoading}>
+              <Input label="Post Title" onChange={(e)=>setTitle(e.target.value)} maxLength={60} isRequired variant="bordered" size="lg" className="w-1/2 max-w-[500px]" placeholder="title..." />
+            </Skeleton>
 
             
             <SkeletonText style={{scrollbarWidth: "none"}} isLoaded={!postLoading}>
