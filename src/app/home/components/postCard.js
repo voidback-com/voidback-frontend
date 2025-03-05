@@ -144,7 +144,7 @@ export const PostCard = ({showContent, post, impressions, post_replies, isInFeed
 
 
               {
-                !membership && !loading
+                !membership && !loading && account
             ?
               <Button size="sm" variant="bordered" color="default" className="rounded-full border-1" onPress={()=>handleJoin()}>
                 join
