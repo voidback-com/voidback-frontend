@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { errorToReadable } from "@/app/configs/api";
 import { Button, Card, CardBody, CardFooter, CardHeader, Image, Spinner } from "@nextui-org/react";
-import { NavBack } from "@/app/research/components/topSection";
+import { NavBack } from "@/app/globalComponents/buttonFunctions";
 
 
 
