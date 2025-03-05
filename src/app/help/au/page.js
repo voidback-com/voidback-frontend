@@ -110,7 +110,7 @@ const Page = () => {
                 fontWeight={600}
                 fontFamily={"sans-serif"}
               >
-                A Data-Driven Future
+                A Data-Driven Machine Learning Future
               </Text>
             </CardHeader>
 
@@ -119,7 +119,7 @@ const Page = () => {
                 fontFamily={"sans-serif"}
                 fontSize={"medium"}
               >
-                To further enhance the value it offers, Voidback is introducing a groundbreaking feature: the Data Hub. This powerful tool will provide subscribers with direct access to a vast repository of sentiment data, enabling them to perform complex queries and extract deeper insights. By leveraging this data, institutions can make more informed and strategic decisions, reducing risk and maximizing returns.
+Voidback is a platform that offers "edge rooms," enabling users to cultivate vibrant communities. Each edge room serves as a distinct community space. Furthermore, with our groundbreaking new feature, ML-Hub (Machine Learning Hub), users can train machine learning models directly within their browsers. ML-Hub provides access to diverse datasets available on Voidback, empowering users to build state-of-the-art models from their own devices, leveraging their contributions and the collective knowledge of the Voidback community.
               </Text>
 
             </CardBody>
