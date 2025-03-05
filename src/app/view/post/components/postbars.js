@@ -645,17 +645,20 @@ export const PostBottomBar = ({post, isInFeed}) => {
 
     const myImpression = await postAccountImpression(post.id);
 
-    const imp = await myImpression.json();
-
-    if(myImpression)
+    if(myImpression.status===200)
     {
-      setImpression(imp.impression);
-    }
-    else{
-      if(!isInFeed)
-        viewPost(post.id);
+      const imp = await myImpression.json();
 
-      setImpression(0);
+      if(myImpression)
+      {
+        setImpression(imp.impression);
+      }
+      else{
+        if(!isInFeed)
+          viewPost(post.id);
+
+        setImpression(0);
+      }
     }
 
     setLoading(false);
