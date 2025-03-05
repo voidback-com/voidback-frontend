@@ -118,7 +118,6 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
   const renderPosts = () => {
 
-    console.log(posts);
     return posts.map((post, i)=> {
       return <Stack direction={"column"} className="w-[80%] h-full shadow-none my-5" key={i}><PostCard post={post} isInFeed={false}  /></Stack>
   })
@@ -188,6 +187,7 @@ export const ForYouPostsFeed = ({refresh, setRefresh}) => {
 
         {renderPosts()}
       </InfiniteScroll>
+
   )
 
 }

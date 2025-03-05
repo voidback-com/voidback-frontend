@@ -338,24 +338,7 @@ const CenterSection = ({ActiveFeed}) => {
           />
         </Button>
 
-
-        <HStack
-          width={"100%"}
-        >
-        <Spacer/>
-          <Button
-            size="sm"
-            variant="bordered"
-            color="default"
-            endContent={<RefreshCcw size={18} />}
-            onPress={()=>setRefresh(true)}
-          >
-            refresh
-          </Button>
-        <Spacer/>
-        </HStack>
-
-
+        <Spacer />
 
         { 
           (account)

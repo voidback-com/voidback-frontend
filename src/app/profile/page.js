@@ -92,9 +92,10 @@ const ProfilePage = () => {
 
 
 
-  const handleLogout = () => {
-    logoutUser();
+  const handleLogout = async () => {
+    await logoutUser();
 
+    router.refresh();
     return router.replace("/home");
   }
 
@@ -435,7 +436,7 @@ const ProfilePage = () => {
 
       <HStack
         width={"100%"}
-        padding={2}
+        classNase="bg-red-200"
       >
         <NavBack />
 
@@ -568,7 +569,7 @@ const ProfilePage = () => {
               size="sm"
               variant="light"
               color="danger"
-              onPress={handleLogout}
+              onPress={()=>handleLogout()}
             >
               <LogOut />
             </Button>

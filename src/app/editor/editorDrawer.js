@@ -21,6 +21,7 @@ import {
   CloseButton,
   DrawerHeader,
   DrawerBody,
+  Text
 } from "@chakra-ui/react";
 import {EditorContext} from "@/app/providers/FeedsProvider/PostEditorProvider";
 import PostOption from "./components/toolbarComponents/PostOption";
@@ -28,13 +29,15 @@ import ImageOption from "./components/toolbarComponents/ImageOption";
 import Editor from "./components/editor";
 import CharLimit from "./components/toolbarComponents/charLimit";
 import { MediaSection } from "../view/post/components/MediaSection";
+import { Input, Chip } from "@nextui-org/react";
 
 
 
-const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
+const VoidBackEditor = ({isOpen, onClose, onOpen, room}) => {
 
 
 
+  const [title, setTitle] = useState("")
   const [content, setContent] = useState(null);
   const [attributes, setAttributes] = useState(null);
   const [text, setText] = useState(null);
@@ -83,6 +86,18 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
       <DrawerHeader width={"100%"}>
         <HStack width={"100%"}>
+
+            {room ? (
+
+              <Chip size="sm" variant="bordered" className="border-1 p-4 rounded-md">
+                <Text className="font-semibold text-md">
+                  {room}
+                </Text>
+              </Chip>
+              
+            ) : null}
+
+
         <Spacer />
         <CloseButton onClick={onClose} />
         </HStack>
@@ -160,6 +175,7 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
 
 
+
             <Skeleton className="p-4" isLoaded={!postLoading}>
               { image || video ?
               <MediaSection  setVideo={setVideo} video={video} image={image} setImage={setImage} edit_mode />
@@ -167,6 +183,10 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
               }
             </Skeleton>
 
+
+            {/* Implement Select menu for selecting the room inwhich this post belongs (only rooms am a member of and can post in)*/}
+
+            <Input label="Post Title" onChange={(e)=>setTitle(e.target.value)} maxLength={60} isRequired variant="bordered" size="lg" className="w-1/2 max-w-[500px]" placeholder="title..." />
 
             
             <SkeletonText style={{scrollbarWidth: "none"}} isLoaded={!postLoading}>
@@ -182,7 +202,7 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
                   <Spacer/>
 
-                  <PostOption video={video} image={image} content={content} attributes={attributes} text={text} parent_post={null} />
+                  <PostOption video={video} image={image} content={content} attributes={attributes} text={text} title={title} room={room} parent_post={null} />
                 </div>
 
               </div>

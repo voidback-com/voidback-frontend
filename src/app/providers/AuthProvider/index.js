@@ -161,9 +161,9 @@ const AuthContextProvider = ({ children }) => {
   }
 
   const logoutUser = async () => {
-    await logEvent("auth-logout", window.location.href);
     blackListToken();
     deleteCookie("authTok");
+    await logEvent("auth-logout", window.location.href);
   }
 
 

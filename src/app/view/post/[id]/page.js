@@ -117,6 +117,7 @@ const ViewPost = ({ params }) => {
       >
         <Skeleton 
           isLoaded={!loading}
+          className="w-full"
         >
           <VStack 
             width="80%"
@@ -147,7 +148,7 @@ const ViewPost = ({ params }) => {
               <HStack className="w-full flex flex-row">
               
                   {post && post.room &&
-                   <Link href={`/room/${post.room.name}`} className="h-fit w-fit">
+                   <Link href={`/rooms/${post.room.name}`} className="h-fit w-fit">
                       <Chip
                         className="border-1 bg-background rounded-md "
                       >
@@ -182,14 +183,18 @@ const ViewPost = ({ params }) => {
                <VStack    
                 className="h-fit w-full flex flex-col p-2 gap-0"
                 >
-                    <Text
-                    fontWeight={600}
-                    fontSize={16}
-                    className={"w-[80%]"}
-                    fontFamily="sans-serif"
-                    >
-                      {post.title && (post.title.endsWith(".") || post.title.endsWith("?") || post.title.endsWith("!")) ? post.title : post.title+'.'}
-                    </Text>
+                  {
+                    post.title &&
+                      <Text
+                      fontWeight={600}
+                      fontSize={24}
+                      className={"w-full pb-5"}
+                      style={{textAlign: "center"}}
+                      fontFamily="sans-serif"
+                      >
+                          {post.title}
+                      </Text>
+                  }
               </VStack>
 
           }
@@ -235,7 +240,7 @@ const ViewPost = ({ params }) => {
 
 
             {post ?
-              <ReplyEditor parent_post_id={post.id} />
+              <ReplyEditor parent_post_room={post.room.name} parent_post_id={post.id} />
               :
               null
             }

@@ -6,7 +6,7 @@ import { useToast } from '@chakra-ui/react';
 import { isAuthenticated } from '@/app/configs/api';
 
 
-const PostOption = ({content, attributes, text, image, video, parent_post}) => {
+const PostOption = ({content, attributes, text, image, video, parent_post, title, room, isReply}) => {
 
 
   const { 
@@ -33,7 +33,7 @@ const PostOption = ({content, attributes, text, image, video, parent_post}) => {
       }
     }
 
-    handlePost(content, attributes, image, video, parent_post);
+    handlePost(room, title, content, attributes, image, video, parent_post);
 
   }
 
@@ -43,7 +43,7 @@ const PostOption = ({content, attributes, text, image, video, parent_post}) => {
     if(!isAuthenticated())
       return true;
 
-    if(text)
+    if((title || isReply) && text)
     {
       if(text.length < 2)
         return true;

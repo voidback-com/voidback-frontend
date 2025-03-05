@@ -22,7 +22,7 @@ const EditorContextProvider = ({children}) => {
   const { account } = useContext(AuthContext);
 
 
-  const handlePost = async (content, attributes, image, video, parent_post) => {
+  const handlePost = async (room, title, content, attributes, image, video, parent_post) => {
 
     if(!account) return;
 
@@ -43,10 +43,14 @@ const EditorContextProvider = ({children}) => {
         setPostLoading(false);
         return;
       }
+
+      formData.append("image", image.file);
     }
 
 
     formData.append("post", JSON.stringify({
+      room: room,
+      title: title,
       content: content,
       mentions: attributes.mentions,
       hashtags: attributes.hashtags,
@@ -57,7 +61,6 @@ const EditorContextProvider = ({children}) => {
     }));
 
 
-    formData.append("image", image.file);
 
     await fetch(API_URL+"post", {
       method: "POST",

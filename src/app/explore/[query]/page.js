@@ -25,7 +25,6 @@ import { LeftSection, RightSection } from "@/app/home/components/Sections";
 import InfiniteScroll from "react-infinite-scroller/dist/InfiniteScroll";
 import { AiOutlineRedo } from "@react-icons/all-files/ai/AiOutlineRedo";
 import { PostCard } from "@/app/home/components/postCard";
-import { ResearchPaperCard } from "@/app/research/components/components";
 import AccountCard from "@/app/profile/components/accountCard";
 
 
@@ -47,7 +46,6 @@ const ExplorePage = ({ params }) => {
 
     explorePosts,
     exploreAccounts,
-    exploreResearchPapers,
     postsEndReached,
     accountEndReached
   } = useContext(RightFeedContext);
@@ -55,7 +53,7 @@ const ExplorePage = ({ params }) => {
 
   const [current, setCurrent] = useState("posts");
   const [error, setError] = useState(null);
-  const [queryCount, setQueryCount] = useState({"posts": 0, "research": 0, "accounts": 0});
+  const [queryCount, setQueryCount] = useState({"posts": 0, "accounts": 0});
 
 
 
@@ -65,6 +63,14 @@ const ExplorePage = ({ params }) => {
     
     if(!searchLoading)
     {
+      if(postsEndReached&&current=="posts")
+      {
+        return;
+      }
+      else if(accountEndReached && current==="accounts")
+      {
+        return;
+      }
       const counts = await exploreSearchCount(q);
 
       if(counts){
@@ -85,7 +91,6 @@ const ExplorePage = ({ params }) => {
 
   useEffect(()=> {
     const q = decodeURI(query);
-
     exploreSearchCount(q)
       .then((counts)=> {
         if(counts){
@@ -165,72 +170,6 @@ const ExplorePage = ({ params }) => {
     )
   }
 
-  const renderResearch = () => {
-
-    return (
-      <InfiniteScroll
-        getScrollParent={()=>vref.current}
-        element={VStack}
-        style={{scrollbarWidth: "none"}}
-        pageStart={0}
-        initialLoad
-        hasMore={!researchEndReached}
-        className="bg-transparent"
-        width="100%"
-        loadMore={fetchMore}
-        data={exploreResearchPapers}
-        loader={
-          <HStack
-            width="100%"
-            padding={"2%"}
-            paddingBottom={"10%"}
-          >
-            <Spacer/>
-            <Spinner size="md" color="default" />
-            <Spacer/>
-          </HStack>
-        }
-        threshold={10000}
-        useWindow={false}
-      >
-
-        {
-          exploreResearchPapers &&
-          exploreResearchPapers.map((paper)=> {
-            return <Stack direction={"column"} className="w-[500px] h-full my-5 shadow-sm"><ResearchPaperCard paper={paper}/></Stack>
-          })
-        }
-
-        {
-          error
-          ?
-            <>
-              <Alert width={"fit-content"} className="rounded-md" status="error">
-                <AlertIcon />
-                {error}
-                <Spacer />
-              </Alert>
-
-              <Button 
-                variant="bordered"
-                color="default"
-                size="sm"
-                endContent={<AiOutlineRedo size={20} />}
-                onClick={()=>{
-                  setEnd(false);
-                  setError(null);
-                }}
-              >
-                retry
-              </Button>
-            </>
-
-          : null
-        }
-      </InfiniteScroll>
-    )
-
-  }
 
   const renderAccounts = () => {
 
@@ -307,9 +246,6 @@ const ExplorePage = ({ params }) => {
       case "posts":
         return renderPosts();
 
-      case "research":
-        return renderResearch();
-
       case "accounts":
         return renderAccounts();
 
@@ -348,12 +284,6 @@ const ExplorePage = ({ params }) => {
               </div>
             } key="posts" />
 
-            <Tab title={
-              <div className="flex items-center space-x-2">
-                <span>Research</span>
-                <Chip variant="bordered">{format.toHumanString(queryCount.research)}</Chip>
-              </div>
-            } key="research" />
 
             <Tab title={
               <div className="flex items-center space-x-2">

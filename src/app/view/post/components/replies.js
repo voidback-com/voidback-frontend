@@ -80,7 +80,7 @@ export const Replies = ({parent_post_id}) => {
     return replies.map((reply, i)=> {
       return (
         <VStack key={i} height={"fit-content"} width={"100%"} spacing={0} marginTop={10}>
-          <PostCard post={reply} isInFeed={false}/>
+          <PostCard showContent post={reply} isInFeed={false}/>
         </VStack>
         )
     })

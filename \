@@ -10,7 +10,6 @@ import { FaStarOfLife } from "@react-icons/all-files/fa/FaStarOfLife";
 import Link from "next/link";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { useState, useContext, useEffect } from "react";
-import { AuthContext } from "@/app/providers/AuthProvider";
 
 
 
@@ -65,14 +64,15 @@ export const PostCard = ({showContent, post, impressions, post_replies, isInFeed
   const [membership, setMembership] = useState(false);
 
 
-  const { getMembership, joinEdgeRoom } = useContext(LeftFeedContext);
-  const { account } = useContext(AuthContext);
+  const { getMembership } = useContext(LeftFeedContext);
 
 
+  const handleJoin = () => {
+  }
 
 
   const fetchMembership = async () => {
-    if(!post || loading || membership) return;
+    if(!post || loading) return;
 
     setLoading(true);
 
@@ -89,27 +89,11 @@ export const PostCard = ({showContent, post, impressions, post_replies, isInFeed
   }
 
 
-  const handleJoin = async () => {
-    const response = await joinEdgeRoom({
-      account: account.id,
-      permissions: post.room.config.default_member_permissions,
-      room: post.room.id
-    });
-
-    if(response.status===200)
-    {
-      await fetchMembership();
-    }
-  }
-
-
-
   useEffect(()=> {
-    if(post && !loading && !membership)
-      fetchMembership();
+    fetchMembership();
   }, [!membership])
 
-
+  const router = useRouter();
 
 
   if(post.from_mobile)
@@ -122,7 +106,7 @@ export const PostCard = ({showContent, post, impressions, post_replies, isInFeed
         >
 
           <CardHeader className="flex flex-col">
-          <HStack className="w-full flex flex-row justify-between">
+          <HStack className="w-full">
           
               {post.room &&
                <Link href={`/rooms/${post.room.name}`} className="h-fit w-full">
@@ -146,7 +130,7 @@ export const PostCard = ({showContent, post, impressions, post_replies, isInFeed
               {
                 !membership && !loading
             ?
-              <Button size="sm" variant="bordered" color="default" className="rounded-full border-1" onPress={()=>handleJoin()}>
+              <Button size="sm" variant="solid" color="primary" className="rounded-full" onPress={handleJoin}>
                 join
               </Button>
             :

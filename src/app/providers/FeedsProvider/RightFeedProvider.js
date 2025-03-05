@@ -26,11 +26,9 @@ const RightFeedContextProvider = ({children}) => {
 
   const [explorePosts, setExplorePosts] = useState(null);
   const [exploreAccounts, setExploreAccounts] = useState(null);
-  const [exploreResearchPapers, setExploreResearchPapers] = useState(null);
 
 
   const [postsEndReached, setPostsEndReached] = useState(false);
-  const [researchEndReached, setResearchEndReached] = useState(false);
   const [accountEndReached, setAccountEndReached] = useState(false);
 
 
@@ -187,6 +185,18 @@ const RightFeedContextProvider = ({children}) => {
   }
   
   const exploreSearch = async (query, category) => {
+
+
+    if(category==="posts" && postsEndReached)
+    {
+      return;
+    }
+
+    else if(category==="accounts" && accountEndReached)
+    {
+      return;
+    }
+
     setSearchLoading(true);
 
     let skip = 0;
@@ -202,14 +212,6 @@ const RightFeedContextProvider = ({children}) => {
           }
           break;
 
-        case "research":
-          if(exploreResearchPapers&&exploreResearchPapers.length)
-          {
-            skip = exploreResearchPapers.length+1
-            limit = skip+5
-          }
-          break;
-
         case "accounts":
          if(exploreAccounts&&exploreAccounts.length)
           {
@@ -217,8 +219,9 @@ const RightFeedContextProvider = ({children}) => {
             limit = skip+5
           }
           break;
-        
       }
+
+
 
     const response = await fetch(API_URL+`exploreSearch?query=${query}&skip=${skip}&limit=${limit}&category=${category}`, {
       method: "GET"
@@ -245,19 +248,6 @@ const RightFeedContextProvider = ({children}) => {
 
           break;
 
-        case "research":
-          if(skip)
-          {
-            setExploreResearchPapers(p=>[...p, ...data]);
-          }
-          else{
-            setExploreResearchPapers(data);
-          }
-
-          if(!data.length)
-            setResearchEndReached(true);
-
-          break;
 
         case "accounts":
            if(skip)
@@ -297,9 +287,7 @@ const RightFeedContextProvider = ({children}) => {
 
     explorePosts,
     exploreAccounts,
-    exploreResearchPapers,
     postsEndReached,
-    researchEndReached,
     accountEndReached,
 
     topSymbols,

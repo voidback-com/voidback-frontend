@@ -14,6 +14,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { SkewLoader } from "react-spinners";
 import AccountCard from "./accountCard";
 import { MdVerified } from "react-icons/md";
+import { PostCard } from "@/app/home/components/postCard";
 
 
 
@@ -175,50 +176,12 @@ export const MyPosts = ({account}) => {
           { 
             posts.length ?
             posts.map((post)=> {
-              return (
-                <Card
-                  className="shadow-none rounded-none w-[500px] min-w-[350px] bg-background"
-                  style={{borderBottomWidth: 1}}
-                  key={post.id}
-                >
-                  <CardHeader>
-                  {
-                    post
-                    ?
-                    <PostTopBar post={post} />
-                    : null
-                  }
-                  </CardHeader>
+                return (
+                  <HStack className="w-full my-5">
+                    <PostCard post={post} />
+                  </HStack>
+                )
 
-                  <CardBody className="w-full">
-                  {
-                    post && post.image || post.video
-                    ?
-                      <MediaSection video={post.video} image={post.image} />
-                    :
-                    null
-                  }
-
-                  {
-                    post
-                      &&
-                      <Touchable className="place-self-center" onClick={()=>router.push(`/view/post/${post.id}`)}>
-                      <ReadonlyEditor content={post.content} />
-                    </Touchable>
-                  }
-
-                  </CardBody>
-
-
-                  <CardFooter>
-                    {post ?
-                      <PostBottomBar post={post} />
-                      : null
-                    }
-                  </CardFooter>
-
-                </Card>
-              )
             })
 
             : <Text fontSize={"small"}>not posts found.</Text>
@@ -239,12 +202,15 @@ export const MyReplies = ({account}) => {
   const [posts,setPosts] = useState([]);
   const [endReached, setEndReached] = useState(false);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
 
   const toast = useToast();
 
 
   const fetchPosts = async () => {
+
+    setLoading(true);
 
     const response = await getAccountPosts(account.username, page, "child");
 
@@ -271,6 +237,8 @@ export const MyReplies = ({account}) => {
         duration: 4000
       })
     }
+
+    setLoading(true);
   }
   
   const vref = useRef();
@@ -291,6 +259,7 @@ export const MyReplies = ({account}) => {
         padding={10}
         paddingBottom={"20%"}
         style={{scrollbarWidth: "none"}}
+        className="flex flex-col gap-10"
       >
         <InfiniteScroll
           getScrollParent={()=>vref.current}
@@ -318,52 +287,13 @@ export const MyReplies = ({account}) => {
             posts.length ?
             posts.map((post)=> {
               return (
-                <Card
-                  className="shadow-none rounded-none w-[500px] min-w-[350px] bg-background"
-                  style={{borderBottomWidth: 1}}
-                  key={post.id}
-                >
-                  <CardHeader>
-                  {
-                    post
-                    ?
-                    <PostTopBar post={post} />
-                    : null
-                  }
-                  </CardHeader>
-
-                  <CardBody className="w-full">
-                  {
-                    post && post.image || post.video
-                    ?
-                      <MediaSection video={post.video} image={post.image} />
-                    :
-                    null
-                  }
-
-                  {
-                    post
-                      &&
-                      <Touchable className="place-self-center" onClick={()=>router.push(`/view/post/${post.id}`)}>
-                      <ReadonlyEditor content={post.content} />
-                    </Touchable>
-                  }
-
-                  </CardBody>
-
-
-                  <CardFooter>
-                    {post ?
-                      <PostBottomBar post={post} />
-                      : null
-                    }
-                  </CardFooter>
-
-                </Card>
+                  <HStack className="w-full my-5">
+                <PostCard post={post} />
+                </HStack>
               )
             })
 
-            : <Text fontSize={"small"}>not posts found.</Text>
+            : !loading && <Text fontSize={"small"}>not posts found.</Text>
           }
         </InfiniteScroll>
       </VStack>
@@ -462,6 +392,7 @@ export const MyLikes = ({account}) => {
         padding={10}
         paddingBottom={"20%"}
         style={{scrollbarWidth: "none"}}
+
       >
         <InfiniteScroll
           getScrollParent={()=>vref.current}
@@ -489,49 +420,10 @@ export const MyLikes = ({account}) => {
             posts ?
             posts.map((post)=> {
               return (
-                <Card
-                  className="shadow-none border-0 rounded-none w-[500px] min-w-[350px] bg-background"
-                  style={{borderBottomWidth: 1}}
-                  key={post.id}
-                >
-                  <CardHeader>
-                  {
-                    post
-                    ?
-                    <PostTopBar post={post} />
-                    : null
-                  }
-                  </CardHeader>
-
-                  <CardBody>
-                  {
-                    post
-                    ?
-                      <MediaSection video={post.video} image={post.image} />
-                    :
-                    null
-                  }
-
-                  {
-                    post
-                      &&
-                      <Touchable onClick={()=>router.push(`/view/post/${post.id}`)}>
-                      <ReadonlyEditor content={post.content} />
-                    </Touchable>
-                  }
-
-                  </CardBody>
-
-
-                  <CardFooter>
-                    {post ?
-                      <PostBottomBar post={post} />
-                      : null
-                    }
-                  </CardFooter>
-
-                </Card>
-              )
+                  <HStack className="w-full my-5">
+                <PostCard post={post} />
+                </HStack>
+             )
             })
 
             : 

@@ -14,6 +14,7 @@ import {
   SkeletonText,
   Link,
   CloseButton,
+  Text
 } from "@chakra-ui/react";
 import PostOption from "@/app/editor/components/toolbarComponents/PostOption";
 import ImageOption from "@/app/editor/components/toolbarComponents/ImageOption";
@@ -24,8 +25,9 @@ import { EditorContext } from "@/app/providers/FeedsProvider/PostEditorProvider"
 import { AnalyticsContext } from "@/app/providers/AnalyticsProvider";
 import { UserCard } from "@/app/profile/components/components";
 import { PostBottomBar, PostTopBar } from "./postbars";
-import { Card, CardBody, CardFooter, CardHeader, Divider } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, CardHeader, Divider, Chip } from "@nextui-org/react";
 import { renderNodes } from "@/app/editor/components/mobileEditorRenderer";
+import { FaStarOfLife } from "@react-icons/all-files/fa/FaStarOfLife";
 
 
 
@@ -95,10 +97,49 @@ export const ParentPostCard = ({post}) => {
       }
       <CardHeader>
 
-        <PostTopBar post={post} />
+        <HStack className="w-full flex flex-row">
+        
+            {post && post.room &&
+             <Link href={`/rooms/${post.room.name}`} className="h-fit w-fit">
+                <Chip
+                  className="border-1 bg-background rounded-md "
+                >
+                <HStack className="w-full">
+                  <FaStarOfLife size={12} />
+                  <Text
+                    className="font-semibold text-sm"
+                  >
+                    {post.room.name}
+                  </Text>
+                </HStack>
+              </Chip>
+            </Link>
+            }
+
+          </HStack>
+
+
     </CardHeader>
 
+      <PostTopBar post={post} />
+
       <CardBody>
+
+        {
+            post.title
+            &&
+            <Text
+            fontWeight={600}
+            fontSize={20}
+            className={"w-[100%] pb-5"}
+            style={{textAlign: "center"}}
+            fontFamily="sans-serif"
+            >
+              {post.title}
+            </Text>
+          }
+
+
         <MediaSection video={post.video} image={post.image} />
 
         <div className="w-full px-10">
@@ -118,7 +159,7 @@ export const ParentPostCard = ({post}) => {
 
 
 
-export const ReplyEditor = ({parent_post_id}) => {
+export const ReplyEditor = ({parent_post_id, parent_post_room}) => {
 
   const [content, setContent] = useState(null);
   const [attributes, setAttributes] = useState(null);
@@ -269,7 +310,7 @@ export const ReplyEditor = ({parent_post_id}) => {
 
               <Spacer/>
 
-              <PostOption video={video} image={image} content={content} attributes={attributes} text={text} is_private={false} parent_post={parent_post_id} />
+              <PostOption room={parent_post_room} video={video} image={image} content={content} attributes={attributes} text={text} is_private={false} parent_post={parent_post_id} isReply />
             </div>
 
           </div>
