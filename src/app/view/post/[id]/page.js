@@ -241,7 +241,7 @@ const ViewPost = ({ params }) => {
 
 
             {post ?
-              <ReplyEditor parent_post_room={post.room.name} parent_post_id={post.id} />
+              <ReplyEditor parent_post_room={post.room?post.room.name:null} parent_post_id={post.id} />
               :
               null
             }
