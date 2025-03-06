@@ -105,7 +105,6 @@ const ViewPost = ({ params }) => {
       direction={"row"}
       padding={0}
     >
-      <LeftSection currentSelection={"/home"} />
       <VStack
         height={"100%"}
         width="100%"
@@ -142,6 +141,7 @@ const ViewPost = ({ params }) => {
               width="100%"
               backgroundColor={"default"}
               shadow={"none"}
+              className="border-1"
             >
 
               <CardHeader>

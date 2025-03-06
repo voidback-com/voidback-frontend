@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { Skeleton } from "@nextui-org/react";
+import { VStack } from "@chakra-ui/react";
 
 
 
@@ -17,7 +18,7 @@ const Home = () => {
 
 
   useEffect(()=> {
-    if(!loading) return router.replace("/home/foryou");
+    if(!loading) return router.replace("/rooms");
   }, [account, loading])
 
   return (

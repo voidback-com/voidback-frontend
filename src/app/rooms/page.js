@@ -111,7 +111,7 @@ const Page = () => {
       <Topbar setPosts={setPosts} showNavBack />
 
       <HStack className="w-full h-full">
-        <Sidebar />
+          <Sidebar />
 
         <HStack className="w-full h-full">
           <InfiniteScroll

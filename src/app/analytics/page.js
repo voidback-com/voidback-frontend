@@ -137,7 +137,7 @@ const Analytics = () => {
         return <UsersActivity />;
 
       case "home":
-        return router.replace("/home");
+        return router.replace("/rooms");
 
       case "positiveEvents":
           return <PositiveEvents />;

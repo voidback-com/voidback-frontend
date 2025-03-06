@@ -328,17 +328,6 @@ const AuthContextProvider = ({ children }) => {
   }
 
 
-  const getAccountRecommendations = async () => {
-    if(!isAuthenticated()) return;
-
-    return await fetch(API_URL+`account/recommendations`, {
-      method: "GET",
-      headers: toAuthHeaders({})
-    }).catch((err)=> {
-      })
-
-  }
-
 
   const getAccountMutuals = async (username) => {
     if(!isAuthenticated()) return;
@@ -435,7 +424,6 @@ const AuthContextProvider = ({ children }) => {
 
     getUsernameFollowingCount,
 
-    getAccountRecommendations,
     getAccountMutuals,
 
     follow,

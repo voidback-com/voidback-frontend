@@ -24,7 +24,6 @@ import { Home as HomeIcon, Settings as SettingsIcon, Moon as MoonIcon, Sun as Su
 import { BsGraphUp } from "@react-icons/all-files/bs/BsGraphUp";
 import { Search } from '@geist-ui/icons';
 import { SidebarContext } from "@/app/providers/FeedsProvider/SidebarProvider";
-import AccountRecommendations from "@/app/globalComponents/AccountRecommendations";
 import { FaStarOfLife } from "@react-icons/all-files/fa/FaStarOfLife";
 import { NavBack } from "@/app/globalComponents/buttonFunctions";
 import { FaBrain } from "@react-icons/all-files/fa/FaBrain";
@@ -53,14 +52,9 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
   return (
     <VStack
-      height="100vh"
       borderRightWidth={0}
       alignItems={"center"}
       overflow={"hidden"}
-      width="100%"
-      maxW={"25vw"}
-      paddingRight={10}
-      paddingLeft={5}
       style={{scrollbarWidth: "none"}}
     >
       {
@@ -95,8 +89,8 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
             return router.push(e);
           }
 
-          else if(e==="/home")
-            return router.push('/home/foryou');
+          else if(e==="/rooms")
+            return router.push('/rooms');
         }}
       >
 
@@ -108,7 +102,7 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
             key={"/analytics"}
             className="flex flex-row justify-start"
             title={
-              <HStack spacing={5}>
+              <HStack spacing={5} className="w-fit">
                 <Activity size={25} />
                 <Show breakpoint="(min-width: 1000px)">
                   <Text fontSize={"medium"} fontWeight={600}>Analytics</Text>
@@ -123,10 +117,10 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
 
         <Tab
-          key={"/home"}
-          className="flex flex-row justify-start"
+          key={"/rooms"}
+          className="flex flex-row justify-start w-full"
           title={
-            <HStack spacing={5}>
+            <HStack spacing={5} className="w-fit">
               <HomeIcon size={25} />
               <Show breakpoint="(min-width: 1000px)">
                 <Text fontSize={"medium"} fontWeight={600}>Home</Text>
@@ -150,20 +144,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
                 </Chip>
               </Show>
           </HStack>
-          }
-        />
-
-        <Tab
-          key={"/rooms"}
-          className="flex flex-row justify-start"
-          title={
-            <HStack spacing={5}>
-              <FaStarOfLife size={25} />
-
-              <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>Edge Rooms</Text>
-              </Show>
-            </HStack>
           }
         />
 
@@ -231,21 +211,6 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
           }
         />
 
-      <Tab
-        key={"editor"}
-
-        className="flex flex-row justify-start"
-          title={
-            <HStack width="100%" spacing={5}>
-              <Feather size={25}  />
-              <Show breakpoint="(min-width: 1000px)">
-                <Text fontSize={"medium"} fontWeight={600}>New post</Text>
-                <Spacer/>
-              </Show>
-            </HStack>
-          }
-      />
-
 
       <Tab
         key={"theme"}
@@ -281,12 +246,7 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
       </Tabs>
 
-      <VoidBackEditor isOpen={editor.isOpen} onOpen={editor.onOpen} onClose={editor.onClose} />
 
-      <AccountRecommendations />
-
-      <Spacer />
-      <Spacer />
     </VStack>
   )
 }

@@ -15,7 +15,7 @@ import { CheckboxGroup, Checkbox } from "@nextui-org/react";
 export const RoomMemberPermissions = ({setMemberPermission, memberPermission}) => {
 
 
-  const [permissions, setPermissions] = useState({
+  const permissions = {
     is_moderator: false,
     can_delete_posts: false,
     can_remove_members: false,
@@ -27,7 +27,7 @@ export const RoomMemberPermissions = ({setMemberPermission, memberPermission}) =
     can_reply: true,
     can_post_image: false,
     can_add_members: true
-  });
+  };
 
   const [enabled, setEnabled] = useState(["can_post", "can_like", "can_dislike", "can_reply", "can_add_members"]);
 

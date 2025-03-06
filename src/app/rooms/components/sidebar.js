@@ -1,5 +1,5 @@
 'use client'
-import { VStack, Text, HStack, Show, Wrap } from "@chakra-ui/react";
+import { VStack, Text, HStack, Show, Wrap, Divider } from "@chakra-ui/react";
 import { 
   useState,
   useContext,
@@ -16,6 +16,7 @@ import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider"
 import VoidBackEditor from "@/app/editor/editorDrawer";
 import Markdown  from "react-markdown";
 import { AuthContext } from "@/app/providers/AuthProvider";
+import { LeftSection } from "@/app/home/components/Sections";
 
 
 
@@ -23,172 +24,6 @@ import { AuthContext } from "@/app/providers/AuthProvider";
 
 
 
-
-export const Section = ({title, items, defaultSelected, loading}) => {
-
-
-  const router = useRouter();
-
-  return (
-    <VStack
-      className="h-fit w-full border-b-1 pb-5 flex flex-row justify-center"
-    >
-
-      <Text className="py-4 font-semibold" fontFamily={"Roboto"}>{title}</Text>
-
-      {loading && <Spinner className="my-2" color="default" size="md" />}
-
-      <Tabs
-        selectedKey={defaultSelected ? defaultSelected : ""}
-        variant="light"
-        className="h-full"
-        isVertical
-        onSelectionChange={(e)=> {
-          // if(e=="DMs")
-            // return router.push("/dm")
-          if(e=="Home")
-            return router.push("/home")
-        }}
-      >
-
-
-        {items.map((i)=> {
-          return (
-            <Tab
-              key={i.name}
-              className="flex flex-row justify-start"
-              title={
-                i.onClick
-                ?
-                  <Touchable onPress={i.onClick}>
-                    <HStack spacing={5}>
-                      <Show breakpoint="(min-width: 1000px)">
-                      {i.icon}
-                      </Show>
-
-
-                        <Text fontSize={"medium"} fontWeight={600}  {...i.NameProps}>{i.name}</Text>
-
-                    </HStack>
-                  </Touchable>
-                :
-                  <HStack spacing={5}>
-                    <Show breakpoint="(min-width: 1000px)">
-                    {i.icon}
-                    </Show>
-
-                      <Text fontSize={"medium"} fontWeight={600}  {...i.NameProps}>{i.name}</Text>
-
-                  </HStack>
-                
-              }
-            />
-          )
-        })}
-      </Tabs>
-    </VStack>
-  )
-}
-
-
-export const NavigationSection = () => {
-
-
-  return (
-    <Section title={""} items={[
-      {"name": "Rooms", "icon": <FaStarOfLife size={23} />},
-      {"name": "Home", "icon": <Home />},
-    ]} 
-    defaultSelected={"Rooms"} 
-    />
-  )
-
-
-}
-
-
-export const MyRoomsSection = () => {
-
-  const router = useRouter();
-
-  const [loading, setLoading] = useState(false);
-  const [rooms, setRooms] = useState([]);
-  const [end, setEnd] = useState(false);
-  const [page, setPage] = useState(1);
-
-
-  const { getMyRooms } = useContext(LeftFeedContext);
-
-
-  const fetchRooms = async () => {
-
-    if(loading || end) return;
-
-    setLoading(true);
-
-    const response = await getMyRooms(page);
-
-    const data = await response.json();
-
-    if(response.status===200)
-    {
-
-      if(data.next)
-        setPage(page+1);
-      else
-      {
-        setEnd(true);
-      }
-
-      if(data.results && data.results.length)
-      {
-        data.results.map((x)=> {
-          const r = {
-            NameProps: {
-              fontFamily: "monospace",
-              fontSize: 15
-            },
-            name: 'r/'+x.name, 
-            icon: <FaStarOfLife size={24} />, 
-            onClick: ()=>router.push(`/rooms/${x.name}`), 
-            room: x
-          };
-
-          setRooms(p=>p.filter((i)=> i.name !== r.name));
-          setRooms(p=>[...p, r]);
-        })
-      }
-
-      else{
-        setEnd(true);
-      }
-    }
-    else{
-      setEnd(true);
-    }
-
-    setLoading(false);
-  }
-
-
-  useEffect(()=> {
-    if(!end && !loading)
-    {
-      fetchRooms();
-    }
-  }, [!end, !loading])
-
-
-
-  return (
-    <>
-    <Section title={"My Rooms"} items={rooms} loading={loading} />
-
-    </>
-  )
-
-
-}
 
 
 
@@ -199,18 +34,13 @@ export const Sidebar = () => {
   return (
     <VStack
       height={"100vh"}
-      width="20%"
+      width="30%"
       bg={"default"}
-      className="border-1 max-w-[200px] min-w-[150px]"
+      className="border-1"
       style={{overflowY: "scroll", borderTopWidth: 0}}
-      overflow={"hidden"}
       spacing={0}
     >
-
-      <NavigationSection />
-
-      <MyRoomsSection />
-      
+      <LeftSection currentSelection={"/rooms"} />
     </VStack>
   )
 }
@@ -224,15 +54,15 @@ export const RoomViewSidebarLeft = ({room}) => {
   return (
     <VStack
       height={"100vh"}
-      width="20%"
+      width="30%"
       bg={"default"}
-      className="border-1 max-w-[200px] min-w-[150px]"
-      style={{overflowY: "scroll", borderTopWidth: 0}}
-      overflow={"hidden"}
+      className="border-1"
+      style={{borderTopWidth: 0, overflowY: "scroll"}}
       spacing={0}
     >
 
-      <NavigationSection />
+      <LeftSection currentSelection={"/rooms"} />
+      <Divider />
 
       <Button className="rounded-none w-full font-semibold" size="lg" variant="light" onPress={editor.onOpen} startContent={<Feather/>}>
         <Show breakpoint="(min-width: 1000px)">
@@ -258,11 +88,12 @@ export const RoomViewSidebarRight = ({room}) => {
   const isModerator = () => {
     if(account)
     {
-      if(account.username!==room.config.admin.username)
+      if(account.username===room.config.admin.username)
       {
         return true;
       }
       else{
+        // check room membership if user is a mod
         return false;
       }
     }
@@ -277,6 +108,7 @@ export const RoomViewSidebarRight = ({room}) => {
 
 
   const hdate = require("human-date");
+
 
   return (
     <VStack
@@ -377,14 +209,15 @@ export const RoomViewSidebarRight = ({room}) => {
 
 export const RoomsSidebarRight = () => {
 
-  const { getTopRankingRooms } = useContext(LeftFeedContext);
+  const { getTopRankingRooms, getMyRooms } = useContext(LeftFeedContext);
 
   const [rooms, setRooms] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [end, setEnd] = useState(false);
+  const [page, setPage] = useState(1);
 
   
   const getTopRooms = async () => {
-    console.log("fetching")
     setLoading(true);
 
     const response = await getTopRankingRooms();
@@ -394,26 +227,76 @@ export const RoomsSidebarRight = () => {
 
     if(response.status===200)
     {
-      setRooms(data);
+      if(rooms && rooms.length)
+        setRooms(p=>[...p, ...data]);
+      else
+        setRooms(data);
+    }
+
+    setLoading(false);
+  }
+
+  
+ const fetchMyRooms = async () => {
+
+    if(loading || end) return;
+
+    setLoading(true);
+
+    const response = await getMyRooms(page);
+
+    const data = await response.json();
+
+    if(response.status===200)
+    {
+
+      if(data.next)
+        setPage(page+1);
+      else
+      {
+        setEnd(true);
+      }
+
+      if(data.results && data.results.length)
+      {
+        if(rooms && rooms.length)
+          setRooms(p=>[...p, ...data.results]);
+        setRooms(data.results);
+      }
+
+      else{
+        setEnd(true);
+      }
+    }
+    else{
+      setEnd(true);
     }
 
     setLoading(false);
   }
 
 
+
   useEffect(()=> {
     if(!rooms)
     {
-      getTopRooms();
+      fetchMyRooms();
     }
   }, [!rooms])
 
 
+  useEffect(()=> {
+    if(end)
+    {
+      getTopRooms();
+    }
+  }, [end])
 
   const hdate = require("human-date");
 
   const router = useRouter();
 
+  const human = require("human-readable-numbers");
 
   return (
     <VStack
@@ -431,34 +314,37 @@ export const RoomsSidebarRight = () => {
               className="w-full flex flex-row justify-center border-b-1"
             >
               <Touchable
-                onPress={()=>router.push(`/rooms/${x.room.name}`)}
+                onPress={()=>x['room']?router.push(`/rooms/${x.room.name}`):router.push(`/rooms/${x.name}`)}
               >
                 <Text
-                  className="p-3 w-full"
+                  className={"p-3 w-full"+` ${!x['room'] && "text-green-500"}`}
                   fontFamily={"monospace"}
                   fontWeight={600}
                   textAlign="center"
                 >
-                  r/{x.room.name}
+                  r/{x['room'] ? x.room.name : x.name}
                 </Text>
               </Touchable>
 
             </HStack>
 
-            <HStack
-              className="flex flex-row justify-center border-b-1 p-2"
-            >
-              <Text fontFamily={"sans-serif"} fontSize={15} fontWeight={600}>Members</Text>
-              <Text
-                fontFamily={"monospace"}
-                fontWeight={600}
-                textAlign="center"
+            { x['room'] &&
+              <HStack
+                className="flex flex-row justify-center border-b-1 p-2"
               >
-                {x.members}
-              </Text>
-            </HStack>
+                <Text fontFamily={"sans-serif"} fontSize={15} fontWeight={600}>Members</Text>
+                <Text
+                  fontFamily={"monospace"}
+                  fontWeight={600}
+                  textAlign="center"
+                >
+                {human.toHumanString(x.members)}
+                </Text>
+              </HStack>
+            }
 
 
+            { x['room'] &&
             <HStack
               className="flex flex-row justify-center border-b-1 p-2"
             >
@@ -468,9 +354,10 @@ export const RoomsSidebarRight = () => {
                 fontWeight={600}
                 textAlign="center"
               >
-                {x.room.rank}
+                {human.toHumanString(x.room.rank)}
               </Text>
             </HStack>
+            }
 
 
             <HStack
@@ -483,7 +370,7 @@ export const RoomsSidebarRight = () => {
                 textAlign="center"
                 fontSize={12}
               >
-                {hdate.prettyPrint(x.room.created_at)}
+                {x['room'] ? hdate.prettyPrint(x.room.created_at) : hdate.prettyPrint(x.created_at)}
               </Text>
             </HStack>
 
@@ -493,9 +380,19 @@ export const RoomsSidebarRight = () => {
             >
 
               <Wrap className="h-full w-full p-5">
-                {x.room.categories.map((category)=> {
+                {
+                x['room'] ? 
+
+                x.room.categories.map((category)=> {
                   return <Chip size="sm" className="p-4" variant="bordered">{category.category}</Chip>
-                })}
+                    })
+                  :
+
+                x.categories.map((category)=> {
+                  return <Chip size="sm" className="p-4" variant="bordered">{category.category}</Chip>
+
+                })
+                }
               </Wrap>
             </HStack>
 

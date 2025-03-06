@@ -110,6 +110,27 @@ export const PostCard = ({showContent, post, impressions, post_replies, isInFeed
   }, [!membership])
 
 
+  const checkIsMember = () => {
+
+    if(!account) return 1;
+
+    if(!membership && !loading && account)
+    {
+      if(account.username===post.room.config.admin.username)
+        return true;
+
+      else
+        return false;
+    }
+    else if(membership)
+    {
+      return true;
+    }
+
+    else{
+      return false;
+    }
+  }
 
 
   if(post.from_mobile)
@@ -144,7 +165,8 @@ export const PostCard = ({showContent, post, impressions, post_replies, isInFeed
 
 
               {
-                !membership && !loading && account
+
+              !checkIsMember()
             ?
               <Button size="sm" variant="bordered" color="default" className="rounded-full border-1" onPress={()=>handleJoin()}>
                 join

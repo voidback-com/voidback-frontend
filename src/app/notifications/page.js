@@ -9,6 +9,7 @@ import { Button, Spinner } from "@nextui-org/react";
 import { Delete } from "@geist-ui/icons";
 import { useRouter } from "next/navigation";
 import { isAuthenticated } from "../configs/api";
+import { NavBack } from "../globalComponents/buttonFunctions";
 
 
 const NotificationsPage = () => {
@@ -121,7 +122,6 @@ const NotificationsPage = () => {
         height={"100vh"}
         width={"100vw"}
       >
-        <LeftSection showNavBack currentSelection={"/notifications"} />
 
         <VStack
           width={"100%"}
@@ -129,10 +129,14 @@ const NotificationsPage = () => {
         >
           <HStack
             paddingTop={10}
+            className="w-full"
           >
+            <NavBack />
+            <Spacer />
             <Button onPress={clearAll} variant="bordered" size="sm" endContent={<Delete size={20} color="default" />}>
               clear all
             </Button>
+            <Spacer />
           </HStack>
 
           <Spacer />

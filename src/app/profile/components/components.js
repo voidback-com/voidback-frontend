@@ -178,7 +178,7 @@ export const MyPosts = ({account}) => {
             posts.map((post)=> {
                 return (
                   <HStack className="w-full my-5">
-                    <PostCard post={post} />
+                      <PostCard post={post} />
                   </HStack>
                 )
 
@@ -244,6 +244,7 @@ export const MyReplies = ({account}) => {
   const vref = useRef();
   const router = useRouter();
 
+
   return (
     <VStack
       height={"100%"}
@@ -288,7 +289,9 @@ export const MyReplies = ({account}) => {
             posts.map((post)=> {
               return (
                   <HStack className="w-full my-5">
-                <PostCard post={post} />
+                    <HStack className="w-[500px]">
+                      <PostCard showContent post={post} />
+                    </HStack>
                 </HStack>
               )
             })
@@ -421,7 +424,7 @@ export const MyLikes = ({account}) => {
             posts.map((post)=> {
               return (
                   <HStack className="w-full my-5">
-                <PostCard post={post} />
+                <PostCard showContent post={post} />
                 </HStack>
              )
             })

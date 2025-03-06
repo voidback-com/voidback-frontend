@@ -6,8 +6,8 @@ import {
   useEffect,
   useRef
 } from "react";
-import { Plus, Search, Trash, X } from "@geist-ui/icons";
-import { Autocomplete, Spinner, Button, useDisclosure, Modal, ModalContent, ModalBody, ModalHeader, ModalFooter, Input, Textarea, Checkbox, AutocompleteItem } from "@nextui-org/react";
+import { LogIn, Plus, Search, Trash, X } from "@geist-ui/icons";
+import { Autocomplete, Spinner, Button, useDisclosure, Modal, ModalContent, ModalBody, ModalHeader, ModalFooter, Input, Textarea, Checkbox, AutocompleteItem, Avatar } from "@nextui-org/react";
 import { CategoryInput } from "@/app/globalComponents/CategoryInput";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { RoomMemberPermissions } from "@/app/globalComponents/RoomMemberPermissions";
@@ -145,7 +145,30 @@ export const Topbar = ({ showNavBack, setPosts }) => {
 
     setLoading(true);
 
-    const conf = {default_member_permissions: defaultMembersPermissions, isPublic: isPublic, admin: account.id};
+    let perms = defaultMembersPermissions;
+
+   const permissions = {
+    is_moderator: false,
+    can_delete_posts: false,
+    can_remove_members: false,
+    can_remove_moderators: false,
+    can_add_moderators: false,
+    can_post: true,
+    can_like: true,
+    can_dislike: true,
+    can_reply: true,
+    can_post_image: false,
+    can_add_members: true
+  };
+
+
+
+    if(JSON.stringify(perms)==="{}")
+    {
+      perms = permissions;
+    }
+
+    const conf = {default_member_permissions: perms, isPublic: isPublic, admin: account.id};
 
     const response = await createRoom(name, description, categories, conf);
 
@@ -195,11 +218,23 @@ export const Topbar = ({ showNavBack, setPosts }) => {
       spacing={0}
       padding={10}
     >
-      {
-        showNavBack
-          &&
-        <NavBack />
-      }
+
+      <Button
+        _hover={{opacity: "70%"}}
+        marginLeft={3}
+        onPress={()=>router.push("/profile")}
+        variant="unstyled"
+        size="md"
+      >
+        <Avatar 
+          size={"md"} 
+          radius="md"
+          src={account && account.avatar}
+          className="border-1"
+        />
+      </Button>
+
+
 
       <Spacer />
       <Autocomplete
@@ -261,6 +296,9 @@ export const Topbar = ({ showNavBack, setPosts }) => {
 
       <Spacer />
 
+      {
+        account
+          ?
       <Button
         className="w-fit p-0 border-1"
         size="sm"
@@ -270,6 +308,16 @@ export const Topbar = ({ showNavBack, setPosts }) => {
       >
         <Plus />
       </Button>
+      :
+        <Button 
+          size="sm"
+          onPress={()=>router.push("/auth/login")}
+          variant={"unstyled"}
+          _hover={{opacity: "70%"}}
+        >
+          <LogIn />
+        </Button>
+      }
 
 
       <Modal

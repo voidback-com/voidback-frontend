@@ -23,6 +23,7 @@ import { Touchable } from "../auth/components";
 import { InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { errorToReadable, isAuthenticated } from "../configs/api";
+import { NavBack } from "../globalComponents/buttonFunctions";
 
 
 
@@ -184,21 +185,23 @@ const SettingsPage = () => {
 
 
   return (
-    <HStack
+    <VStack
       className="w-[100vw] h-[100vh] bg-background"
       overflowX={"hidden"}
       overflowY={"hidden"}
     >
-      <LeftSection currentSelection={"/settings"} />
 
-      <Spacer/>
+      <HStack className="w-full p-10">
+        <NavBack />
+      </HStack>
+
 
       <VStack 
         height={"100%"} 
-        width={"50vw"} 
+        width={"100%"} 
       >
         <Spacer/>
-        <Accordion className="w-1/2 min-w-fit" variant="bordered">
+        <Accordion className="w-2/4 min-w-fit" variant="bordered">
 
           <AccordionItem className="h-fit" isDisabled={!isAuthenticated()} key="Change password" aria-label="change password" title="Change password">
             <HStack>
@@ -373,7 +376,7 @@ const SettingsPage = () => {
 
       <Spacer/>
       <Spacer/>
-   </HStack>
+   </VStack>
   )
 
 }
