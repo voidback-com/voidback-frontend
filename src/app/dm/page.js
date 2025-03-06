@@ -48,8 +48,6 @@ const Page = () => {
       padding={2}
       className="bg-background flex flex-row"
     >
-      <LeftSection currentSelection={"/dm"} />
-
       {
         selected
           ?

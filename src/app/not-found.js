@@ -8,7 +8,7 @@ export default async function NotFound() {
     <div className='bg-background'>
 
       <div className='self-start p-10'>
-        <NavBack home={true} />
+        <NavBack />
       </div>
 
       <div
