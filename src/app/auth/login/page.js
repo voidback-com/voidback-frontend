@@ -94,7 +94,7 @@ const Login = () => {
           duration: 5000
         })
 
-        return router.replace("/home/foryou");
+        return router.replace("/rooms");
       }
       else{
         setLoginError(await response.json());
@@ -133,7 +133,7 @@ const Login = () => {
 
   useEffect(()=> {
     if(account)
-      return router.replace("/home/foryou");
+      return router.replace("/rooms");
   }, [])
 
   
