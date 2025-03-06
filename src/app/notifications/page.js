@@ -32,7 +32,7 @@ const NotificationsPage = () => {
           isClosable: true,
           id: 2
         })
-      return router.replace("/home/foryou");
+      return router.replace("/rooms");
     }
   }, [])
 
