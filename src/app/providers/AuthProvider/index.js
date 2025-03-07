@@ -268,6 +268,16 @@ const AuthContextProvider = ({ children }) => {
 
   }
  
+ 
+  // people you follow and they followed back
+  const getFriends = async (username) => {
+    return await fetch(API_URL+`account/friends/${username}`, {
+      method: "GET"
+    }).catch((err)=> {
+      })
+
+  }
+ 
 
 
 
@@ -435,6 +445,7 @@ const AuthContextProvider = ({ children }) => {
     submitAccountReport,
 
     getAccountStatus,
+    getFriends,
 
     logoutUser
 

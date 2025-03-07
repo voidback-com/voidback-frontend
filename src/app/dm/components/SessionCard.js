@@ -243,6 +243,7 @@ export const SessionCard = ({message, setSessionCards}) => {
                 Delete
             </DropdownItem>
 
+              {/*
             <DropdownItem
               key="copy"
               description="Archive DM Session"
@@ -250,6 +251,7 @@ export const SessionCard = ({message, setSessionCards}) => {
             >
                 Archive
             </DropdownItem>
+              */}
           </DropdownSection>
         </DropdownMenu>
       </Dropdown>

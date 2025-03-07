@@ -131,17 +131,12 @@ export const LeftSection = ({currentSelection, showNavBack=false}) => {
 
         <Tab
           key={"/dm"}
-          isDisabled
-          popoverTarget="Hi"
           className="flex flex-row justify-start"
           title={
             <HStack spacing={5}>
               <MessageCircle size={25} />
               <Show breakpoint="(min-width: 1000px)">
                 <Text fontSize={"medium"} fontWeight={600}>DMs</Text>
-                <Chip size="sm">
-                  in-dev
-                </Chip>
               </Show>
           </HStack>
           }

@@ -32,7 +32,6 @@ export const MediaSection = ({video, image, setImage, edit_mode=false, toRight, 
                 src={image.source}
                 className="rounded-md w-[50%] h-fit"
                 alt="post-image"
-                contentFit="contain"
               />
             </HStack>
           </VStack>
@@ -46,9 +45,8 @@ export const MediaSection = ({video, image, setImage, edit_mode=false, toRight, 
             <Image 
               src={image.image}
               removeWrapper
-              className="rounded-md w-full h-fit"
+              className="object-contain rounded-md w-[80%]"
               alt="dm-image"
-              contentFit="cover"
               transition={1000}
             />
           </HStack>

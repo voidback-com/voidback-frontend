@@ -98,6 +98,7 @@ export const SessionEditor = ({sessionId, setMessages}) => {
           :
           null
         }
+
         <Textarea
           isDisabled={locked}
           className="max-w-full"

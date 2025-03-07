@@ -4,6 +4,7 @@ import { Circle, HStack, IconButton, Spacer, Text, VStack } from "@chakra-ui/rea
 import { Spinner } from "@nextui-org/react"
 import { UserCard } from "@/app/profile/components/components";
 import { SessionEditor } from "./dmEditor";
+import { useRouter } from "next/navigation";
 
 
 export const SessionScreenHeader = ({message}) => {
@@ -82,6 +83,8 @@ export const SessionScreenHeader = ({message}) => {
 
   const hdate = require("human-date");
 
+  const router = useRouter();
+
   return (
     <div className="w-full min-w-[400px] h-fit p-2 border-0 rounded-lg place-self-center flex flex-row border-b-1 rounded-none">
       <HStack className="flex flex-row justify-between w-full h-fit">
@@ -89,6 +92,8 @@ export const SessionScreenHeader = ({message}) => {
         account.username===message.session.initiator.username
         ?
           <UserCard 
+              isPressable
+              handlePress={()=>router.push(`/view/account/${message.session.friend.username}`)}
               username={message.session.friend.username} 
               fullName={message.session.friend.full_name}
               isActive={isActive} 
@@ -106,6 +111,9 @@ export const SessionScreenHeader = ({message}) => {
           />
         :
           <UserCard 
+
+              isPressable
+              handlePress={()=>router.push(`/view/account/${message.session.initiator.username}`)}
               username={message.session.initiator.username} 
               fullName={message.session.initiator.full_name}
               isActive={isActive} 

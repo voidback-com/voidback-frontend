@@ -27,7 +27,7 @@ export const SessionsList = ({messages, setMessages, selected, setSelected, load
   return (
     <div className="w-[50%] min-w-[500px] h-full flex flex-col overflow-y-scroll border-1 rounded-lg">
 
-      <SessionHeader />
+      <SessionHeader setMessages={setMessages} />
       
       <Tabs
         className="h-full flex flex-col justify-between overflow-y-scroll"

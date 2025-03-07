@@ -6,6 +6,7 @@ import { DirectMessageContext } from "@/app/providers/DirectMessageProvider";
 import { Spinner } from "@nextui-org/react";
 import InfiniteScroll from "react-infinite-scroller";
 import { DMMessage } from "../dmMessageCard";
+import { getAccessToken, WS_DMS } from "@/app/configs/api";
 
 
 
@@ -69,6 +70,52 @@ export const DmScreen = ({messageStr}) => {
         </VStack>
     )
   }
+
+
+  useEffect(()=> {
+
+    if(message){
+
+      const ws = new WebSocket(WS_DMS);
+
+      ws.onopen = (event) => {
+        ws.send(JSON.stringify({"sessionID": message.session.id, "token": getAccessToken()}));
+      }
+
+      ws.onmessage = (event) => {
+        const json = JSON.parse(event.data);
+
+
+        if(json.status===0)
+        {
+          setMessages(x=>[json.data, ...x]);
+        }
+      }
+
+      ws.onclose = (ev) => {
+
+        return ()=> {
+          ws.close();
+        }
+
+      };
+
+      const interval = setInterval(()=> {
+        try{
+          if(ws.readyState!==WebSocket.CLOSED)
+          {
+            ws.send(JSON.stringify({"sessionID": message.session.id, "token": getAccessToken()}));
+          }
+        }catch(err){
+          //
+        }
+      }, 5000); 
+    
+      return ()=> clearInterval(interval);
+
+    }
+
+  }, [message])
 
 
 
