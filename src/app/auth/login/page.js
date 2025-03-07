@@ -208,6 +208,8 @@ const Login = () => {
             <Input 
               size="lg"
               autoComplete="email"
+              label="Email"
+              isRequired
               placeholder="email"
               type="email"
               onChange={(e)=>{
@@ -229,6 +231,8 @@ const Login = () => {
           >
             <Input 
               size="lg"
+                isRequired
+                label="Password"
               fontSize={"large"}
               alignSelf={"center"}
               placeholder="password"

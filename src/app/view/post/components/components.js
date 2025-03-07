@@ -28,6 +28,7 @@ import { PostBottomBar, PostTopBar } from "./postbars";
 import { Card, CardBody, CardFooter, CardHeader, Divider, Chip } from "@nextui-org/react";
 import { renderNodes } from "@/app/editor/components/mobileEditorRenderer";
 import { FaStarOfLife } from "@react-icons/all-files/fa/FaStarOfLife";
+import { isAuthenticated } from "@/app/configs/api";
 
 
 
@@ -208,6 +209,14 @@ export const ReplyEditor = ({parent_post_id, parent_post_room}) => {
       direction="column"
       overflowY={"hidden"}
     >
+      {!isAuthenticated()
+        ?
+      <HStack className="w-full flex flex-row justify-center">
+        <Text className="font-bold text-default-600 text-sm border-1 p-4 rounded-md">Please login to reply to this post.</Text>
+      </HStack>
+        :
+        null
+      }
 {
           errorOpen 
             &&

@@ -32,7 +32,6 @@ export const Topbar = ({ showNavBack, setPosts }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
-  const [isPublic, setIsPublic] = useState(true);
   const [defaultMembersPermissions, setDefaultMembersPermissions] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -168,7 +167,7 @@ export const Topbar = ({ showNavBack, setPosts }) => {
       perms = permissions;
     }
 
-    const conf = {default_member_permissions: perms, isPublic: isPublic, admin: account.id};
+    const conf = {default_member_permissions: perms, admin: account.id};
 
     const response = await createRoom(name, description, categories, conf);
 
@@ -336,14 +335,6 @@ export const Topbar = ({ showNavBack, setPosts }) => {
                   <Input onChange={(e)=>setName(e.target.value)} isRequired label="Name Your Room" placeholder="name..." />
                   <Textarea onChange={(e)=>setDescription(e.target.value)} isRequired label="Describe Your Room" placeholder="description (in markdown)..." />
                   
-
-                  <Checkbox
-                    isSelected={isPublic}
-                    onChange={(e)=>setIsPublic(!isPublic)}
-                    value={isPublic}
-                  >
-                    Is Public
-                  </Checkbox>
 
 
                   <CategoryInput setCategories={setCategories} categories={categories} />
