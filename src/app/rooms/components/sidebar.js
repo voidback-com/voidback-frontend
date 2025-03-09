@@ -152,16 +152,14 @@ export const RoomViewSidebarRight = ({room}) => {
       </VStack>
 
 
-      <Wrap className="max-w-[90%]">
         <MarkdownPreview 
           source={room.description} 
           style={{backgroundColor: "transparent"}}
-          className="border-1 p-5"
+          className="border-0 p-5 w-[98%]"
           wrapperElement={{
             "data-color-mode": colorMode.colorMode
           }}
         />
-      </Wrap>
 
 
       <Wrap className="h-full w-full p-5">
