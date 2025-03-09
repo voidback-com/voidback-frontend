@@ -31,8 +31,8 @@ export default function RootLayout({ children }) {
 
   <link href="https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&display=swap" rel="stylesheet"/>
 
-      <meta name="description" content="Voidback is a social media platform for traders and finance oriented people who seek out edge and want a pure and safe environment to do so." />
-      <meta name="keywords" content="$VB, Finance, Voidback, Quant, Fintech, " />
+      <meta name="description" content="Voidback - Create communities and contribute to machine learning models all from your browser." />
+      <meta name="keywords" content="Voidback, Rooms, In Browser AI, In Browser Machine Learning, Models, ML, AI, Communities, Discussions " />
 
   </head>
 

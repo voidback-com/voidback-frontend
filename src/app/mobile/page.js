@@ -11,7 +11,7 @@ import Countdown from "react-countdown";
 
 const Page = () => {
 
-  document.title = "Mobile App";
+  document.title = "Voidback";
 
   const launchDate = new Date()
 

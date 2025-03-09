@@ -10,6 +10,8 @@ import SidebarContextProvider from "./FeedsProvider/SidebarProvider.js";
 import {NextUIProvider} from "@nextui-org/react";
 import AnalyticsContextProvider from "./AnalyticsProvider/index.js";
 import DirectMessageContextProvider from "./DirectMessageProvider/index.js";
+import MLContextProvider from "./MLProvider/index.js";
+import DataHubContextProvider from "./DataHubProvider/index.js";
  
 
         
@@ -20,23 +22,27 @@ export default function Providers ({children}) {
   return (
     <ChakraProvider theme={chakraTheme}>
       <ColorModeScript initialColorMode={chakraTheme.config.initialColorMode}/>
-        <NextUIProvider>
-          <AnalyticsContextProvider>
-            <AuthContextProvider>
-              <RightFeedContextProvider>
-                <SidebarContextProvider>
-                  <LeftFeedContextProvider>
-                    <EditorContextProvider>
-                      <DirectMessageContextProvider>
-                        {children}
-                      </DirectMessageContextProvider>
-                    </EditorContextProvider>
-                  </LeftFeedContextProvider>
-                </SidebarContextProvider>
-              </RightFeedContextProvider>
-            </AuthContextProvider>
-          </AnalyticsContextProvider>
-        </NextUIProvider>
+      <DataHubContextProvider>
+          <MLContextProvider>
+            <NextUIProvider>
+              <AnalyticsContextProvider>
+                <AuthContextProvider>
+                  <RightFeedContextProvider>
+                    <SidebarContextProvider>
+                      <LeftFeedContextProvider>
+                        <EditorContextProvider>
+                          <DirectMessageContextProvider>
+                            {children}
+                          </DirectMessageContextProvider>
+                        </EditorContextProvider>
+                      </LeftFeedContextProvider>
+                    </SidebarContextProvider>
+                  </RightFeedContextProvider>
+                </AuthContextProvider>
+              </AnalyticsContextProvider>
+            </NextUIProvider>
+          </MLContextProvider>
+        </DataHubContextProvider>
     </ChakraProvider>
   )
 

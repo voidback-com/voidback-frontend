@@ -28,7 +28,7 @@ const Category = ({handleDelete, text}) => {
 
 
 
-export const CategoryInput = ({setCategories, categories}) => {
+export const CategoryInput = ({setCategories, categories, hideBorder}) => {
 
   const [category, setCategory] = useState('');
 
@@ -57,6 +57,7 @@ export const CategoryInput = ({setCategories, categories}) => {
   return (
     <VStack
       className="w-full h-fit border-1 rounded-lg p-10"
+      style={{borderWidth: hideBorder && 0 }}
     >
       <Wrap>
       {

@@ -1,5 +1,5 @@
 'use client'
-import { VStack, Text, HStack, Show, Wrap, Divider } from "@chakra-ui/react";
+import { VStack, Text, HStack, Show, Wrap, Divider, useColorMode } from "@chakra-ui/react";
 import { 
   useState,
   useContext,
@@ -14,9 +14,9 @@ import { useRouter } from "next/navigation";
 import { Touchable } from "@/app/auth/components";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import VoidBackEditor from "@/app/editor/editorDrawer";
-import Markdown  from "react-markdown";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { LeftSection } from "@/app/home/components/Sections";
+import MarkdownPreview from "@uiw/react-markdown-preview";
 
 
 
@@ -110,6 +110,10 @@ export const RoomViewSidebarRight = ({room}) => {
   const hdate = require("human-date");
 
 
+  const colorMode = useColorMode();
+
+
+
   return (
     <VStack
       width="40%"
@@ -149,50 +153,14 @@ export const RoomViewSidebarRight = ({room}) => {
 
 
       <Wrap className="max-w-[90%]">
-        <Markdown
-          components={{
-            "h1": (props) => {
-
-              return <Text fontSize={"x-large"} className="font-semibold">{props.children}</Text>
-            },
-
-             "h2": (props) => {
-
-              return <Text fontSize={"large"} className="font-semibold">{props.children}</Text>
-            },
-
-
-             "h3": (props) => {
-
-              return <Text fontSize={"medium"} className="font-semibold">{props.children}</Text>
-            },
-
-
-
-             "h4": (props) => {
-
-              return <Text fontSize={"small"} className="font-semibold">{props.children}</Text>
-            },
-
-
-             "h5": (props) => {
-
-              return <Text fontSize={"smaller"} className="font-semibold">{props.children}</Text>
-            },
-
-
-             "blockquote": (props) => {
-
-              return <blockquote fontSize={"large"} fontFamily="sans-serif" className="italic">{props.children}</blockquote>
-            },
-
-
-
-
+        <MarkdownPreview 
+          source={room.description} 
+          style={{backgroundColor: "transparent"}}
+          className="border-1 p-5"
+          wrapperElement={{
+            "data-color-mode": colorMode.colorMode
           }}
-        >
-          {room.description}
-        </Markdown>
+        />
       </Wrap>
 
 
