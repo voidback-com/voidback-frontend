@@ -1,11 +1,8 @@
 'use client'
 import { Touchable } from "@/app/auth/components";
 import { errorToReadable } from "@/app/configs/api";
-import { ReadonlyEditor } from "@/app/editor/components/editor";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
-import { MediaSection } from "@/app/view/post/components/MediaSection";
-import { PostBottomBar, PostTopBar } from "@/app/view/post/components/postbars";
 import { HStack, VStack, Spacer, Text, useConst, useToast } from "@chakra-ui/react";
 import { Avatar, Badge, Button, Card, CardBody, CardFooter, CardHeader, Link, ScrollShadow, Skeleton, Spinner, Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
@@ -14,7 +11,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { SkewLoader } from "react-spinners";
 import AccountCard from "./accountCard";
 import { MdVerified } from "react-icons/md";
-import { PostCard } from "@/app/home/components/postCard";
+
 
 
 
@@ -42,7 +39,6 @@ export const UserCard = ({username, fullName, avatarUrl, avatar_size, name_size,
             <Text
               className="w-full"
               fontSize={name_size ? name_size : "medium"}
-              fontFamily={"sans-serif"}
               fontWeight={600}
             >
               {fullName}

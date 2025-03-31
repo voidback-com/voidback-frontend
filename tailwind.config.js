@@ -12,7 +12,12 @@ module.exports = {
       "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        abril: ["var(--font-abril)"],
+        roboto: ['var(--font-roboto)']
+      }
+    },
   },
   plugins: [
    nextui({
@@ -24,11 +29,15 @@ module.exports = {
         themes: {
           light: {
             layout: {}, // light theme layout tokens
-            colors: {}, // light theme colors
+            colors: {
+              writeup: "#2c3853"
+          }, // light theme colors
           },
           dark: {
             layout: {}, // dark theme layout tokens
-            colors: {}, // dark theme colors
+            colors: {
+              writeup: "white"
+          }, // dark theme colors
           },
           }
     }),

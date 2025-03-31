@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 span {
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;

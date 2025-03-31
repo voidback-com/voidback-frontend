@@ -74,9 +74,6 @@ export const toAuthHeaders = (headers) => {
           {
             setCookie("authTok", JSON.stringify(response));
           }
-          else{
-            logoutUser();
-          }
         }).catch((err)=> {
         })
       }

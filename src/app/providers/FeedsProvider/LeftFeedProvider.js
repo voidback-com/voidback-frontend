@@ -1,8 +1,7 @@
 'use client'
 import { createContext, useContext } from "react";
-import PostsContext from "./PostsContext";
 import PlatformContext from "./PlatformContext";
-import EdgeRoomContext from "./EdgeRoomContext";
+import WriteUpsContext from "./WriteupsContext";
 
 
 
@@ -13,18 +12,15 @@ export const LeftFeedContext = createContext();
 const LeftFeedContextProvider = ({children}) => {
 
 
-  const postsContext = useContext(PostsContext());
   const platformContext = useContext(PlatformContext());
-  const edgeRoomContext = useContext(EdgeRoomContext());
+  const WriteUpsContextData = useContext(WriteUpsContext());
 
 
   const value = {
 
-    ...postsContext,
-
     ...platformContext,
 
-    ...edgeRoomContext
+    ...WriteUpsContextData
 
   };
 

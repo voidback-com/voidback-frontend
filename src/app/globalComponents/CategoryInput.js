@@ -37,9 +37,9 @@ export const CategoryInput = ({setCategories, categories, hideBorder}) => {
 
     if(!category.length) return;
 
-    const newCategory = {"category": category};
+    const newCategory = {"tag": category};
 
-    setCategories(x=>x.filter((i)=> i.category!=newCategory.category));
+    setCategories(x=>x.filter((i)=> i.tag!=newCategory.tag));
 
     setCategories(p=>[...p, newCategory]);
 
@@ -49,7 +49,7 @@ export const CategoryInput = ({setCategories, categories, hideBorder}) => {
 
 
   const handleRemove = (category) => {
-    setCategories(x=>x.filter((i)=> i.category!=category.category));
+    setCategories(x=>x.filter((i)=> i.tag!=category.tag));
   }
 
 
@@ -64,7 +64,7 @@ export const CategoryInput = ({setCategories, categories, hideBorder}) => {
         categories.length
         ?
         categories.map((x)=> {
-          return <Category text={x.category} handleDelete={()=>handleRemove(x)} />;
+          return <Category text={x.tag} handleDelete={()=>handleRemove(x)} />;
         })
 
         : null
@@ -73,12 +73,12 @@ export const CategoryInput = ({setCategories, categories, hideBorder}) => {
 
       {
 
-        categories.length<10
+        categories.length < 5
           ?
       <Input 
         isRequired
-        label="Categories"
-        placeholder="room categories..." 
+        label="Tags"
+        placeholder="tag... (hit Enter)" 
         value={category}
         maxLength={20}
         onChange={(e)=>setCategory(e.target.value)}

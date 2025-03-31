@@ -1,7 +1,6 @@
 'use client'
 import { useContext, useEffect, useRef, useState } from "react";
 import { Divider, HStack, Show, VStack, Spacer, useToast } from "@chakra-ui/react";
-import { LeftSection, RightSection } from "../home/components/Sections";
 import { SidebarContext } from "../providers/FeedsProvider/SidebarProvider";
 import NotificationCard from "./components/NotificationCard";
 import InfiniteScroll from "react-infinite-scroller/dist/InfiniteScroll";
@@ -32,7 +31,7 @@ const NotificationsPage = () => {
           isClosable: true,
           id: 2
         })
-      return router.replace("/rooms");
+      return router.replace("/");
     }
   }, [])
 
@@ -177,9 +176,6 @@ const NotificationsPage = () => {
           </VStack>
         </VStack>
 
-      <Show breakpoint="(min-width: 1000px)" style={{display: "none"}}>
-        <RightSection />
-      </Show>
       </HStack>
     </div>
   )

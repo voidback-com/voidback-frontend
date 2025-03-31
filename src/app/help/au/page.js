@@ -1,5 +1,4 @@
 'use client'
-import { LeftSection, RightSection } from "@/app/home/components/Sections";
 import { useContext, useRef, useState } from "react";
 import { 
   VStack,
