@@ -49,6 +49,7 @@ import Youtube from "@tiptap/extension-youtube";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import { EditorContext } from "../providers/FeedsProvider/EditorProvider";
 import Blockquote from "@tiptap/extension-blockquote";
+import { Footnote, FootnoteReference, Footnotes } from "tiptap-footnotes";
 
 
 
@@ -190,6 +191,10 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
           "class": "bg-default-50 rounded-lg p-5"
         } 
       }),
+
+      Footnotes,
+      Footnote,
+      FootnoteReference,
 
     ],
   });

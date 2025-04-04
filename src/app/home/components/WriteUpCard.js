@@ -59,7 +59,7 @@ export const WriteUpCard = ({writeup}) => {
             className="w-full"
           >
             <Text
-              className="text-large text-writeup font-abril max-w-[100%]"
+              className="text-md text-writeup font-roboto max-w-[100%]"
               textOverflow={"clip"}
               noOfLines={2}
             >
@@ -92,7 +92,7 @@ export const WriteUpCard = ({writeup}) => {
           <Text
             className="text-xs font-semibold text-gray-500"
           >
-            {fmt.toHumanString(writeup.rank)} Impressions
+            {fmt.toHumanString(writeup.rank)} {writeup.rank !== 1 ? "Impressions" : "Impression"}
           </Text>
 
           <BsDot className="text-gray-500" size={20} />

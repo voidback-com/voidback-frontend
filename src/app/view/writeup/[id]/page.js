@@ -2,7 +2,8 @@
 import { 
   useState,
   useContext,
-  useEffect
+  useEffect,
+  useRef
 } from "react";
 import { 
   VStack,
@@ -21,9 +22,20 @@ import {
   CardBody,
   CardFooter,
   SkeletonText,
+  ModalCloseButton,
+  ModalOverlay,
+  Modal as ChakraModal,
+  ModalBody as ChakraModalBody,
+  ModalContent as ChakraModalContent,
+  useDisclosure,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  Slider,
+
   useToast
 } from "@chakra-ui/react";
-import { Chip, Avatar, Button, Textarea } from "@nextui-org/react";
+import { Chip, Avatar, Button, Textarea, Spinner, Dropdown, DropdownTrigger, DropdownItem, DropdownMenu } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { errorToReadable, isAuthenticated, isError } from "@/app/configs/api";
@@ -32,9 +44,11 @@ import Link from "next/link";
 import NotFound from "@/app/not-found";
 import EditorReadOnly from "@/app/editor/editorReadOnly";
 import { Touchable } from "@/app/auth/components";
-import { ArrowUp, Eye, Heart, HeartFill } from "@geist-ui/icons";
+import { ArrowUp, Download, Eye, Flag, Heart, HeartFill } from "@geist-ui/icons";
 import InfiniteScroll from "react-infinite-scroller";
 import { CommentCard } from "../components/comments";
+import { AuthContext } from "@/app/providers/AuthProvider";
+import { MdSort } from "@react-icons/all-files/md/MdSort";
 
 
 
@@ -45,14 +59,19 @@ const ViewWriteup = ({ params }) => {
 
   const { id } = params;
 
+
   const { 
     getWriteUpById,
     getWriteUpImpressions,
     handleWriteUpLike,
     createComment,
     listComments,
-    getCommentsCount
+    getCommentsCount,
+    submitWriteupReport
   } = useContext(LeftFeedContext);
+
+
+  const { account } = useContext(AuthContext);
 
 
   const [loading, setLoading] = useState(false);
@@ -71,7 +90,14 @@ const ViewWriteup = ({ params }) => {
   const [end, setEnd] = useState(false);
   const [page, setPage] = useState(1);
 
+  const [reportMessage, setReportMessage] = useState(null);
+  const [reportPriority, setReportPriority] = useState(null);
+  const [reportDisturbance, setReportDisturbance] = useState(null);
+  const [reportLoading, setReportLoading] = useState(false);
+  const [sortBy, setSortBy] = useState(null);
 
+
+  const reportModal = useDisclosure();
 
   const router = useRouter();
   const toast = useToast();
@@ -163,6 +189,7 @@ const ViewWriteup = ({ params }) => {
 
     if(response.status===200)
     {
+      setCommentsCount(false);
       toast({
         title: "Comment posted successfully!",
         duration: 4000,
@@ -182,6 +209,7 @@ const ViewWriteup = ({ params }) => {
       });
     }
 
+    setComment(null);
     setCommentLoading(false);
   }
 
@@ -192,7 +220,7 @@ const ViewWriteup = ({ params }) => {
 
     setCommentsLoading(true);
 
-    const response = await listComments(writeUp.id, page);
+    const response = await listComments(writeUp.id, page, null, sortBy ? sortBy.key : null);
 
     const data = await response.json();
 
@@ -217,7 +245,11 @@ const ViewWriteup = ({ params }) => {
     }
 
     else{
-      // error handle
+      toast({
+        title: "Failed to fetch comments!",
+        description: errorToReadable(data),
+        status: "error"
+      });
     }
 
     setCommentsLoading(false);
@@ -228,7 +260,7 @@ const ViewWriteup = ({ params }) => {
   const fetchCommentsCount = async () => {
     setCommentsLoading(true);
 
-    const response = await getCommentsCount(writeUp.id);
+    const response = await getCommentsCount(writeUp.id, null);
 
     const data = await response.json();
 
@@ -238,11 +270,67 @@ const ViewWriteup = ({ params }) => {
       setCommentsCount(data.count);
     }
     else{
-      // error handle
+      toast({
+        title: "Failed to fetch comments count!",
+        description: errorToReadable(data),
+        status: "error"
+      });
     }
 
     setCommentsLoading(false);
   }
+
+
+
+  const handleSubmitReport = async () => {
+
+    if(!account) return
+    
+    setReportLoading(true);
+
+    await submitWriteupReport(account.id, writeUp.id, reportMessage, reportPriority, reportDisturbance)
+    .then((res)=> {
+        if(res)
+        {
+          if(res.status!==201)
+          {
+            toast({
+              title: "Failed to submit the report",
+              status: "error",
+              duration: 3000,
+              isClosable: true
+            })
+          }
+
+          else{
+            toast({
+              title: "Successfully submited the report",
+              description: "thank you for improving the platform.",
+              status: "success",
+              duration: 3000,
+              isClosable: true
+            });
+
+            reportModal.onClose();
+          }
+        }
+
+        else{
+          toast({
+            title: "Failed to submit the report",
+            description: "please try again.",
+            status: "error",
+            duration: 3000,
+            isClosable: true
+          })
+        }
+      })
+
+    setReportLoading(false);
+  }
+
+
+
 
 
   useEffect(()=> {
@@ -268,8 +356,13 @@ const ViewWriteup = ({ params }) => {
   }
 
 
-  const fmt = require("human-readable-numbers");
 
+
+
+  const fmt = require("human-readable-numbers");
+  const hdate = require("human-date");
+
+  const vref = useRef();
 
   return (
     <Stack
@@ -311,13 +404,59 @@ const ViewWriteup = ({ params }) => {
               <Spacer />
 
               <HStack className="w-[80%]">
+
                 <Spacer />
+
+                {
+                  writeUp
+                    ?
+
+                  <Skeleton
+                    isLoaded={!loading}
+                  >
+
+                    <Chip className="border-1 bg-default-0 rounded-md">
+                      <Text
+                        className="text-sm font-semibold text-gray-500"
+                      >
+                        published on {hdate.prettyPrint(writeUp.created_at)}
+                      </Text>
+                    </Chip>
+                  </Skeleton>
+                  :
+                    null
+                }
+
+
+
                 { writeUp && writeUp.series &&
                 <Chip onClick={()=>router.push(`/view/account/${writeUp.author.username}`)} className="border-1 bg-default-0 rounded-md">
                   {writeUp.series.name}
                 </Chip>
                 }
               </HStack>
+
+                {
+                  writeUp && writeUp.edited
+                    ?
+
+                  <Skeleton
+                    isLoaded={!loading}
+                  >
+
+                    <Chip className="border-1 bg-default-0 rounded-md">
+                      <Text
+                        className="text-sm font-bold text-gray-500"
+                      >
+                        edited
+                      </Text>
+                    </Chip>
+                  </Skeleton>
+                  :
+                    null
+                }
+
+
               <Spacer />
             </HStack>
 
@@ -366,7 +505,7 @@ const ViewWriteup = ({ params }) => {
                   >
                     <HStack>
                       <Text>
-                        {likes}
+                        {fmt.toHumanString(likes)}
                       </Text>
                       { impression===1
                         ?
@@ -389,12 +528,160 @@ const ViewWriteup = ({ params }) => {
                   >
                     <HStack>
                       <Text>
-                        {views}
+                        {fmt.toHumanString(views)}
                       </Text>
                       <Eye />
                     </HStack>
                   </Button>
                 </Skeleton>
+
+
+                <Skeleton
+                  isLoaded={!loadingImpressions}
+                >
+                  <Button
+                    className="border-0"
+                    size="sm"
+                    variant="light"
+                    onPress={reportModal.onOpen}
+                  >
+                    <Flag />
+                  </Button>
+                </Skeleton>
+
+
+
+
+                {/* report modal */}
+
+                <ChakraModal
+                  isOpen={reportModal.isOpen}
+                  onClose={reportModal.onClose}
+                >
+                <ModalOverlay />
+
+                <ChakraModalContent
+                  backgroundColor="default"
+                  width="100%"
+                  height="80%"
+                  maxHeight={"600px"}
+                  className="bg-background"
+                >
+                  <ModalCloseButton />
+
+                  <ChakraModalBody
+                    padding={10}
+                    height={"100%"}
+                    className="bg-background border-1 rounded-md"
+                  >
+                    <VStack
+                      height="100%"
+                    >
+                      <Spacer/>
+
+                      <VStack
+                        padding={4}
+                        width="100%"
+                      >
+
+                        <Text
+                          padding={2}
+                          borderRadius={3}
+                          fontSize={"xs"}
+                          textAlign="center"
+                        >
+                          Rate the disturbance caused by this write up
+                        </Text>
+
+
+                        <Slider
+                          aria-label={['min', 'max']}
+                          colorScheme="purple"
+                          defaultValue={0}
+                          step={10}
+                          onChange={(p)=>setReportDisturbance(p)}
+                        >
+                          <SliderTrack>
+                            <SliderFilledTrack />
+                          </SliderTrack>
+
+                          <SliderThumb index={0} />
+                        </Slider>
+
+                      </VStack>
+
+                      <Spacer />
+
+
+                      <VStack
+                        width="100%"
+                      >
+                        <Text
+                          padding={2}
+                          borderRadius={3}
+                          fontSize={"xs"}
+                          textAlign="center"
+                        >
+                          Rate the priority of this report 
+                        </Text>
+
+
+                        <Slider
+                          aria-label={['min', 'max']}
+                          colorScheme="purple"
+                          defaultValue={0}
+                          step={10}
+                          onChange={(p)=>setReportPriority(p)}
+                        >
+                          <SliderTrack>
+                            <SliderFilledTrack />
+                          </SliderTrack>
+
+                          <SliderThumb index={0} />
+                        </Slider>
+                      </VStack>
+
+
+                      <Spacer/>
+
+
+                      <Textarea
+                        onChange={(e)=> {
+                          setReportMessage(e.target.value);
+                        }}
+                        height={"100%"}
+                        placeholder="Briefly describe this write up." 
+                      />
+
+
+                      <Spacer/>
+
+                    <HStack 
+                        width="100%" 
+                      >
+                        <Spacer/>
+                        { reportLoading
+                              ?
+                              <Spinner color="default" size="md" />
+                              :
+                          <Button
+                            onClick={handleSubmitReport}
+                            isDisabled={!reportMessage}
+                          >
+                              Submit
+                          </Button>
+                        }
+
+                    </HStack>
+
+                    </VStack>
+                  </ChakraModalBody>
+
+
+                </ChakraModalContent>
+              </ChakraModal>
+
+
 
               </HStack>
 
@@ -448,6 +735,72 @@ const ViewWriteup = ({ params }) => {
                     {commentsCount && fmt.toHumanString(commentsCount)}
                   </Text>
                 </SkeletonText>
+
+                <Skeleton isLoaded={!commentsLoading}>
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button
+                        variant="ghost"
+                        className="border-0"
+                        endContent={<MdSort size={20} />}
+                      >
+                        {!sortBy ? "Sort By" : sortBy.label }
+                      </Button>
+                    </DropdownTrigger>
+
+
+                    <DropdownMenu>
+                      <DropdownItem
+                        onPress={()=>{
+                          setSortBy({label: "My Comments First", key: "my"});    
+                          setComments([]);
+                          setEnd(false);
+                          fetchComments();
+                        }}
+                      >
+                        My Comments First
+                      </DropdownItem>
+
+                      <DropdownItem
+                        onPress={()=>{
+                          setSortBy({label: "Top Comments First", key: "top"});
+                          setComments([]);
+                          setEnd(false);
+                          fetchComments();
+                        }}
+                      >
+                        Top Comments First
+                      </DropdownItem>
+
+
+                      <DropdownItem
+                        onPress={()=>{
+                          setSortBy({label: "Latest Comments First", key: "latest"});
+                          setPage(1);
+                          setComments([]);
+                          setEnd(false);
+                          fetchComments();
+                        }}
+                      >
+                        Latest Comments First
+                      </DropdownItem>
+
+                      <DropdownItem
+                        onPress={()=>{
+                          setSortBy(null);
+                          setPage(1);
+                          setComments([]);
+                          setEnd(false);
+                          fetchComments();
+                        }}
+                      >
+                        Unsorted
+                      </DropdownItem>
+
+
+                    </DropdownMenu>
+                  </Dropdown>
+                </Skeleton>
               </HStack>
 
 
@@ -484,23 +837,28 @@ const ViewWriteup = ({ params }) => {
                 </Skeleton>
               </HStack>
 
+              <Divider />
 
               {/* Comments Scrolling */}
               <VStack
-                className="w-full h-full min-h-[50vh] p-5"
+                className="w-full h-full p-5 overflow-y-scroll"
                 spacing={20}
+                ref={(r)=>vref.current=r}
               >
                 <InfiniteScroll
                   data={comments}
+                  initialLoad
                   loadMore={fetchComments}
                   hasMore={!end}
                   className="h-full w-full gap-10 flex flex-col pt-10"
                   threshold={500}
+                  useWindow={false}
+                  getScrollParent={()=>vref.current}
                 >
                   {
                     comments &&
                       comments.map((c)=> {
-                        return <CommentCard comment={c} />
+                        return <CommentCard key={c.id} comment={c} />
                       })
                   }
                 </InfiniteScroll>

@@ -19,7 +19,7 @@ import VoidBackEditor from "@/app/editor/editorDrawer";
 
 
 
-export const Topbar = ({ showNavBack, setPosts }) => {
+export const Topbar = ({ showNavBack, setSelected, fetchWriteUps, setEnd, setWriteUps, setPage}) => {
 
 
   const { createRoom } = useContext(LeftFeedContext);
@@ -28,7 +28,9 @@ export const Topbar = ({ showNavBack, setPosts }) => {
   const newWriteUpModal = useDisclosure();
 
   const {
-    newNotifications
+    newNotifications,
+    autocompleteQuery,
+    newQuery
   } = useContext(LeftFeedContext);
 
 
@@ -36,20 +38,29 @@ export const Topbar = ({ showNavBack, setPosts }) => {
   const [queries, setQueries] = useState([]);
   const [query, setQuery] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
-  const [end, setEnd] = useState(false);
-  const [skip, setSkip] = useState(0);
 
 
 
 
-  const searchQueries = (query) => {
-
-
+  const searchQueries = async (query) => {
     if(query.length)
     {
       setSearchLoading(true);
 
+      const response = await autocompleteQuery(query);
+      
+      const data = await response.json();
+
+      if(response.status===200)
+      {
+        if(data.length)
+          setQueries(data);
+      }
+
       setQuery(query);
+
+      setSearchLoading(false);
+
     }
   }
 
@@ -76,20 +87,14 @@ export const Topbar = ({ showNavBack, setPosts }) => {
 
     setSearchLoading(true);
 
+    await newQuery(query); // store the query or increment rank if it already exists
 
+    setSelected(query);
 
-    const response = await fetch(API_URL+`exploreSearch?query=${query}&skip=${skip}&limit=${skip+6}&category=posts`, {
-      method: "GET"
-    })
-
-    const data = await response.json();
-
-
-    if(data && data.length)
-    {
-      setPosts(data);
-      setSkip(skip+5);
-    }
+    setWriteUps([]);
+    setPage(1);
+    setEnd(false);
+    fetchWriteUps();
 
     setSearchLoading(false);
   }

@@ -28,7 +28,7 @@ export const RobotoFont = Roboto({
 
   variable: "--font-roboto",
 
-  weight: "500"
+  weight: "400"
 });
 
 

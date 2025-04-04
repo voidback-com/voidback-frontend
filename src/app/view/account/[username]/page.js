@@ -22,11 +22,12 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
-  Slider
+  Slider,
+  useDisclosure as useChakraDisclosure
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/providers/AuthProvider";
-import { MutualFriends, TabBar, UserCard } from "@/app/profile/components/components";
+import { MutualFriends, MyLikes, MySeries, MyWriteUps, TabBar, UserCard } from "@/app/profile/components/components";
 import { MdLink } from "react-icons/md";
 import { Touchable } from "@/app/auth/components";
 import { Input, User, Link, Button, Divider, useDisclosure, Modal, ModalHeader, ModalContent, ModalBody, Avatar, Textarea, Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react";
@@ -42,9 +43,11 @@ import { NavBack } from "@/app/globalComponents/buttonFunctions";
 
 const ViewAccount = ({ params }) => {
 
-  document.title = "View Account";
+
 
   const { username } = params;
+
+  document.title = username;
 
   const auth = useContext(AuthContext);
 
@@ -70,14 +73,14 @@ const ViewAccount = ({ params }) => {
 
   
   const getAccount = async () => {
-
-    if(auth.account)
-    {
-      if(auth.account.username === username)
-      {
-        return router.push("/profile");
-      }
-    }
+    //
+    // if(auth.account)
+    // {
+    //   if(auth.account.username === username)
+    //   {
+    //     return router.push("/profile");
+    //   }
+    // }
 
 
     const response = await getAccountByUsername(username);
@@ -120,6 +123,7 @@ const ViewAccount = ({ params }) => {
   const [reportDisturbance, setReportDisturbance] = useState(0);
   const [reportPriority, setReportPriority] = useState(0);
   const [reportMessage, setReportMessage] = useState("");
+  const [reportLoading, setReportLoading] = useState(false);
 
 
 
@@ -218,15 +222,17 @@ const ViewAccount = ({ params }) => {
 
 
 
-  const reportModal = useDisclosure();
+  const reportModal = useChakraDisclosure();
 
 
-  const handleSubmitReport = () => {
+  const handleSubmitReport = async () => {
 
-    if(!account) return
+    if(!account || reportLoading) return
+
+    setReportLoading(true);
 
 
-    submitAccountReport(account.id, reportMessage, reportPriority, reportDisturbance)
+    await submitAccountReport(account.id, reportMessage, reportPriority, reportDisturbance)
     .then((res)=> {
         if(res)
         {
@@ -263,6 +269,31 @@ const ViewAccount = ({ params }) => {
           })
         }
       })
+
+
+    setReportLoading(false);
+  }
+
+
+  const [current, setCurrent] = useState("writeups");
+  const [count, setCount] = useState(0);
+
+
+  const renderCurrent = () => {
+
+    if(current==="writeups")
+    {
+      return <MyWriteUps setWriteUpsCount={setCount} account={account} />
+    }
+
+    else if(current==="series")
+    {
+      return <MySeries setSeriesCount={setCount} account={account} />
+    }
+
+    else{
+      return <MyLikes setLikesCount={setCount} account={account} />
+    }
   }
 
 
@@ -277,30 +308,30 @@ const ViewAccount = ({ params }) => {
 
   return (
     <VStack
-      height={"100vh"}
-      width="100%"
-      bg={"default"}
-      className="bg-background"
-      overflow={"hidden"}
-      spacing={0}
+      className="bg-background pb-10"
+      overflowX={"hidden"} 
+      overflowY={"scroll"}
+      width="100%" 
+      minHeight={"100vh"}
+      direction={"row"}
       padding={10}
     >
 
-
+     {/* dont forget writeups count near followers */}
       <HStack
         width={"100%"}
-        padding={2}
       >
         <NavBack />
 
         <Skeleton 
           isLoaded={!account ? false : true}
         >
-
           { account &&
-            <AccountCard 
-              account={account}
-              size="lg"
+            <UserCard 
+              avatar_size={"lg"}
+              fullName={account.full_name}
+              username={account.username}
+              avatarUrl={account.avatar}
               verified_size={19}
             />
           }
@@ -308,77 +339,123 @@ const ViewAccount = ({ params }) => {
 
       </HStack>
 
+    <HStack width={"100%"}>
+      <Skeleton isLoaded={!account ? false : true}>
+        <Text
+          fontFamily={"sans-serif"}
+          fontSize={14}
+        >
+          {account && account.bio}
+        </Text>
+      </Skeleton>
 
-      {/* Followers and Following */}
+      <Skeleton isLoaded={!account ? false : true}>
+          { account && account.site_link &&
+
+          <HStack>
+            <MdLink size={20} color={"lightslategrey"} />
+            <Link isExternal href={account.site_link}>
+              {account.site_link}
+            </Link>
+          </HStack>
+          }
+      </Skeleton>
+
+
+    </HStack>
+
      <HStack
       padding={1}
       spacing={5}
-      width={"95%"}
+      className="flex flex-row self-center w-[90%]"
     >
-      {/* Followers */}
-      <HStack
-        spacing={0}
-      >
-
-        <Skeleton isLoaded={followers}>
-            <Text
-              fontSize={"small"}
-              fontWeight={900}
+        
+      {/* followers and following */}
+      <HStack gap={5}  className="flex flex-row">
+        <HStack
+          spacing={0}
+        >
+           <Button
+              onPress={followersModal.onOpen}
+              size="sm"
+              variant="ghost"
+              className="w-fit border-0"
             >
-              {followersCount > 0 ? format.toHumanString(followersCount) : "0"}
-            </Text>
-        </Skeleton>
+             
+              <Skeleton isLoaded={followers} className="w-fit">
+                <Text
+                  className="font-bold"
+                  fontSize={16}
+                >
+                  {followersCount > 0 ? format.toHumanString(followersCount) : "0"}
+                </Text>
+
+              </Skeleton>
+
+               <Skeleton isLoaded={followers} className="w-fit">
+                <Text
+                  fontSize={15}
+                  className="text-gray-500"
+                >
+                  {followersCount !== 1 ? "followers" : "follower"}
+                </Text>
+
+              </Skeleton>
 
 
 
-        <Skeleton isLoaded={followers}>
-          <Touchable
-              onClick={followersModal.onOpen}
+          </Button>
+
+        </HStack>
+
+
+         <HStack
+          spacing={0}
+        >
+           <Button
+              onPress={followingModal.onOpen}
+              size="sm"
+              className="w-fit border-0"
+              variant="ghost"
             >
-            <Text
-              fontSize={"small"}
-              color={"lightslategrey"}
-              fontFamily={"sans-serif"}
-              fontWeight={600}
-            >
-              Followers
-            </Text>
-          </Touchable>
-        </Skeleton>
+             <Skeleton isLoaded={following}>
+                <Text
+                  fontSize={16}
+                  className="font-bold"
+                >
+                  {followingCount > 0 ? format.toHumanString(followingCount) : "0"}
+                </Text>
+            </Skeleton>
+
+
+             <Skeleton isLoaded={following}>
+                 <Text
+                  fontSize={15}
+                  className="text-gray-500"
+                >
+                  following
+                </Text>
+              </Skeleton>
+
+
+          </Button>
+
+        </HStack>
+
       </HStack>
 
 
-      {/* Following */}
-       <HStack
-        spacing={0}
-      >
-        <Skeleton isLoaded={following}>
-          <Text
-            fontSize={"small"}
-            fontWeight={900}
-          >
-            {followingCount > 0 ? format.toHumanString(followingCount) : "0"}
-          </Text>
-        </Skeleton>
-
-        <Skeleton isLoaded={following}>
-          <Touchable
-            onClick={followingModal.onOpen}
-          >
-            <Text
-              fontSize={"small"}
-              color={"lightslategrey"}
-              fontFamily={"sans-serif"}
-              fontWeight={600}
-            >
-              Following
-            </Text>
-          </Touchable>
-        </Skeleton>
-      </HStack>
+      {/* write ups, likes, series */}
+      <HStack className="w-full justify-center">
+          <Skeleton height={"100%"} width={"100%"} isLoaded={!account ? false : true}>
+              { account &&
+              <TabBar setCurrent={setCurrent} current={current} count={count} setCount={setCount} />
+              }
+          </Skeleton>
+        </HStack>
 
 
-      <Spacer />
+        <Spacer />
 
       <Skeleton 
         width="fit-content"
@@ -397,9 +474,7 @@ const ViewAccount = ({ params }) => {
           </Button>
         </Tooltip>
       </Skeleton>
-
     </HStack>
-
 
 
     {/* Mutuals friends */}
@@ -412,13 +487,9 @@ const ViewAccount = ({ params }) => {
     </Skeleton>
 
 
-
-    {/* posts, likes */}
-    <Skeleton height={"100%"} width={"100%"} isLoaded={!account ? false : true}>
-        { account &&
-        <TabBar account={account} isDifferentAccount />
-        }
-    </Skeleton>
+      {/* render current */}
+      {renderCurrent()}
+ 
 
 
       {/* followers Modal */}
@@ -430,6 +501,7 @@ const ViewAccount = ({ params }) => {
 
       <ModalContent
         className="h-1/2 w-1/2 bg-background border-1"
+        style={{scrollbarWidth: "none", overflowY: "scroll"}}
       >
 
         {(onClose)=> (
@@ -447,12 +519,12 @@ const ViewAccount = ({ params }) => {
 
               <ModalBody
                 height={"100%"}
-                style={{scrollbarWidth: "none", overflowY: "scroll"}}
+                style={{scrollbarWidth: "none"}}
               >
                 <InfiniteScroll
                   element={VStack}
                   pageStart={0}
-                  style={{paddingBottom: 100, overflowY: "scroll"}}
+                  style={{paddingBottom: 100}}
                   hasMore={!followersCount===followers.length}
                   width="100%"
                   loadMore={fetchFollowers}
@@ -461,7 +533,7 @@ const ViewAccount = ({ params }) => {
                 >
                     {
                         followers.map(({follower})=> {
-                          return <AccountCard account={follower} />
+                          return <AccountCard inFeed account={follower} />
                         })
                     }
 
@@ -513,9 +585,9 @@ const ViewAccount = ({ params }) => {
                   getScrollParent={()=>vref.current}
                 >
                     {
-                        following.map((f)=> {
-                          return <AccountCard account={f.following} />
-                        })
+                      following.map((f)=> {
+                        return <AccountCard inFeed account={f.following} />
+                      })
                     }
 
                     {!following.length ? <Text fontSize={"small"}>not following anyone.</Text> : null}
@@ -528,7 +600,7 @@ const ViewAccount = ({ params }) => {
 
 
 
-      <ChakraModal
+   <ChakraModal
         isOpen={reportModal.isOpen}
         onClose={reportModal.onClose}
       >
@@ -635,7 +707,8 @@ const ViewAccount = ({ params }) => {
               >
                 <Spacer/>
                 <Button
-                  onClick={handleSubmitReport}
+                  isLoading={reportLoading}
+                  onClick={()=>handleSubmitReport()}
 
                 >
                     Submit
@@ -649,8 +722,6 @@ const ViewAccount = ({ params }) => {
 
         </ChakraModalContent>
       </ChakraModal>
-
-
 
    </VStack>
   )

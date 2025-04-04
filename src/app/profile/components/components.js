@@ -3,14 +3,16 @@ import { Touchable } from "@/app/auth/components";
 import { errorToReadable } from "@/app/configs/api";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
-import { HStack, VStack, Spacer, Text, useConst, useToast } from "@chakra-ui/react";
-import { Avatar, Badge, Button, Card, CardBody, CardFooter, CardHeader, Link, ScrollShadow, Skeleton, Spinner, Tab, Tabs, Tooltip } from "@nextui-org/react";
+import { HStack, VStack, Spacer, Text, useConst, useToast, Wrap } from "@chakra-ui/react";
+import { Avatar, Badge, Button, Chip, Card, CardBody, CardFooter, CardHeader, Link, ScrollShadow, Skeleton, Spinner, Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useContext, useState, useEffect, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { SkewLoader } from "react-spinners";
 import AccountCard from "./accountCard";
 import { MdVerified } from "react-icons/md";
+import { WriteUpCard } from "@/app/home/components/WriteUpCard";
+import SeriesCard from "./seriesCard";
 
 
 
@@ -190,125 +192,94 @@ export const MyPosts = ({account}) => {
 }
 
 
-export const MyReplies = ({account}) => {
+
+export const MySeries = ({account, setSeriesCount}) => {
   const { 
-    getAccountPosts
+    getAccountSeries
   } = useContext(LeftFeedContext);
 
-  const [posts,setPosts] = useState([]);
+  const [series, setSeries] = useState([]);
   const [endReached, setEndReached] = useState(false);
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
 
   const toast = useToast();
 
 
-  const fetchPosts = async () => {
+  const fetchSeries = async () => {
+
+    if(!account || loading || endReached) return;
 
     setLoading(true);
 
-    const response = await getAccountPosts(account.username, page, "child");
+    const response = await getAccountSeries(account.username);
 
     const data = await response.json();
 
     if(response.status===200)
     {
-      if(page>1)
-        setPosts(p=>[...p, ...data.results]);
-      else
-        setPosts(data.results);
-
-      if(!data.next)
-        setEndReached(true);
-      else
-        setPage(page+1);
+      setSeries(data.results);
+      setSeriesCount(data.count);
+      setEndReached(true);
     }
-
     else{
       return toast({
-        title: "failed to fetch replies!",
+        title: "failed to series!",
         description: errorToReadable(data),
         status: "error",
         duration: 4000
       })
     }
 
-    setLoading(true);
+    setLoading(false);
   }
-  
-  const vref = useRef();
-  const router = useRouter();
 
 
   return (
-    <VStack
-      height={"100%"}
-      width={"100%"}
-      overflowY={"scroll"}
-      style={{scrollbarWidth: "none"}}
-    >
-      <VStack 
-        ref={vref} 
-        height={"100%"}
-        overflowX={"hidden"}
-        overflowY={"scroll"}
-        padding={10}
-        paddingBottom={"20%"}
-        style={{scrollbarWidth: "none"}}
-        className="flex flex-col gap-10"
-      >
-        <InfiniteScroll
-          getScrollParent={()=>vref.current}
-          element={VStack}
-          pageStart={0}
-          initialLoad
-          hasMore={!endReached}
-          loadMore={fetchPosts}
-          data={posts}
-          loader={
-            <HStack
-              minWidth={"100%"}
-              padding={"2%"}
-              paddingBottom={"10%"}
-            >
-              <Spacer/>
-              <Spinner color="default" size="md" />
-              <Spacer/>
-            </HStack>
-          }
-          threshold={400}
-          useWindow={false}
+    <InfiniteScroll
+      className="w-full h-full py-[10vh] gap-6 flex flex-wrap justify-start gap-y-10"
+      initialLoad
+      hasMore={!endReached}
+      loadMore={()=>fetchSeries()}
+      data={series}
+      loader={
+        <HStack
+          minWidth={"100%"}
+          padding={"2%"}
+          paddingBottom={"10%"}
         >
-          { 
-            posts.length ?
-            posts.map((post)=> {
-              return (
-                  <HStack className="w-full my-5">
-                    <HStack className="w-[500px]">
-                      <PostCard showContent post={post} />
-                    </HStack>
-                </HStack>
-              )
-            })
+          <Spacer/>
+          <Spinner color="default" size="md" />
+          <Spacer/>
+        </HStack>
+      }
+      threshold={400}
+      useWindow={true}
+    >
+      { 
+        series.length ?
+        series.map((s)=> {
+          return (
+            <SeriesCard series={s} />
+          )
+        })
 
-            : !loading && <Text fontSize={"small"}>not posts found.</Text>
-          }
-        </InfiniteScroll>
-      </VStack>
-    </VStack>
+        : !loading && <Text fontSize={"small"}>no series found.</Text>
+      }
+    </InfiniteScroll>
   )
 
 }
 
 
 
+export const MyWriteUps = ({account, setWriteUpsCount}) => {
+  const { 
+    getAccountWriteups
+  } = useContext(LeftFeedContext);
 
-
-export const MyLikes = ({account}) => {
-  const { getAccountLikedPosts } = useContext(LeftFeedContext);
-
-  const [posts,setPosts] = useState(false);
+  const [writeups, setWriteups] = useState([]);
+  const [page, setPage] = useState(1);
   const [endReached, setEndReached] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -316,124 +287,77 @@ export const MyLikes = ({account}) => {
   const toast = useToast();
 
 
-  const fetchPosts = async () => {
+  const fetchWriteUps = async () => {
 
-    if(loading) return;
+    if(!account || loading || endReached) return;
 
     setLoading(true);
 
-    if(!posts)
+    const response = await getAccountWriteups(account.username, page);
+
+    const data = await response.json();
+
+    if(response.status===200)
     {
-      const response = await getAccountLikedPosts(account.username, 0, 5);
+      if(page>1)
+        setWriteups(p=>[...p, ...data.results]);
+      else
+        setWriteups(data.results);
 
-      const data = await response.json();
+      setWriteUpsCount(data.count);
 
-      if(response.status===200)
-      {
-        if(data.length)
-          setPosts(data);
-        else
-          setEndReached(true);
-      }
-      else{
-        return toast({
-          title: "failed to fetch liked posts!",
-          description: errorToReadable(data),
-          status: "error",
-          duration: 4000
-        })
-      }
+      if(data.next)
+        setPage(page+1);
+      else
+        setEndReached(true);
+
 
     }
-
     else{
-      const response = await getAccountLikedPosts(account.username, posts.length+1, posts.length+6);
-
-      const data = await response.json();
-
-
-      if(response.status===200)
-      {
-        if(data.length)
-          setPosts(p=>[...p, ...data]);
-        else
-          setEndReached(true);
-      }
-
-      else{
-        return toast({
-          title: "failed to fetch liked posts!",
-          description: errorToReadable(data),
-          status: "error",
-          duration: 4000
-        })
-      }
+      return toast({
+        title: "failed to fetch write ups!",
+        description: errorToReadable(data),
+        status: "error",
+        duration: 4000
+      })
     }
 
     setLoading(false);
   }
-  
-  const vref = useRef();
-  const router = useRouter();
+
 
   return (
-    <VStack
-      height={"100%"}
-      width={"100%"}
-      overflowY={"scroll"}
-      style={{scrollbarWidth: "none"}}
-    >
-      <VStack 
-        ref={vref} 
-        height={"100%"}
-        overflowX={"hidden"}
-        overflowY={"scroll"}
-        padding={10}
-        paddingBottom={"20%"}
-        style={{scrollbarWidth: "none"}}
-
-      >
-        <InfiniteScroll
-          getScrollParent={()=>vref.current}
-          element={VStack}
-          pageStart={0}
-          initialLoad
-          hasMore={!endReached}
-          loadMore={fetchPosts}
-          data={posts}
-          loader={
-            <HStack
-              minWidth={"100%"}
-              padding={"2%"}
-              paddingBottom={"10%"}
-            >
-              <Spacer/>
-              <Spinner color="default" />
-              <Spacer/>
-            </HStack>
-          }
-          threshold={1000}
-          useWindow={false}
+    <InfiniteScroll
+      className="w-full h-full py-[10vh] gap-6 flex flex-wrap justify-start gap-y-10"
+      initialLoad
+      hasMore={!endReached}
+      loadMore={()=>fetchWriteUps()}
+      data={writeups}
+      loader={
+        <HStack
+          minWidth={"100%"}
+          padding={"2%"}
+          paddingBottom={"10%"}
         >
-          { 
-            posts ?
-            posts.map((post)=> {
-              return (
-                  <HStack className="w-full my-5">
-                <PostCard showContent post={post} />
-                </HStack>
-             )
-            })
+          <Spacer/>
+          <Spinner color="default" size="md" />
+          <Spacer/>
+        </HStack>
+      }
+      threshold={400}
+      useWindow={true}
+    >
+      { 
+        writeups.length ?
+        writeups.map((w)=> {
+          return (
+            <WriteUpCard key={w.id} writeup={w} />
+          )
+        })
 
-            : 
-
-              !loading ?
-            <Text fontSize={"small"}>not liked posts found.</Text>
-            : null
-          }
-        </InfiniteScroll>
-      </VStack>
-    </VStack>
+        : !loading && <Text fontSize={"small"}>no write ups found.</Text>
+      }
+    </InfiniteScroll>
   )
 
 }
@@ -441,25 +365,103 @@ export const MyLikes = ({account}) => {
 
 
 
-export const TabBar = ({account, isDifferentAccount}) => {
 
-  const [current, setCurrent] = useState("posts");
+export const MyLikes = ({account, setLikesCount}) => {
+  const { 
+    getAccountLikedWriteups
+  } = useContext(LeftFeedContext);
+
+  const [writeups, setWriteups] = useState([]);
+  const [page, setPage] = useState(1);
+  const [endReached, setEndReached] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
-  const renderCurrent = () => {
-    if(current==="posts"){
-      return <MyPosts account={account} />
+  const toast = useToast();
+
+
+  const fetchWriteUps = async () => {
+
+    if(!account || loading || endReached) return;
+
+    setLoading(true);
+
+    const response = await getAccountLikedWriteups(account.username, page);
+
+    const data = await response.json();
+
+    if(response.status===200)
+    {
+      if(page>1)
+        setWriteups(p=>[...p, ...data.results]);
+      else
+        setWriteups(data.results);
+
+      setLikesCount(data.count);
+
+      if(data.next)
+        setPage(page+1);
+      else
+        setEndReached(true);
+
+
+    }
+    else{
+      return toast({
+        title: "failed to fetch write ups!",
+        description: errorToReadable(data),
+        status: "error",
+        duration: 4000
+      })
     }
 
-    else if(current==="likes"){
-      return <MyLikes account={account} />
-    }
-
-    else if(current==="replies"){
-      return <MyReplies account={account} />
-    }
-
+    setLoading(false);
   }
+
+
+  return (
+    <InfiniteScroll
+      className="w-full h-full py-[10vh] gap-6 flex flex-wrap justify-start gap-y-10"
+      initialLoad
+      hasMore={!endReached}
+      loadMore={()=>fetchWriteUps()}
+      data={writeups}
+      loader={
+        <HStack
+          minWidth={"100%"}
+          padding={"2%"}
+          paddingBottom={"10%"}
+        >
+          <Spacer/>
+          <Spinner color="default" size="md" />
+          <Spacer/>
+        </HStack>
+      }
+      threshold={400}
+      useWindow={true}
+    >
+      { 
+        writeups.length ?
+        writeups.map((w)=> {
+          return (
+            <WriteUpCard key={w.id} writeup={w} />
+          )
+        })
+
+        : !loading && <Text fontSize={"small"}>no write ups found.</Text>
+      }
+    </InfiniteScroll>
+  )
+
+}
+
+
+
+
+export const TabBar = ({setCurrent, current, count, setCount}) => {
+
+
+  const fmt = require("human-readable-numbers");
 
   return (
     <VStack
@@ -468,23 +470,85 @@ export const TabBar = ({account, isDifferentAccount}) => {
       style={{scrollbarWidth: "none"}}
     >
       <HStack>
-        <Tabs variant="bordered">
-          <Tab title="Posts" onFocus={(e)=>{setCurrent("posts")}} />
+        <Tabs selectedKey={current} variant="solid">
 
-          <Tab title="Replies" onFocus={(e)=>{setCurrent("replies")}} />
+          <Tab 
+            key={"writeups"}
+            title={
+            <HStack>
+              <Text>
+               Write Ups
+              </Text>
 
-          <Tab title="Likes" onFocus={(e)=>{setCurrent("likes")}} />
+              { current==="writeups" && count ?
+                <Chip
+                  size="sm"
+                  variant="solid"
+                >
+                  {fmt.toHumanString(count)}
+              </Chip>
+                :
+                null
+              }
+            </HStack>
+          } 
+            onFocus={(e)=>{
+              setCount(0)
+              setCurrent("writeups")
+            }} />
+
+          <Tab 
+            key={"series"}
+            title={
+          <HStack>
+              <Text className="font-roboto">
+                Series
+              </Text>
+
+              { current==="series" && count ?
+                <Chip
+                  size="sm"
+                  variant="solid"
+                >
+                  {fmt.toHumanString(count)}
+              </Chip>
+                :
+                null
+              }
+          </HStack>
+          } onFocus={(e)=>{
+              setCount(0);
+              setCurrent("series")
+            }} />
+
+
+          <Tab 
+            key={"likes"}
+            title={
+          <HStack>
+              <Text className="font-roboto">
+                Likes
+              </Text>
+
+              { current==="likes" && count ?
+                <Chip
+                  size="sm"
+                  variant="solid"
+                >
+                  {fmt.toHumanString(count)}
+              </Chip>
+                :
+                null
+              }
+          </HStack>
+          } onFocus={(e)=>{
+              setCount(0);
+              setCurrent("likes")
+            }} />
+
+
         </Tabs>
       </HStack>
-
-      <VStack
-        width="100%"
-        height={"100%"}
-        paddingBottom={100}
-        style={{scrollbarWidth: "none"}}
-      >
-        {renderCurrent()}
-      </VStack>
 
     </VStack>
   )

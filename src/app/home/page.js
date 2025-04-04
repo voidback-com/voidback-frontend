@@ -1,30 +1,29 @@
 'use client'
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "../providers/AuthProvider";
-import { Skeleton } from "@nextui-org/react";
-import { VStack, Wrap } from "@chakra-ui/react";
+import { Skeleton, Spinner } from "@nextui-org/react";
+import { HStack, VStack, Wrap, Spacer, Text } from "@chakra-ui/react";
 import { Topbar } from "./components/topbar";
 import TagsFilterBar from "./components/tagsFilterBar";
 import { LeftFeedContext } from "../providers/FeedsProvider/LeftFeedProvider";
 import { WriteUpCard } from "./components/WriteUpCard";
+import InfiniteScroll from "react-infinite-scroller";
 
 
 
 
 const Home = () => {
 
+
   document.title = "Home";
 
-  const { account } = useContext(AuthContext);
 
   const { getWriteUps } = useContext(LeftFeedContext);
 
 
   const [tags, setTags] = useState(null);
   const [selectedTag, setSelectedTag] = useState("All");
-
-  const router = useRouter();
 
 
   const [page, setPage] = useState(1);
@@ -34,6 +33,9 @@ const Home = () => {
 
 
   const fetchWriteUps = async () => {
+
+    if(loading || end) return;
+
     setLoading(true);
 
     let filterTag = selectedTag;
@@ -46,11 +48,17 @@ const Home = () => {
 
     if(response.status===200)
     {
-      setWriteups(data.results);
+      if(page>1)
+        setWriteups(p=>[...p, ...data.results]);
+      else
+        setWriteups(data.results);
 
       if(!data.next)
       {
         setEnd(true);
+      }
+      else{
+        setPage(page+1);
       }
     }
     else{
@@ -65,53 +73,65 @@ const Home = () => {
   const handleSelectTag = (t) => {
     setSelectedTag(t);
     setPage(1);
-    fetchWriteUps();
+    setEnd(false);
+    setWriteups([]);
   }
 
 
-  const previous = () => {
-    if(page > 1)
-    {
-      setPage(page-1);
-      fetchWriteUps();
-    }
-  }
 
-
-  useEffect(()=> {
-    if(!end && !loading && page===1 && !writeups.length)
-    {
-      fetchWriteUps();
-    }
-  }, [!end, !loading])
+  const vref = useRef();
 
 
   return (
     <VStack
-      height={"100vh"}
+      maxHeight={"100vh"}
       width="100%"
       bg={"default"}
-      className="bg-background flex flex-col"
-      overflow={"hidden"}
-      overflowY="hidden"
+      className="bg-background h-full flex flex-col"
       spacing={0}
     >
-      <Topbar />
+      <div className="w-full">
+        <Topbar setSelected={setSelectedTag} fetchWriteUps={fetchWriteUps} setEnd={setEnd} setPage={setPage} setWriteUps={setWriteups} />
 
-      <TagsFilterBar tags={tags} setTags={setTags} selectedTag={selectedTag} selectTag={handleSelectTag} />
+        <TagsFilterBar tags={tags} setTags={setTags} selectedTag={selectedTag} selectTag={handleSelectTag} />
+      </div>
 
-      <div
-        className="w-full h-full p-5 overflow-y-scroll gap-5 flex flex-wrap justify-center gap-y-10"
+      <div 
+        className="w-full h-full overflow-y-scroll"
+        ref={(r)=>vref.current=r}
       >
-        {
-          writeups.length
-          ?
-            writeups.map((writeup)=> {
-              return <WriteUpCard writeup={writeup} />
+        <InfiniteScroll
+          className="py-[10vh] gap-6 flex flex-wrap justify-start gap-y-10 p-8"
+          initialLoad
+          hasMore={!end}
+          loadMore={()=>fetchWriteUps()}
+          data={writeups}
+          loader={
+            <HStack
+              minWidth={"100%"}
+              padding={"2%"}
+              paddingBottom={"10%"}
+            >
+              <Spacer />
+              <Spinner color="default" size="md" />
+              <Spacer/>
+            </HStack>
+          }
+          threshold={400}
+          useWindow={false}
+          getScrollParent={()=>vref.current}
+        >
+          { 
+            writeups.length ?
+            writeups.map((w)=> {
+              return (
+                <WriteUpCard key={w.id} writeup={w} />
+              )
             })
-          :
-          null
-        }
+
+            : !loading && <Text fontSize={"small"}>no write ups found.</Text>
+          }
+        </InfiniteScroll>
       </div>
 
     </VStack>

@@ -28,18 +28,34 @@ module.exports = {
         layout: {}, // common layout tokens (applied to all themes)
         themes: {
           light: {
-            layout: {}, // light theme layout tokens
-            colors: {
-              writeup: "#2c3853"
-          }, // light theme colors
+              layout: {}, // light theme layout tokens
+              colors: {
+                writeup: "#2c3853"
+            }, // light theme colors
           },
+
           dark: {
-            layout: {}, // dark theme layout tokens
-            colors: {
-              writeup: "white"
-          }, // dark theme colors
+              layout: {}, // dark theme layout tokens
+              colors: {
+                writeup: "white"
+            }, // dark theme colors
           },
+
+        
+          // kindle like theme
+          ebookLight: {
+            colors: {
+          },
+
+          ebookMid: {
+
+          },
+
+          ebookWarm: {
+
           }
+        }
+        }
     }),
   ],
 }

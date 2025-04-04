@@ -1,7 +1,7 @@
 'use client'
 import { createContext, useState, useEffect, useContext } from "react";
-import { deleteCookie, setCookie } from "cookies-next";
-import { API_URL, getRefresh, isAuthenticated, shouldRefresh, toAuthHeaders } from "@/app/configs/api";
+import { deleteCookie } from "cookies-next";
+import { API_URL, isAuthenticated, toAuthHeaders } from "@/app/configs/api";
 import { AnalyticsContext } from "../AnalyticsProvider";
 
 
@@ -12,7 +12,6 @@ export const AuthContext = createContext();
 const AuthContextProvider = ({ children }) => {
 
   const [account, setAccount] = useState(null);
-  const [checkToken, setCheckToken] = useState(false);
 
 
 
@@ -128,12 +127,12 @@ const AuthContextProvider = ({ children }) => {
     await logEvent("auth-login", window.location.href, {email});
 
     const body = {
-      email: email,
+      username: email,
       password: password
     };
 
 
-    return fetch(API_URL+"token", {
+    return fetch(API_URL+"login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -145,54 +144,15 @@ const AuthContextProvider = ({ children }) => {
   }
 
 
-  const blackListToken = async () => {
-    // only used when loging out!
-    const r = getRefresh();
-
-    if(r){
-      await fetch(API_URL+"token/blacklist", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({refresh: r})
-      }).catch(()=>{
-
-      })
-    }
-  }
 
   const logoutUser = async () => {
-    blackListToken();
     deleteCookie("authTok");
     await logEvent("auth-logout", window.location.href);
-  }
 
-
-
-
-
-  const refreshToken = async () => {
-    const r = getRefresh();
-
-    if(r)
-    {
-      await fetch(API_URL+"token/refresh", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({"refresh": r})
-      }).then((res)=> {
-        if(res.status===200)
-          return res.json();
-      }).then((response)=> {
-        if(response)
-        {
-          setCookie("authTok", JSON.stringify(response));
-        }
-        else{
-          logoutUser();
-        }
-      }).catch((err)=> {
-      })
-    }
+    await fetch(API_URL+"logout", {
+      method: "GET",
+      headers: toAuthHeaders({})
+    });
   }
 
 
@@ -358,30 +318,6 @@ const AuthContextProvider = ({ children }) => {
       getAccount();
     }
   }, [!account])
-
-
-
-  useEffect(()=> {
-    if(shouldRefresh())
-      refreshToken();
-    setCheckToken(false);
-  }, [checkToken])
-  
-
-  useEffect(()=> {
-
-    if(isAuthenticated())
-    {
-      const id = setInterval(()=> {
-        setCheckToken(true);
-      }, 3000);
-
-      // check every 3 seconds
-
-      return ()=> clearInterval(id);
-    }
-
-  }, [account, !checkToken])
 
 
   const submitAccountReport = async (uid, description, priority, disturbance) => {

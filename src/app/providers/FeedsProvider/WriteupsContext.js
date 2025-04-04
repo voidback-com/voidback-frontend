@@ -23,9 +23,9 @@ const WriteUpsContext = () => {
   const getWriteUps = async (page, searchQuery) => {
     const q = searchQuery ? `&search=${searchQuery}` : "";
 
-    return fetch(API_URL+`writeup/list?page_size=10&page=${page}${q}`, {
+    return fetch(API_URL+`writeup/list?page_size=5&page=${page}${q}`, {
       method: "GET"
-    })
+    });
   }
 
 
@@ -70,21 +70,129 @@ const WriteUpsContext = () => {
   }
 
 
-  const listComments = async (writeup, page) => {
-    return fetch(API_URL+`writeup/comments?writeup=${writeup}&&page=${page}&&page_size=5`, {
+  const listComments = async (writeup, page, parent, sortby) => {
+    return fetch(API_URL+`writeup/comments?writeup=${writeup}${parent ? "&parent=" : ""}${parent ? parent : ""}&page=${page}&page_size=5${sortby ? "&&sortby=" : ""}${sortby ? sortby : ""}`, {
       method: "GET"
     });
   }
 
 
-  const getCommentsCount = async (writeup) => {
-    return fetch(API_URL+`writeup/comments/count?writeup=${writeup}`, {
+  const getCommentsCount = async (writeup, parent) => {
+    return fetch(API_URL+`writeup/comments/count?writeup=${writeup}${parent ? "&parent=" : ''}${parent ? parent : ''}`, {
       method: "GET"
     });
   }
+
+
+  const handleCommentLike = async (id) => {
+    return fetch(API_URL+`writeup/comment/like?comment=${id}`, {
+      method: "GET",
+      headers: toAuthHeaders({})
+    });
+  }
+
+
+  const getCommentImpressions = async (id) => {
+    return fetch(API_URL+`writeup/comment/impressions?comment=${id}`, {
+      method: "GET",
+      headers: toAuthHeaders({})
+    })
+  }
+
+
+  const submitCommentReport = async (account, commentID, description, priority, disturbance) => {
+    await logEvent("writeup-comment-report", window.location.href, {"comment_id": commentID});
+
+    return fetch(API_URL+"report", {
+      method: "POST",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({
+        object_id: commentID,
+        object_type: "comment",
+        description: description,
+        reporter: account.username,
+        priority: priority,
+        disturbance: disturbance
+      })
+    }).catch((err)=> {
+    })
+  }
+
+
+
+  const submitWriteupReport = async (account, writeup_id, description, priority, disturbance) => {
+    await logEvent("writeup-report", window.location.href, {"writeup_id": writeup_id});
+
+    return fetch(API_URL+"report", {
+      method: "POST",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({
+        object_id: writeup_id,
+        object_type: "writeup",
+        description: description,
+        reporter: account.username,
+        priority: priority,
+        disturbance: disturbance
+      })
+    }).catch((err)=> {
+    })
+  }
+
+
+
+  const getAccountWriteups = async (username, page) => {
+    return fetch(API_URL+`account/writeups?author=${username}&page_size=5&page=${page}`, {
+      method: "GET"
+    });
+  }
+
+
+
+
+  const getAccountSeries = async (username) => {
+    return fetch(API_URL+`account/series?author=${username}`, {
+      method: "GET"
+    });
+  }
+
+
+  const getSeriesWriteups = async (series, page) => {
+    return fetch(API_URL+`writeup/list?series=${series}&page_size=5&page=${page}`, {
+      method: "GET"
+    });
+  }
+
+
+  const getAccountLikedWriteups = async (username, page) => {
+    return fetch(API_URL+`writeup/list/liked?account=${username}&page_size=5&page=${page}`, {
+      method: "GET"
+    });
+  }
+
+
+
+  const autocompleteQuery = async (query) => {
+    return fetch(API_URL+`searchQuery?query=${query}&object=writeup`, {
+      method: "GET"
+    });
+  }
+
+
+  const newQuery = async (query) => {
+    return fetch(API_URL+`searchQuery`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({"object_name": "writeup", "query": query})
+    });
+  }
+
 
 
   const contextData = {
+
+    autocompleteQuery,
+    newQuery,
+
     getTags,
 
     getWriteUps,
@@ -94,7 +202,18 @@ const WriteUpsContext = () => {
 
     createComment,
     listComments,
-    getCommentsCount
+
+    getSeriesWriteups,
+    getAccountSeries,
+    getAccountWriteups,
+    getAccountLikedWriteups,
+
+    getCommentsCount,
+    handleCommentLike,
+    getCommentImpressions,
+    submitCommentReport,
+    submitWriteupReport
+
   }
 
   return createContext(contextData);

@@ -20,7 +20,7 @@ import { isBioValid, isLinkValid, Touchable } from "../auth/components";
 import InfiniteScroll from "react-infinite-scroller";
 import { useFileUpload } from "use-file-upload";
 import { isFullNameValid, isEmailValid } from "../auth/components";
-import { TabBar, UserCard } from "./components/components";
+import { MyLikes, MySeries, MyWriteUps, TabBar, UserCard } from "./components/components";
 import { errorToReadable, isAuthenticated } from "../configs/api";
 import AccountCard from "./components/accountCard";
 import { LogOut } from "@geist-ui/icons";
@@ -417,26 +417,47 @@ const ProfilePage = () => {
   const editModal = useDisclosure();
 
 
+  const [current, setCurrent] = useState("writeups");
+  const [count, setCount] = useState(0);
+
+
+  const renderCurrent = () => {
+
+    if(current==="writeups")
+    {
+      return <MyWriteUps setWriteUpsCount={setCount} account={account} />
+    }
+
+    else if(current==="series")
+    {
+      return <MySeries setSeriesCount={setCount} account={account} />
+    }
+
+    else{
+      return <MyLikes setLikesCount={setCount} account={account} />
+    }
+  }
+
+
+
   const format = require("human-readable-numbers");
   const vref = useRef();
 
 
   return (
    <VStack
-      background={"default"} 
-      className="bg-background"
+      className="bg-background pb-10"
       overflowX={"hidden"} 
-      overflowY={"hidden"}
+      overflowY={"scroll"}
       width="100%" 
-      maxHeight={"100vh"}
-      height={"100vh"}
+      minHeight={"100vh"}
       direction={"row"}
       padding={10}
     >
 
+      {/* dont forget writeups count near followers */}
       <HStack
         width={"100%"}
-        classNase="bg-red-200"
       >
         <NavBack />
 
@@ -490,73 +511,95 @@ const ProfilePage = () => {
      <HStack
       padding={1}
       spacing={5}
-      width={"100%"}
+      className="flex flex-row self-center w-[90%]"
     >
-      <HStack
-        spacing={0}
-      >
-        <Skeleton isLoaded={followers}>
-            <Text
-              fontSize={"small"}
-              fontWeight={900}
+        
+      {/* followers and following */}
+      <HStack gap={5}  className="flex flex-row">
+        <HStack
+          spacing={0}
+        >
+           <Button
+              onPress={followersModal.onOpen}
+              size="sm"
+              variant="ghost"
+              className="w-fit border-0"
             >
-              {followersCount > 0 ? format.toHumanString(followersCount) : "0"}
-            </Text>
-        </Skeleton>
+             
+              <Skeleton isLoaded={followers} className="w-fit">
+                <Text
+                  className="font-bold"
+                  fontSize={16}
+                >
+                  {followersCount > 0 ? format.toHumanString(followersCount) : "0"}
+                </Text>
 
-        <Touchable
-            onPress={followersModal.onOpen}
-            size="sm"
-            variant="light"
-          >
-          <Skeleton isLoaded={followers} className="w-fit">
-              <Text
-                fontSize={"small"}
-                color={"lightslategrey"}
-                fontFamily={"sans-serif"}
-                fontWeight={600}
-              >
-                Followers
-              </Text>
+              </Skeleton>
+
+               <Skeleton isLoaded={followers} className="w-fit">
+                <Text
+                  fontSize={15}
+                  className="text-gray-500"
+                >
+                  {followersCount !== 1 ? "followers" : "follower"}
+                </Text>
+
+              </Skeleton>
+
+
+
+          </Button>
+
+        </HStack>
+
+
+         <HStack
+          spacing={0}
+        >
+           <Button
+              onPress={followingModal.onOpen}
+              size="sm"
+              className="w-fit border-0"
+              variant="ghost"
+            >
+             <Skeleton isLoaded={following}>
+                <Text
+                  fontSize={16}
+                  className="font-bold"
+                >
+                  {followingCount > 0 ? format.toHumanString(followingCount) : "0"}
+                </Text>
+            </Skeleton>
+
+
+             <Skeleton isLoaded={following}>
+                 <Text
+                  fontSize={15}
+                  className="text-gray-500"
+                >
+                  following
+                </Text>
+              </Skeleton>
+
+
+          </Button>
+
+        </HStack>
+      </HStack>
+
+
+      {/* write ups, likes, series */}
+      <HStack className="w-full justify-center">
+          <Skeleton height={"100%"} width={"100%"} isLoaded={!account ? false : true}>
+              { account &&
+              <TabBar setCurrent={setCurrent} current={current} count={count} setCount={setCount} />
+              }
           </Skeleton>
-        </Touchable>
+        </HStack>
 
-      </HStack>
-
-
-       <HStack
-        spacing={0}
-      >
-        <Skeleton isLoaded={following}>
-            <Text
-              fontSize={"small"}
-              fontWeight={900}
-            >
-              {followingCount > 0 ? format.toHumanString(followingCount) : "0"}
-            </Text>
-        </Skeleton>
-
-        <Skeleton isLoaded={following}>
-          <Touchable
-            onPress={followingModal.onOpen}
-            size="sm"
-            variant="light"
-            className="w-fit"
-          >
-            <Text
-              fontSize={"small"}
-              color={"lightslategrey"}
-              fontFamily={"sans-serif"}
-              fontWeight={600}
-            >
-              Following
-            </Text>
-          </Touchable>
-        </Skeleton>
-
-      </HStack>
 
         <Spacer />
+
 
         <Skeleton 
           width="fit-content"
@@ -579,12 +622,9 @@ const ProfilePage = () => {
     </HStack>
 
 
-    {/* posts, research, likes */}
-    <Skeleton height={"100%"} width={"100%"} isLoaded={!account ? false : true}>
-        { account &&
-        <TabBar account={account} />
-        }
-    </Skeleton>
+      {/* render current */}
+      {renderCurrent()}
+ 
 
 
       {/* followers Modal */}

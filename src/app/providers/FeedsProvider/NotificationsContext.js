@@ -1,6 +1,7 @@
 'use client'
 import { useContext, useEffect, useState } from "react";
-import { API_URL, getAccessToken, isAuthenticated, toAuthHeaders, WS_NOTIFICATIONS_COUNT } from "@/app/configs/api";
+import { API_URL, isAuthenticated, toAuthHeaders, WS_NOTIFICATIONS_COUNT } from "@/app/configs/api";
+import { getCookie } from "cookies-next";
 
 
 
@@ -61,10 +62,13 @@ const notificatitonsContext = () => {
 
     if(isAuthenticated()){
 
+      const tok = getCookie("authTok");
+
+
       const ws = new WebSocket(WS_NOTIFICATIONS_COUNT);
 
       ws.onopen = (event) => {
-        ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(tok);
       }
 
       ws.onmessage = (event) => {
@@ -93,7 +97,7 @@ const notificatitonsContext = () => {
         try{
           if(ws.readyState!==WebSocket.CLOSED)
           {
-            ws.send(JSON.stringify({"token": getAccessToken()}));
+            ws.send(tok);
           }
         }catch(err){
           //

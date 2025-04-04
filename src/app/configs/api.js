@@ -1,8 +1,5 @@
 'use client'
-import { getCookie, setCookie } from "cookies-next";
-import { jwtDecode } from "jwt-decode";
- 
-
+import { getCookie } from "cookies-next";
 
 
 
@@ -27,59 +24,7 @@ export const isAuthenticated = () => {
 }
 
 
-export const shouldRefresh = () => {
-  const tok = getCookie("authTok");
-
-  if(tok)
-  {
-    let token = JSON.parse(tok);
-
-    if(token)
-    {
-      const d = jwtDecode(token.access);
-
-      if(d){
-        if(Date.now() > d.exp * 1000)
-        {
-          return true;
-        }
-        else{
-          return false;
-        }
-      }
-      else{
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-
 export const toAuthHeaders = (headers) => {
-  if(shouldRefresh()){
-     const r = getRefresh();
-
-      if(r)
-      {
-        fetch(API_URL+"token/refresh", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({"refresh": r})
-        }).then((res)=> {
-          if(res.status===200)
-            return res.json();
-        }).then( (response)=> {
-          if(response)
-          {
-            setCookie("authTok", JSON.stringify(response));
-          }
-        }).catch((err)=> {
-        })
-      }
-  }
-   
-
   try{
     const tok = JSON.parse(getCookie("authTok"));
   
@@ -88,7 +33,7 @@ export const toAuthHeaders = (headers) => {
     {
       if(tok)
       {
-        headers["Authorization"] = `Bearer ${tok.access}`
+        headers["Authorization"] = `Token ${tok.token}`
         return headers;
       }
     }
@@ -98,21 +43,6 @@ export const toAuthHeaders = (headers) => {
   }
 
   return headers;
-}
-
-
-export const getRefresh = () => {
-  const r = getCookie("authTok");
-
-  if(r)
-  {
-    let tok = JSON.parse(r);
-    if(tok)
-    {
-      return tok.refresh;
-    }
-  }
-
 }
 
 
@@ -161,23 +91,6 @@ export const isError = (obj) => {
   else{
     return false;
   }
-}
-
-
-
-export const getAccessToken = () => {
-  const r = getCookie("authTok");
-
-  if(r)
-  {
-    let tok = JSON.parse(r);
-    if(tok)
-    {
-      return tok.access;
-    }
-  }
-
-
 }
 
 

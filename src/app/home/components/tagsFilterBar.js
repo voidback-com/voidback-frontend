@@ -2,7 +2,7 @@
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { HStack, Text, Spacer, Spinner } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import { Button, Chip } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import { ChevronLeft, ChevronRight } from "@geist-ui/icons";
 
 
@@ -12,11 +12,13 @@ const Tag = ({tag, selectTag, selectedTag}) => {
 
 
   return (
-    <Chip onClick={()=>selectTag(tag.tag)} size="sm" variant="bordered" className={`h-full rounded-xl border-1 p-2 ${selectedTag===tag.tag && "bg-default-50"}`}>
-      <Text className="text-sm font-semibold" fontFamily={"sans-serif"}>
-        {tag.tag}
-      </Text>
-    </Chip>
+    <Card isPressable onPress={()=>selectTag(tag.tag)} className={`h-fit w-fit shadow-none rounded-xl border-1 p-0 ${selectedTag===tag.tag && "bg-default-200"}`}>
+      <CardBody>
+        <Text className="text-sm font-semibold" fontFamily={"sans-serif"}>
+          {tag.tag}
+        </Text>
+      </CardBody>
+    </Card>
   )
 }
 
@@ -90,8 +92,8 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
       >
         <Tag tag={{"tag": "All"}} selectTag={selectTag} selectedTag={selectedTag} />
         {
-          tags && tags.map((t)=> {
-            return <Tag tag={t} selectTag={selectTag} selectedTag={selectedTag} />
+          tags && tags.map((t,i)=> {
+            return <Tag key={i} tag={t} selectTag={selectTag} selectedTag={selectedTag} />
           })
         }
         {
