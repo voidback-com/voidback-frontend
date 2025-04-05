@@ -89,6 +89,7 @@ const Home = () => {
       bg={"default"}
       className="bg-background h-full flex flex-col"
       spacing={0}
+      itemScope
     >
       <div className="w-full">
         <Topbar setSelected={setSelectedTag} fetchWriteUps={fetchWriteUps} setEnd={setEnd} setPage={setPage} setWriteUps={setWriteups} />
@@ -125,7 +126,7 @@ const Home = () => {
             writeups.length ?
             writeups.map((w)=> {
               return (
-                <WriteUpCard key={w.id} writeup={w} />
+                <WriteUpCard setWriteUps={setWriteups} key={w.id} writeup={w} />
               )
             })
 

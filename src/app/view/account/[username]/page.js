@@ -57,10 +57,8 @@ const ViewAccount = ({ params }) => {
     getUsernameFollowing,
     getUsernameFollowingCount,
     submitAccountReport,
+
     } = auth;
-
-
-
 
 
   const [account, setAccount] = useState(false);
@@ -127,6 +125,12 @@ const ViewAccount = ({ params }) => {
 
 
 
+  useEffect(()=> {
+    if(account && auth.account && account.username===auth.account.username)
+    {
+      return router.push("/profile");
+    }
+  }, [account])
 
   const fetchFollowing = async () => {
 
@@ -315,6 +319,8 @@ const ViewAccount = ({ params }) => {
       minHeight={"100vh"}
       direction={"row"}
       padding={10}
+      itemScope
+      itemType="https://schema.org/Person"
     >
 
      {/* dont forget writeups count near followers */}
@@ -326,16 +332,9 @@ const ViewAccount = ({ params }) => {
         <Skeleton 
           isLoaded={!account ? false : true}
         >
-          { account &&
-            <UserCard 
-              avatar_size={"lg"}
-              fullName={account.full_name}
-              username={account.username}
-              avatarUrl={account.avatar}
-              verified_size={19}
-            />
-          }
+          <AccountCard avatarSize={"lg"} size={"xl"} account={account} />
         </Skeleton>
+
 
       </HStack>
 

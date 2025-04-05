@@ -1,7 +1,7 @@
 'use client'
 import { createContext, useState, useEffect, useContext } from "react";
 import { deleteCookie } from "cookies-next";
-import { API_URL, isAuthenticated, toAuthHeaders } from "@/app/configs/api";
+import { accountCacheDelete, accountCacheGet, accountCacheStore, API_URL, isAuthenticated, toAuthHeaders } from "@/app/configs/api";
 import { AnalyticsContext } from "../AnalyticsProvider";
 
 
@@ -78,7 +78,9 @@ const AuthContextProvider = ({ children }) => {
   }
 
 
-  const refreshAccount = async () => {
+
+
+  const refetchAccount = async () => {
     const headers = toAuthHeaders({});
 
     fetch(API_URL+"account", {
@@ -94,6 +96,44 @@ const AuthContextProvider = ({ children }) => {
     }).then((acc)=> {
       if(acc)
       {
+          accountCacheStore(acc);
+          setAccount(acc);
+      }
+      }).catch((err)=> {
+        //
+      })
+  }
+
+
+
+
+
+  const refreshAccount = async () => {
+
+    const acc = accountCacheGet();
+
+    if(acc)
+    {
+      setAccount(acc);
+      return;
+    }
+
+    const headers = toAuthHeaders({});
+
+    fetch(API_URL+"account", {
+      method: "GET",
+      headers: headers
+    })
+    .then((res)=> {
+      if(res.status===200)
+        return res.json();
+      else{
+        refreshToken();
+      }
+    }).then((acc)=> {
+      if(acc)
+      {
+          accountCacheStore(acc);
           setAccount(acc);
       }
       }).catch((err)=> {
@@ -147,6 +187,7 @@ const AuthContextProvider = ({ children }) => {
 
   const logoutUser = async () => {
     deleteCookie("authTok");
+    accountCacheDelete();
     await logEvent("auth-logout", window.location.href);
 
     await fetch(API_URL+"logout", {
@@ -156,22 +197,20 @@ const AuthContextProvider = ({ children }) => {
   }
 
 
-  const getAccount = async () => {
-    refreshAccount();
-  }
 
 
   const updateAccount = async (data) => {
 
     await logEvent("auth-account-update", window.location.href, {data});
 
+    accountCacheDelete();
+
     return await fetch(API_URL+`account`, {
       method: "PATCH",
       headers: toAuthHeaders({}),
       body: data
     }).catch((err)=> {
-      })
-
+    })
   }
 
 
@@ -299,6 +338,7 @@ const AuthContextProvider = ({ children }) => {
 
 
 
+
   const getAccountMutuals = async (username) => {
     if(!isAuthenticated()) return;
 
@@ -313,9 +353,9 @@ const AuthContextProvider = ({ children }) => {
 
 
   useEffect(()=> {
-    if(isAuthenticated() && !account)
+    if(isAuthenticated())
     {
-      getAccount();
+      refreshAccount();
     }
   }, [!account])
 
@@ -360,7 +400,6 @@ const AuthContextProvider = ({ children }) => {
     updateAccount,
     deleteAccount,
     refreshAccount,
-    getAccount,
 
 
     getAccountByUsername,
@@ -383,7 +422,8 @@ const AuthContextProvider = ({ children }) => {
     getAccountStatus,
     getFriends,
 
-    logoutUser
+    logoutUser,
+    refetchAccount
 
   };
 

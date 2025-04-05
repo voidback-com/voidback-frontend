@@ -42,16 +42,17 @@ export default function RootLayout({ children }) {
       className={`${AbrilFatFace.variable} ${RobotoFont.variable}`}
     >
         <head>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
-  <link rel="manifest" href="/site.webmanifest"/>
+          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+          <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+          <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+          <link rel="manifest" href="/site.webmanifest"/>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github-dark.min.css"/>
+        <link rel="stylesheet" href="/github-dark.min.css"/>
 
 
-      <meta name="description" content="Voidback - Create communities and contribute to machine learning models all from your browser." />
-      <meta name="keywords" content="Voidback, Rooms, In Browser AI, In Browser Machine Learning, Models, ML, AI, Communities, Discussions " />
+      <meta name="description" content={`Voidback - Discover Voidback, a platform built for readers and writers to create and share content. Write "write ups" (blog posts), organize them into categories, and create "series" to tell stories. Our goal is to be the go-to place for online reading, writing and learning.`} />
+
+      <meta name="keywords" content="Voidback, Docs, Editor, Publish, Write Ups, Write, Read, News, Learning, Writing, Blog, Blogs, WriteUps, Communities, Discussions, Knowledge, E-Learning, Online Learning" />
 
 
   </head>

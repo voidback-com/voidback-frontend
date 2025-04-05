@@ -51,8 +51,8 @@ const ProfilePage = () => {
 
     auth_verifyOtp,
     auth_sendOtp,
-
-    logoutUser
+    logoutUser,
+    refetchAccount
 
   } = useContext(AuthContext);
 
@@ -66,6 +66,7 @@ const ProfilePage = () => {
       router.replace("/auth/login");
     }
   }, [])
+
 
   const toast = useToast();
 
@@ -180,6 +181,8 @@ const ProfilePage = () => {
 
 
   useEffect(()=> {
+    refetchAccount();
+
     if(account)
     {
       if(!following)
@@ -242,7 +245,7 @@ const ProfilePage = () => {
     {
       const avatarClass = await getImageClass(newAvatar);
 
-      if(avatarClass==="NSFW")
+      if(avatarClass==="sfw")
         await saveElement(newAvatar.file, "avatar", true);
       else{
         toast({
@@ -459,7 +462,7 @@ const ProfilePage = () => {
       <HStack
         width={"100%"}
       >
-        <NavBack />
+        <NavBack home />
 
         <Skeleton 
           isLoaded={!account ? false : true}

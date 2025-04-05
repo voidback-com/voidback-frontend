@@ -20,7 +20,9 @@ const Page = () => {
 
   return (
     <div
-      className="w-full h-[100vh] bg-background flex flex-col p-10 gap-10"
+      className="w-full min-h-[100vh] bg-background flex flex-col p-10 gap-10 overflow-y-scroll justify-center place-items-center"
+      itemScope
+      itemType="https://schema.org/AboutPage"
     >
 
       <div className="w-full flex flex-row">
@@ -45,13 +47,9 @@ const Page = () => {
 
       <Spacer />
 
-      <VStack
-        className="w-full overflow-y-scroll flex flex-col space-y-10"
-        overflowY={"scroll"}
-      >
-        <HStack>
+      <HStack>
           <Card
-            className="w-fit bg-background max-w-[600px] h-full shadow-none"
+            className="w-fit bg-background max-w-[400px] h-full shadow-none"
           >
             <CardHeader>
               <Text
@@ -59,7 +57,7 @@ const Page = () => {
                 fontWeight={600}
                 fontFamily={"sans-serif"}
               >
-                Voidback: Harnessing the Power of Collective Sentiment
+                About Voidback
               </Text>
             </CardHeader>
 
@@ -68,14 +66,14 @@ const Page = () => {
                 fontFamily={"sans-serif"}
                 fontSize={"medium"}
               >
-                Voidback is a pioneering platform that leverages the power of artificial intelligence to analyze and interpret the collective sentiment expressed within its community. By mining the wealth of information shared by its users, Voidback is able to extract valuable insights that can inform investment decisions and improve overall financial outcomes.
+                Voidback is a platform designed for you to read and write your own content. Think of your writings as "write ups," which are essentially blog posts you can create and organize under categories that interest you.
               </Text>
             </CardBody>
           </Card>
 
 
           <Card
-            className="w-fit bg-background max-w-[600px] h-full shadow-none"
+            className="w-fit bg-background max-w-[400px] h-full shadow-none"
           >
             <CardHeader>
               <Text
@@ -83,7 +81,7 @@ const Page = () => {
                 fontWeight={600}
                 fontFamily={"sans-serif"}
               >
-                Empowering Informed Decision-Making
+                Introducing Series
               </Text>
             </CardHeader>
 
@@ -92,7 +90,7 @@ const Page = () => {
                 fontFamily={"sans-serif"}
                 fontSize={"medium"}
               >
-                Voidback empowers its users by providing them with access to a wealth of sentiment-driven insights. By understanding the prevailing mood of the market, investors can make more informed decisions, mitigate risks, and optimize their portfolios. Whether you're a seasoned investor or a novice trader, Voidback's data-driven approach can help you navigate the complexities of the financial world with greater confidence.
+Beyond individual write ups, you can also create "series." A series is like a playlist, but instead of songs, it's a collection of your related write ups, allowing readers to follow a theme or story.
               </Text>
             </CardBody>
           </Card>
@@ -101,7 +99,7 @@ const Page = () => {
 
       <HStack>
           <Card
-            className="w-fit bg-background max-w-[1200px] h-full shadow-none"
+            className="w-fit bg-background max-w-[400px] h-full shadow-none"
           >
             <CardHeader>
               <Text
@@ -109,7 +107,7 @@ const Page = () => {
                 fontWeight={600}
                 fontFamily={"sans-serif"}
               >
-                A Data-Driven Machine Learning Future
+              Our Core Problem & Solution
               </Text>
             </CardHeader>
 
@@ -118,7 +116,34 @@ const Page = () => {
                 fontFamily={"sans-serif"}
                 fontSize={"medium"}
               >
-Voidback is a platform that offers "edge rooms," enabling users to cultivate vibrant communities. Each edge room serves as a distinct community space. Furthermore, with our groundbreaking new feature, ML-Hub (Machine Learning Hub), users can train machine learning models directly within their browsers. ML-Hub provides access to diverse datasets available on Voidback, empowering users to build state-of-the-art models from their own devices, leveraging their contributions and the collective knowledge of the Voidback community.
+
+We noticed that there isn't one go-to platform that everyone associates with reading and writing online. Our aim is to become that single, central place for readers and writers alike.
+
+              </Text>
+
+            </CardBody>
+          </Card>
+
+          <Card
+            className="w-fit bg-background max-w-[400px] h-full shadow-none"
+          >
+            <CardHeader>
+              <Text
+                fontSize={"large"}
+                fontWeight={600}
+                fontFamily={"sans-serif"}
+              >
+                Built for You: Readers and Writers
+              </Text>
+            </CardHeader>
+
+            <CardBody className="h-full">
+              <Text
+                fontFamily={"sans-serif"}
+                fontSize={"medium"}
+              >
+Voidback is built for both readers and writers. We offer an intuitive editor that feels familiar, much like the word processors you're already comfortable with, such as Word or Google Docs.
+
               </Text>
 
             </CardBody>
@@ -126,11 +151,111 @@ Voidback is a platform that offers "edge rooms," enabling users to cultivate vib
 
         </HStack>
 
-      </VStack>
 
-      <Spacer />
-      <Spacer />
+      <HStack>
+          <Card
+            className="w-fit bg-background max-w-[400px] h-full shadow-none"
+          >
+            <CardHeader>
+              <Text
+                fontSize={"large"}
+                fontWeight={600}
+                fontFamily={"sans-serif"}
+              >
+                Our Big Picture Vision
+              </Text>
+            </CardHeader>
 
+            <CardBody className="h-full">
+              <Text
+                fontFamily={"sans-serif"}
+                fontSize={"medium"}
+              >
+Our larger goal is to make learning through write ups easier and more engaging. We want to achieve this by allowing the inclusion of images, videos, and referencing within your content.
+              </Text>
+
+            </CardBody>
+          </Card>
+
+          <Card
+            className="w-fit bg-background max-w-[400px] h-full shadow-none"
+          >
+            <CardHeader>
+              <Text
+                fontSize={"large"}
+                fontWeight={600}
+                fontFamily={"sans-serif"}
+              >
+                What You'll Find on Voidback
+              </Text>
+            </CardHeader>
+
+            <CardBody className="h-full">
+              <Text
+                fontFamily={"sans-serif"}
+                fontSize={"medium"}
+              >
+On our platform, you'll discover news, opportunities to learn new skills, and a wealth of pure, unfiltered knowledge and information across various topics.
+              </Text>
+
+            </CardBody>
+          </Card>
+
+        </HStack>
+
+
+      <HStack>
+          <Card
+            className="w-fit bg-background max-w-[400px] h-full shadow-none"
+          >
+            <CardHeader>
+              <Text
+                fontSize={"large"}
+                fontWeight={600}
+                fontFamily={"sans-serif"}
+              >
+                Empowering Knowledge Sharing
+              </Text>
+            </CardHeader>
+
+            <CardBody className="h-full">
+              <Text
+                fontFamily={"sans-serif"}
+                fontSize={"medium"}
+              >
+At its heart, Voidback is driven by the fundamental belief in the power of freely shared knowledge. We envision a space where the exchange of ideas and information is unhindered, allowing individuals from all walks of life to both contribute their unique perspectives and absorb the collective wisdom of others. Our platform is designed to empower everyone – from seasoned experts to curious learners – to actively participate in this dynamic ecosystem of knowledge. 
+              </Text>
+
+            </CardBody>
+          </Card>
+
+
+          <Card
+            className="w-fit bg-background max-w-[400px] h-full shadow-none"
+          >
+            <CardHeader>
+              <Text
+                fontSize={"large"}
+                fontWeight={600}
+                fontFamily={"sans-serif"}
+              >
+              Our Commitment to Freedom of Expression
+              </Text>
+            </CardHeader>
+
+            <CardBody className="h-full">
+              <Text
+                fontFamily={"sans-serif"}
+                fontSize={"medium"}
+              >
+              At Voidback, we deeply value freedom of speech and unfiltered access to information. Our core values are built on allowing users complete freedom to express themselves and share their views as they see fit, provided they do not violate any applicable laws or regulations. While Voidback provides the platform, users are solely responsible for their content, and Voidback will not proactively censor or prevent the expression of any particular viewpoints.
+              </Text>
+
+            </CardBody>
+          </Card>
+
+
+        </HStack>
 
    </div>
   )

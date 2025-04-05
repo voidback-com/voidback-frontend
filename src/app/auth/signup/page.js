@@ -180,7 +180,7 @@ const Signup = () => {
 
 
   useEffect(()=> {
-    if(account) return router.replace("/home/foryou");
+    if(isAuthenticated()) return router.replace("/home");
   }, [])
 
 

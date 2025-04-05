@@ -14,7 +14,6 @@ import {
   Text,
   useToast
 } from "@chakra-ui/react";
-import { LeftSection } from "../home/components/Sections";
 import { Accordion, AccordionItem, Button, Input, Link, Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/react";
 import { AuthContext } from "../providers/AuthProvider";
 import { FaEyeSlash } from "@react-icons/all-files/fa/FaEyeSlash";

@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { Input, Image, Button } from "@nextui-org/react";
 import { setCookie } from "cookies-next";
+import { isAuthenticated } from "@/app/configs/api";
 
 
 
@@ -132,7 +133,7 @@ const Login = () => {
 
 
   useEffect(()=> {
-    if(account)
+    if(isAuthenticated())
       return router.replace("/home");
   }, [])
 

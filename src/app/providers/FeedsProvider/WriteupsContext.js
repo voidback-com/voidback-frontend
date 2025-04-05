@@ -72,7 +72,8 @@ const WriteUpsContext = () => {
 
   const listComments = async (writeup, page, parent, sortby) => {
     return fetch(API_URL+`writeup/comments?writeup=${writeup}${parent ? "&parent=" : ""}${parent ? parent : ""}&page=${page}&page_size=5${sortby ? "&&sortby=" : ""}${sortby ? sortby : ""}`, {
-      method: "GET"
+      method: "GET",
+      headers: toAuthHeaders({})
     });
   }
 
@@ -187,6 +188,37 @@ const WriteUpsContext = () => {
   }
 
 
+  const handleDeleteWriteUp = async (writeupId) => {
+    return fetch(API_URL+"writeup", {
+      method: "DELETE",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({"id": writeupId})
+    });
+  }
+
+
+  const handleDeleteComment = async (commentId) => {
+    return fetch(API_URL+"writeup/comment", {
+      method: "DELETE",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({"id": commentId})
+    });
+  }
+
+
+
+  const deleteSeries = async (sid) => {
+    const response = await fetch(API_URL+"writeup/series/delete", {
+      method: "DELETE",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({"id": sid})
+    });
+
+    return response;
+  }
+
+
+
 
   const contextData = {
 
@@ -195,7 +227,11 @@ const WriteUpsContext = () => {
 
     getTags,
 
+    deleteSeries,
+
     getWriteUps,
+    handleDeleteWriteUp,
+    handleDeleteComment,
     getWriteUpById,
     getWriteUpImpressions,
     handleWriteUpLike,

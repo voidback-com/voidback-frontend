@@ -62,7 +62,7 @@ const Page = () => {
 
   useEffect(()=> {
     if(isAuthenticated())
-      return router.replace("/home/foryou");
+      return router.replace("/home");
   }, [])
 
 

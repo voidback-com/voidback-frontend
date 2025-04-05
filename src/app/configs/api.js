@@ -94,4 +94,28 @@ export const isError = (obj) => {
 }
 
 
+export const accountCacheStore = (accObj) => {
+  localStorage.setItem("cached_accInfo", JSON.stringify(accObj));
+}
+
+
+export const accountCacheGet = () => {
+  const x = localStorage.getItem("cached_accInfo")
+
+  if(x)
+  {
+    try{
+      return JSON.parse(x);
+    } catch(err) {
+      // nothing for now
+    }
+  }
+}
+
+
+
+export const accountCacheDelete = () => {
+  localStorage.removeItem("cached_accInfo");
+}
+
 

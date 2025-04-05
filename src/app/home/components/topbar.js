@@ -6,14 +6,14 @@ import {
   useEffect,
   useRef
 } from "react";
-import { Bell, LogIn, Moon, Plus, Search, Sun, Trash, X } from "@geist-ui/icons";
+import { Bell, LogIn, Moon, Plus, Search, Settings, Sun, Trash, X } from "@geist-ui/icons";
 import { Autocomplete, Chip, Spinner, Button, useDisclosure, Modal, ModalContent, ModalBody, ModalHeader, ModalFooter, Input, Textarea, Checkbox, AutocompleteItem, Avatar } from "@nextui-org/react";
 import { CategoryInput } from "@/app/globalComponents/CategoryInput";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { NavBack } from "@/app/globalComponents/buttonFunctions";
 import { useRouter } from "next/navigation";
-import { API_URL } from "@/app/configs/api";
+import { API_URL, isAuthenticated } from "@/app/configs/api";
 import VoidBackEditor from "@/app/editor/editorDrawer";
 
 
@@ -132,7 +132,23 @@ export const Topbar = ({ showNavBack, setSelected, fetchWriteUps, setEnd, setWri
         />
       </Button>
 
+      
+    {
+        isAuthenticated()
+        ?
+     <Button
+        _hover={{opacity: "70%"}}
+        marginLeft={3}
+        onPress={()=>router.push("/settings")}
+        variant="unstyled"
+        size="md"
+      >
+        <Settings />
+      </Button>
+      : null
+    }
 
+      
 
       <Spacer />
       <Autocomplete
@@ -198,7 +214,7 @@ export const Topbar = ({ showNavBack, setSelected, fetchWriteUps, setEnd, setWri
       <HStack>
 
         {
-          account
+          isAuthenticated()
           ?
             <Button 
               size="sm"
@@ -236,7 +252,7 @@ export const Topbar = ({ showNavBack, setSelected, fetchWriteUps, setEnd, setWri
 
 
       {
-        account
+          isAuthenticated()
           ?
       <Button
         className="w-fit p-0"

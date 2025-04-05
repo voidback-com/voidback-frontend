@@ -14,7 +14,7 @@ export const getImageClass = async (image) => {
 
   const predictions = await model.classify(img);
 
-  if(predictions[0].className==="Neutral" || predictions[0].className==="Drawing")
+  if(predictions[0].className==="Drawing" || predictions[0].className==="Neutral")
   {
     return "sfw";
   }

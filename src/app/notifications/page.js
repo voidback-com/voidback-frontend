@@ -1,7 +1,6 @@
 'use client'
 import { useContext, useEffect, useRef, useState } from "react";
 import { Divider, HStack, Show, VStack, Spacer, useToast } from "@chakra-ui/react";
-import { SidebarContext } from "../providers/FeedsProvider/SidebarProvider";
 import NotificationCard from "./components/NotificationCard";
 import InfiniteScroll from "react-infinite-scroller/dist/InfiniteScroll";
 import { Button, Spinner } from "@nextui-org/react";
@@ -9,6 +8,7 @@ import { Delete } from "@geist-ui/icons";
 import { useRouter } from "next/navigation";
 import { isAuthenticated } from "../configs/api";
 import { NavBack } from "../globalComponents/buttonFunctions";
+import { LeftFeedContext } from "../providers/FeedsProvider/LeftFeedProvider";
 
 
 const NotificationsPage = () => {
@@ -43,7 +43,7 @@ const NotificationsPage = () => {
   const [failedFetch, setFailedFetch] = useState(false);
 
 
-  const { getNotifications, deleteAllNotifications } = useContext(SidebarContext);
+  const { getNotifications, deleteAllNotifications } = useContext(LeftFeedContext);
 
 
 

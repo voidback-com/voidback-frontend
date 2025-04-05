@@ -31,7 +31,7 @@ import {
 } from "@chakra-ui/react";
 import { Card, CardBody, CardFooter, CardHeader, Divider, Chip, Avatar, Button, Textarea, Spinner, DropdownItem, DropdownMenu, Dropdown, DropdownTrigger } from "@nextui-org/react";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
-import { HeartFill, Heart, MessageCircle, ArrowUp, MoreVertical, Flag } from "@geist-ui/icons";
+import { HeartFill, Heart, MessageCircle, ArrowUp, MoreVertical, Flag, Trash } from "@geist-ui/icons";
 import { errorToReadable } from "@/app/configs/api";
 import InfiniteScroll from "react-infinite-scroller";
 import { BsDot } from '@react-icons/all-files/bs/BsDot'
@@ -49,6 +49,7 @@ export const CommentCard = ({comment, isReply}) => {
   const [commentsCount, setCommentsCount] = useState(false);
   const [end, setEnd] = useState(false);
   const [loadingImpressions, setLoadingImpressions] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [commentsLoading, setCommentsLoading] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [reply, setReply] = useState(null);
@@ -59,6 +60,7 @@ export const CommentCard = ({comment, isReply}) => {
 
 
   const reportModal = useDisclosure();
+  const deleteModal = useDisclosure();
 
   const { 
     createComment,
@@ -66,7 +68,8 @@ export const CommentCard = ({comment, isReply}) => {
     getCommentsCount,
     getCommentImpressions,
     handleCommentLike,
-    submitCommentReport
+    submitCommentReport,
+    handleDeleteComment
   } = useContext(LeftFeedContext);
 
 
@@ -154,6 +157,43 @@ export const CommentCard = ({comment, isReply}) => {
   }
 
 
+
+
+  const handleDelete = async () => {
+
+    setDeleteLoading(true);
+
+
+    const response = await handleDeleteComment(comment.id);
+
+    if(response.status!==200)
+    {
+      toast({
+        title: "Failed to delete the comment!",
+        status: "error",
+        duration: 3000,
+        isClosable: true
+      })
+    }
+
+    else{
+      toast({
+        title: "Successfully deleted the comment!",
+        status: "success",
+        duration: 3000,
+        isClosable: true
+      });
+
+      deleteModal.onClose();
+
+    }
+
+    setDeleteLoading(false);
+  }
+
+
+
+
   const handleReply = async () => {
     setCommentsLoading(true);
 
@@ -218,7 +258,7 @@ export const CommentCard = ({comment, isReply}) => {
         setEnd(true);
       }
       else{
-        setPage(p=>p+1);
+        setPage(page+1);
       }
     }
 
@@ -316,6 +356,8 @@ export const CommentCard = ({comment, isReply}) => {
 
     <VStack
       className="w-full flex flex-col "
+      itemScope
+      itemType="comment"
     >
       <HStack className="w-[75vw] flex flex-row justify-center">
         <Card
@@ -330,13 +372,14 @@ export const CommentCard = ({comment, isReply}) => {
             <HStack className="w-fit pb-5">
               <VStack>
 
-                <Avatar name={comment.author.full_name[0]} src={comment.author.avatar} size={isReply ? "md" : "lg"} />
+                <Avatar itemProp="avatar" name={comment.author.full_name[0]} src={comment.author.avatar} size={isReply ? "md" : "lg"} />
 
               </VStack>
 
               <VStack>
                 <HStack>
                   <Text
+                    itemProp="full name"
                     className={`text-md font-semibold text-title ${isReply ? "text-sm" : ""}`}
                   >
                     {comment.author.full_name}
@@ -351,6 +394,7 @@ export const CommentCard = ({comment, isReply}) => {
 
                 <HStack
                   className="w-full"
+                  itemProp="username"
                 >
                   <Link href={`/view/account/${comment.author.username}`}>
                     <Text
@@ -387,6 +431,7 @@ export const CommentCard = ({comment, isReply}) => {
                   >
                     <MoreVertical className="text-gray-500" />
                   </Button>
+
                 </DropdownTrigger>
 
 
@@ -400,9 +445,30 @@ export const CommentCard = ({comment, isReply}) => {
                   >
                     Report
                   </DropdownItem>
+
+
+                  {
+                    account && account.username===comment.author.username
+                      ?
+                     <DropdownItem
+                      key={"report"}
+                      startContent={<Trash />}
+                      className="font-roboto"
+                      onPress={deleteModal.onOpen}
+                    >
+                      Delete
+                    </DropdownItem>
+                    :
+                      null
+                  }
+
+
+
                 </DropdownMenu>
               </Dropdown>
             </HStack>
+
+
 
             {/* Report Modal */}
           <ChakraModal
@@ -534,11 +600,84 @@ export const CommentCard = ({comment, isReply}) => {
 
 
 
-          </CardHeader>
+          {/* Delete Modal */}
+          <ChakraModal
+            isOpen={deleteModal.isOpen}
+            onClose={deleteModal.onClose}
+          >
+          <ModalOverlay />
+
+          <ChakraModalContent
+            backgroundColor="default"
+            width="100%"
+            height="80%"
+            className="bg-background"
+          >
+            <ModalCloseButton />
+
+            <ChakraModalBody
+              padding={10}
+              height={"100%"}
+              className="bg-background border-1 rounded-md"
+            >
+              <VStack
+                height="100%"
+              >
+                <Spacer/>
+
+                <VStack
+                  padding={4}
+                  width="100%"
+                >
+
+                  <Text
+                    padding={2}
+                    borderRadius={3}
+                    fontSize={"xs"}
+                    textAlign="center"
+                  >
+                      Delete This Comment!
+                  </Text>
+
+                </VStack>
+
+                <Spacer />
+
+                <HStack 
+                  width="100%" 
+                >
+                  <Spacer/>
+                  { deleteLoading
+                        ?
+                        <Spinner color="default" size="md" />
+                        :
+                    <Button
+                      variant="bordered"
+                      color="danger"
+                      onPress={handleDelete}
+                    >
+                        Delete
+                    </Button>
+                  }
+
+              </HStack>
+
+              </VStack>
+            </ChakraModalBody>
+
+
+          </ChakraModalContent>
+        </ChakraModal>
+
+
+
+
+        </CardHeader>
 
           <CardBody className="w-full">
             <Text
               className="font-roboto text-sm"
+              itemProp="comment"
             >
               {comment.comment}
             </Text>
@@ -550,6 +689,7 @@ export const CommentCard = ({comment, isReply}) => {
 
             <Skeleton
               isLoaded={!loadingImpressions}
+              itemProp="likes"
             >
               <Button
                 className="border-0"
@@ -574,12 +714,14 @@ export const CommentCard = ({comment, isReply}) => {
 
             <Skeleton
               isLoaded={!commentsLoading}
+
             >
               <Button
                 className="border-0"
                 size="sm"
                 variant="light"
                 onPress={()=>setShowReplies(!showReplies)}
+                itemProp="replies"
               >
                 <HStack>
                   <Text>

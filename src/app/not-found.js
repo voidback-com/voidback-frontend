@@ -1,9 +1,10 @@
+"use client"
 import { Text } from '@chakra-ui/react';
 import { Image, Link } from '@nextui-org/react';
 import { NavBack } from './globalComponents/buttonFunctions';
 
 
-export default async function NotFound() {
+export default function NotFound() {
   return (
     <div className='bg-background'>
 
@@ -18,7 +19,7 @@ export default async function NotFound() {
           className='w-full flex flex-row justify-center'
         >
           <div className='flex flex-col'>
-            <Image src={"/illustrations/404.svg"} className='w-full h-full' />
+            <Image src={"/illustrations/404.svg"} className='w-full max-w-[500px]' />
             <Text
               fontSize={"medium"}
               fontWeight={600}

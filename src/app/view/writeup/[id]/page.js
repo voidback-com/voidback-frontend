@@ -36,15 +36,14 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { Chip, Avatar, Button, Textarea, Spinner, Dropdown, DropdownTrigger, DropdownItem, DropdownMenu } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import { errorToReadable, isAuthenticated, isError } from "@/app/configs/api";
 import { NavBack } from "@/app/globalComponents/buttonFunctions";
 import Link from "next/link";
-import NotFound from "@/app/not-found";
 import EditorReadOnly from "@/app/editor/editorReadOnly";
 import { Touchable } from "@/app/auth/components";
-import { ArrowUp, Download, Eye, Flag, Heart, HeartFill } from "@geist-ui/icons";
+import { ArrowUp, Download, Eye, Flag, Heart, HeartFill, Trash } from "@geist-ui/icons";
 import InfiniteScroll from "react-infinite-scroller";
 import { CommentCard } from "../components/comments";
 import { AuthContext } from "@/app/providers/AuthProvider";
@@ -67,7 +66,9 @@ const ViewWriteup = ({ params }) => {
     createComment,
     listComments,
     getCommentsCount,
-    submitWriteupReport
+    submitWriteupReport,
+    getWriteUps,
+    handleDeleteWriteUp
   } = useContext(LeftFeedContext);
 
 
@@ -78,7 +79,7 @@ const ViewWriteup = ({ params }) => {
   const [loadingImpressions, setLoadingImpressions] = useState(false);
   const [error, setError] = useState(false);
   const [writeUp, setWriteUp] = useState(null);
-  const [notFound, setNotFound] = useState(false);
+  const [notFoundWriteUp, setNotFoundWriteUp] = useState(false);
   const [impression, setImpression] = useState(false);
   const [likes, setLikes] = useState(false);
   const [views, setViews] = useState(false);
@@ -96,11 +97,49 @@ const ViewWriteup = ({ params }) => {
   const [reportLoading, setReportLoading] = useState(false);
   const [sortBy, setSortBy] = useState(null);
 
+  const [loadingDelete, setLoadingDelete] = useState(false);
+
 
   const reportModal = useDisclosure();
+  const deleteModal = useDisclosure();
 
   const router = useRouter();
   const toast = useToast();
+
+
+
+
+  const handleDelete = async () => {
+
+    setLoadingDelete(true);
+
+
+    const response = await handleDeleteWriteUp(writeUp.id);
+
+    if(response.status!==200)
+    {
+      toast({
+        title: "Failed to delete the write up!",
+        status: "error",
+        duration: 3000,
+        isClosable: true
+      })
+    }
+
+    else{
+      toast({
+        title: "Successfully deleted the write up!",
+        status: "success",
+        duration: 3000,
+        isClosable: true
+      });
+
+      deleteModal.onClose();
+
+    }
+
+    setLoadingDelete(false);
+  }
 
 
   const getWriteup = async () => {
@@ -114,8 +153,8 @@ const ViewWriteup = ({ params }) => {
     {
       setWriteUp(data);
     }
-    else if(response.status===404){
-      setNotFound(true);
+    else if(response.status===404){      
+      setNotFoundWriteUp(true);
     }
     else{
       setError(data);
@@ -196,7 +235,7 @@ const ViewWriteup = ({ params }) => {
         status: "success",
       });
       setPage(1);
-      setComments(false);
+      setComments([]);
       setEnd(false);
       fetchComments();
     }
@@ -209,7 +248,7 @@ const ViewWriteup = ({ params }) => {
       });
     }
 
-    setComment(null);
+    setComment([]);
     setCommentLoading(false);
   }
 
@@ -229,8 +268,8 @@ const ViewWriteup = ({ params }) => {
     {
       if(data.results)
       {
-        if(page>1)
-          setComments(p=>[...p, ...data.results]);
+        if(comments && comments.length)
+          setComments(prev =>[...prev, ...data.results]);
 
         else
           setComments(data.results);
@@ -240,7 +279,7 @@ const ViewWriteup = ({ params }) => {
         setEnd(true);
       }
       else{
-        setPage(p=>p+1);
+        setPage(page+1);
       }
     }
 
@@ -350,9 +389,11 @@ const ViewWriteup = ({ params }) => {
   }, [!commentsCount, !commentsLoading, writeUp])
 
 
-  if(notFound)
+
+
+  if(notFoundWriteUp)
   {
-    return NotFound();
+    return notFound();
   }
 
 
@@ -374,6 +415,8 @@ const ViewWriteup = ({ params }) => {
       height={"100vh"}
       direction={"row"}
       padding={0}
+      itemType="https://schema.org/blogPost"
+      itemScope
     >
       <VStack
         height={"100%"}
@@ -551,6 +594,28 @@ const ViewWriteup = ({ params }) => {
 
 
 
+                {
+                  writeUp && account &&
+                  writeUp.author.username===account.username
+                    ?
+                    <Skeleton
+                      isLoaded={!loadingDelete}
+                    >
+                      <Button
+                        className="border-0"
+                        size="sm"
+                        variant="light"
+                        onPress={deleteModal.onOpen}
+                      >
+                        <Trash />
+                      </Button>
+                    </Skeleton>
+                  :
+                    null
+                }
+
+
+
 
                 {/* report modal */}
 
@@ -680,6 +745,77 @@ const ViewWriteup = ({ params }) => {
 
                 </ChakraModalContent>
               </ChakraModal>
+
+
+
+              {/* Delete Modal */}
+              <ChakraModal
+                isOpen={deleteModal.isOpen}
+                onClose={deleteModal.onClose}
+              >
+              <ModalOverlay />
+
+              <ChakraModalContent
+                backgroundColor="default"
+                width="100%"
+                height="80%"
+                className="bg-background"
+              >
+                <ModalCloseButton />
+
+                <ChakraModalBody
+                  padding={10}
+                  height={"100%"}
+                  className="bg-background border-1 rounded-md"
+                >
+                  <VStack
+                    height="100%"
+                  >
+                    <Spacer/>
+
+                    <VStack
+                      padding={4}
+                      width="100%"
+                    >
+
+                      <Text
+                        padding={2}
+                        borderRadius={3}
+                        fontSize={"xs"}
+                        textAlign="center"
+                      >
+                          Delete This Write Up!
+                      </Text>
+
+                    </VStack>
+
+                    <Spacer />
+
+                    <HStack 
+                      width="100%" 
+                    >
+                      <Spacer/>
+                      { loadingDelete
+                            ?
+                            <Spinner color="default" size="md" />
+                            :
+                        <Button
+                          variant="bordered"
+                          color="danger"
+                          onPress={handleDelete}
+                        >
+                            Delete
+                        </Button>
+                      }
+
+                  </HStack>
+
+                  </VStack>
+                </ChakraModalBody>
+
+
+              </ChakraModalContent>
+            </ChakraModal>
 
 
 

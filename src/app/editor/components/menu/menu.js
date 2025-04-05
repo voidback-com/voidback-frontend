@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useContext } from "react";
 import { Divider, HStack, Spacer, Show, Text, VStack, Modal, ModalBody, ModalCloseButton, Skeleton, ModalContent, ModalOverlay, useDisclosure, useToast } from "@chakra-ui/react";
-import { AlignCenter, AlignLeft, AlignRight, Bold, ChevronDown, ChevronDownCircleFill, Code, Image, Italic, Link, List, MoreHorizontal, MoreVertical, Plus, Underline, Video, Youtube } from "@geist-ui/icons";
+import { AlignCenter, AlignLeft, AlignRight, Bold, ChevronDown, ChevronDownCircleFill, Code, Image, Italic, Link, List, Menu, MoreHorizontal, MoreVertical, Plus, PlusCircle, Underline, Video, Youtube } from "@geist-ui/icons";
 import { Button, Input, Select, SelectItem, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, PopoverContent, PopoverTrigger, Popover } from "@nextui-org/react";
 import { BubbleMenu, FloatingMenu } from "@tiptap/react";
 import { FaHeading } from "@react-icons/all-files/fa/FaHeading";
@@ -11,6 +11,9 @@ import { errorToReadable, isError } from "@/app/configs/api";
 import { EditorContext } from "@/app/providers/FeedsProvider/EditorProvider";
 import { CategoryInput } from "@/app/globalComponents/CategoryInput";
 import { BiFontSize } from "@react-icons/all-files/bi/BiFontSize"
+import { VscReferences } from "@react-icons/all-files/vsc/VscReferences";
+import { FaRulerHorizontal } from "@react-icons/all-files/fa/FaRulerHorizontal";
+
 
 
 
@@ -249,7 +252,7 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
 
 
   return (
-    <div className="bg-default-50 w-full rounded-lg p-2 flex flex-row  gap-2">
+    <div className="border-1 w-full rounded-lg p-2 flex flex-row  gap-2 border-b-0 rounded-b-none">
 
 
         <Button
@@ -400,7 +403,18 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
         </DropdownMenu>
       </Dropdown>
 
-      
+ 
+
+      <Button
+        onPress={()=>editor?.commands.addFootnote()}
+        variant="bordered"
+        className="border-0 rounded-md"
+        size="sm"
+      >
+        <VscReferences size={24} />
+      </Button>
+
+     
 
       <Spacer />
 
@@ -567,60 +581,49 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
 
 
 
-export const EditorFloatingMenu = ({editor, handleImage, handleVideo}) => {
-
-    return (
-    <FloatingMenu editor={editor} tippyOptions={{ 
-      duration: 100,
-      placement: "left",
-      "offset": 30,
-      "inlinePositioning": true,
-    }}>
-      <div className="h-full flex flex-col justify-center">
-        <Popover
-          placement="right"
-          className="border-0 bg-default-0 outline-0"
-        >
-          <PopoverTrigger>
-           <button
-              className="border-0 rounded-full w-fit hover:bg-default-200"
-            >
-              <MoreVertical size={25} />
-            </button>
-          </PopoverTrigger>
-
-          <PopoverContent
-            className="w-full flex flex-row bg-default-100 border-0 outline-0 space-x-7"
-          >
-
-              <button
-                className="bg-default-0 p-0"
-                onClick={handleImage}
-              >
-                <Image size={24} />
-              </button>
-
-              <button
-                className="bg-default-0 p-0"
-              onClick={handleVideo}
-              >
-                <Youtube size={24} />
-              </button>
-
-              <button
-                className="bg-default-0 p-0"
-              onClick={()=>editor.chain().focus().toggleCodeBlock().run()}
-              >
-                <Code size={24} />
-              </button>
+export const EditorSecondMenu = ({editor, handleImage, handleVideo}) => {
 
 
-          </PopoverContent>
-        </Popover>
+  return (
+    <div
+      className="w-full flex flex-row border-1 border-t-0 border-0 outline-0 space-x-7 rounded-b-xl rounded-t-xs bottom-0 relative p-2 gap-2"
+    >
+
+      <Button
+        className="bg-default-0 p-0"
+        onPress={handleImage}
+        isIconOnly
+      >
+        <Image size={24} />
+      </Button>
+
+      <Button
+        className="bg-default-0 p-0"
+        onPress={handleVideo}
+        isIconOnly
+      >
+        <Youtube size={24} />
+      </Button>
+
+      <Button
+        className="bg-default-0 p-0"
+        onPress={()=>editor.chain().focus().toggleCodeBlock().run()}
+        isIconOnly
+      >
+        <Code size={24} />
+      </Button>
 
 
-      </div>
-    </FloatingMenu>
+
+      <Button
+        className="bg-default-0 p-0"
+      onPress={()=>editor.chain().focus().setHorizontalRule().run()}
+        isIconOnly
+      >
+        <FaRulerHorizontal size={24} />
+      </Button>
+
+    </div>
   )
 }
 

@@ -1,23 +1,19 @@
 'use client'
 import { HStack, Text, VStack, Spacer, useToast } from "@chakra-ui/react";
-import { Avatar, Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
+import { Avatar, Card, Button, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 import { MessageCircle, Mail, Bell, Trash2, AtSign } from '@geist-ui/icons';
 import { IoHeartDislikeSharp } from "@react-icons/all-files/io5/IoHeartDislikeSharp";
-import { Touchable } from "@/app/auth/components";
 import { FaHeart } from "@react-icons/all-files/fa/FaHeart";
 import { useContext } from "react";
-import { SidebarContext } from "@/app/providers/FeedsProvider/SidebarProvider";
 import { useRouter } from "next/navigation";
+import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 
 
 
 const icons = {
   "notification": <Bell size={20} color="default" />,
   "message": <MessageCircle size={20} color="default" />,
-  "inbox": <Mail size={20} color="default" />,
   "like": <FaHeart size={20} color="tomato" />,
-  "dislike": <IoHeartDislikeSharp size={20} color="tomato" />,
-  "mention": <AtSign size={20} color="default" />
 }
 
 
@@ -26,7 +22,7 @@ const icons = {
 const NotificationCard = ({data, handleRemove}) => {
 
 
-  const { deleteNotification } = useContext(SidebarContext);
+  const { deleteNotification } = useContext(LeftFeedContext);
 
   const mediaUrl = "https://media.voidback.com/media/"
 
@@ -123,7 +119,7 @@ const NotificationCard = ({data, handleRemove}) => {
 
       </CardBody>
 
-      <CardFooter className="w-full">
+      <CardFooter className="w-full p-0">
         <HStack
           width="100%"
         >
@@ -137,11 +133,14 @@ const NotificationCard = ({data, handleRemove}) => {
 
           <Spacer />
 
-          <Touchable
+          <Button
             onClick={handleDelete}
+            variant="ghost"
+            isIconOnly
+            className="border-0"
           >
             <Trash2 size={20} color="default" />
-          </Touchable>
+          </Button>
         </HStack>
       </CardFooter>
     </Card>

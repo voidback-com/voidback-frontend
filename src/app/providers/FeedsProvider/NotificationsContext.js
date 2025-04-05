@@ -1,5 +1,5 @@
 'use client'
-import { useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { API_URL, isAuthenticated, toAuthHeaders, WS_NOTIFICATIONS_COUNT } from "@/app/configs/api";
 import { getCookie } from "cookies-next";
 
@@ -123,7 +123,7 @@ const notificatitonsContext = () => {
     setNewNotifications,
   };
 
-  return value;
+  return createContext(value);
 
 };
 

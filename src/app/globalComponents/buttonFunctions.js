@@ -10,10 +10,11 @@ export const NavBack = ({home}) => {
 
   const router = useRouter();
 
+
   return (
 
       <Touchable
-        onClick={()=>home?router.push("/home/foryou"):router.back()}
+        onClick={()=>home?router.push("/home"):router.back()}
         className="bg-background"
         style={{
           padding: 2,

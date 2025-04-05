@@ -12,6 +12,8 @@ import {
   ModalBody as ChakraModalBody,
   ModalContent as ChakraModalContent,
   useDisclosure as useChakraDisclosure,
+  ModalOverlay,
+  ModalCloseButton,
   HStack,
   Spacer
 } from "@chakra-ui/react";
@@ -20,7 +22,9 @@ import { NavBack } from "@/app/globalComponents/buttonFunctions";
 import { LeftFeedContext } from "@/app/providers/FeedsProvider/LeftFeedProvider";
 import InfiniteScroll from "react-infinite-scroller";
 import { WriteUpCard } from "@/app/home/components/WriteUpCard";
-import { Spinner, Skeleton, Chip } from "@nextui-org/react";
+import { Spinner, Skeleton, Chip, Button } from "@nextui-org/react";
+import { AuthContext } from "@/app/providers/AuthProvider";
+import { Trash } from "@geist-ui/icons";
 
 
 
@@ -34,7 +38,12 @@ const ViewSeries = ({ params }) => {
   document.title = name;
 
 
-  const { getSeriesWriteups } = useContext(LeftFeedContext);
+  const { 
+    getSeriesWriteups,
+    deleteSeries,
+  } = useContext(LeftFeedContext);
+
+  const { account } = useContext(AuthContext);
 
 
   const [writeups, setWriteups] = useState([]);
@@ -43,11 +52,50 @@ const ViewSeries = ({ params }) => {
   const [endReached, setEndReached] = useState(false);
   const [writeUpsCount, setWriteUpsCount] = useState(0);
   const [created_at, setCreatedAt] = useState(false);
+  const [sid, setSid] = useState(null);
   const [author, setAuthor] = useState(false);
 
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
+
+  const deleteModal = useChakraDisclosure();
 
   const toast = useToast();
+
+
+  const handleDelete = async () => {
+    if(!sid) return;
+
+    setDeleteLoading(true);
+
+
+    const response = await deleteSeries(sid);
+
+    if(response.status!==200)
+    {
+      toast({
+        title: "Failed to delete series!",
+        status: "error",
+        duration: 3000,
+        isClosable: true
+      })
+    }
+
+    else{
+      toast({
+        title: "Successfully deleted the series!",
+        status: "success",
+        duration: 3000,
+        isClosable: true
+      });
+
+      deleteModal.onClose();
+    }
+
+    setDeleteLoading(false);
+  }
+
+
 
 
   const fetchWriteUps = async () => {
@@ -71,6 +119,7 @@ const ViewSeries = ({ params }) => {
         {
           setAuthor(data.results[0].author);
           setCreatedAt(data.results[0].series.created_at);
+          setSid(data.results[0].series.id);
         }
       }
 
@@ -110,6 +159,8 @@ const ViewSeries = ({ params }) => {
       className="bg-background overflow-y-scroll pb-[10vh]"
       spacing={0}
       padding={10}
+      itemScope
+      itemType="https://schema.org/Blog"
     >
       <HStack 
         className="w-full"
@@ -129,26 +180,110 @@ const ViewSeries = ({ params }) => {
 
         <Spacer />
 
-        <Skeleton
-          isLoaded={!loading} 
-        >
-          { author && created_at ?
-
-          <Chip>
-            <Text
-              className="font-semibold text-sm text-writeup"
+        { 
+          account && author && created_at && author.username===account.username
+          ?
+            <Button
+              onPress={deleteModal.onOpen}
+              isIconOnly
+              variant="light"
             >
+              <Trash color="tomato" />
+            </Button>
 
-              Created by {author.full_name} on {hdate.prettyPrint(created_at)}
-            </Text>
-          </Chip>
+          :
 
-            : null
-          }
-        </Skeleton>
+        author && created_at ?
+
+          <Skeleton
+            isLoaded={!loading} 
+          >
+            <Chip>
+              <Text
+                className="font-semibold text-sm text-writeup"
+              >
+
+                Created by {author.full_name} on {hdate.prettyPrint(created_at)}
+              </Text>
+            </Chip>
+          </Skeleton>
+
+          : 
+            null
+        }
 
 
       </HStack>
+
+
+      {/* Delete Modal */}
+      <ChakraModal
+        isOpen={deleteModal.isOpen}
+        onClose={deleteModal.onClose}
+      >
+      <ModalOverlay />
+
+      <ChakraModalContent
+        backgroundColor="default"
+        width="100%"
+        height="80%"
+        className="bg-background"
+      >
+        <ModalCloseButton />
+
+        <ChakraModalBody
+          padding={10}
+          height={"100%"}
+          className="bg-background border-1 rounded-md"
+        >
+          <VStack
+            height="100%"
+          >
+            <Spacer/>
+
+            <VStack
+              padding={4}
+              width="100%"
+            >
+
+              <Text
+                padding={2}
+                borderRadius={3}
+                fontSize={"xs"}
+                textAlign="center"
+              >
+                  Delete This Write Up!
+              </Text>
+
+            </VStack>
+
+            <Spacer />
+
+            <HStack 
+              width="100%" 
+            >
+              <Spacer/>
+              { deleteLoading
+                    ?
+                    <Spinner color="default" size="md" />
+                    :
+                <Button
+                  variant="bordered"
+                  color="danger"
+                  onPress={()=>handleDelete()}
+                >
+                    Delete
+                </Button>
+              }
+
+          </HStack>
+
+          </VStack>
+        </ChakraModalBody>
+
+
+      </ChakraModalContent>
+    </ChakraModal>
 
 
 

@@ -14,7 +14,6 @@ import {
   AlertTitle,
   AlertDescription,
   SkeletonText,
-  Link,
   Drawer,
   DrawerContent,
   DrawerOverlay,
@@ -30,7 +29,7 @@ import TextStyle from '@tiptap/extension-text-style'
 import { EditorProvider, ReactNodeViewRenderer, useCurrentEditor, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import "./components/editor.css"
-import { EditorFloatingMenu, MainMenu } from "./components/menu/menu";
+import { EditorSecondMenu, MainMenu } from "./components/menu/menu";
 import { EditorContent } from "@tiptap/react";
 import BubbleMenu from "@tiptap/extension-bubble-menu";
 import { PluginKey } from "prosemirror-state";
@@ -50,6 +49,9 @@ import Dropcursor from "@tiptap/extension-dropcursor";
 import { EditorContext } from "../providers/FeedsProvider/EditorProvider";
 import Blockquote from "@tiptap/extension-blockquote";
 import { Footnote, FootnoteReference, Footnotes } from "tiptap-footnotes";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import Document from "@tiptap/extension-document";
+import Link from "@tiptap/extension-link";
 
 
 
@@ -99,35 +101,23 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
       setContent(editor.getJSON());
     },
     extensions: [
-
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
+
     TextStyle.configure({ types: [ListItem.name] }),
+
     StarterKit.configure({
       bulletList: {
         keepMarks: true,
       },
-      orderedList: {
-        keepMarks: true,
-        keepAttributes: true, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      },
 
+      document: false
     }),
 
 
-    BubbleMenu.configure({
-      pluginKey: new PluginKey('bubbleMenuOne'),
-      element: document.querySelector('.menu-one'),
+    Document.extend({
+      content: "block+ footnotes?",
     }),
 
-    FloatingMenu.configure({
-      element: document.querySelector('.menu'),
-        shouldShow: ({ editor, view, state, oldState }) => {
-          // show the floating within any paragraph
-          return editor.isActive('paragraph')
-        },
-
-      "tippyOptions": {"placement": "left-start"}
-    }),
 
     TextAlign.configure({
       types: ['heading', 'paragraph'],
@@ -192,9 +182,73 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
         } 
       }),
 
+      HorizontalRule,
       Footnotes,
       Footnote,
       FootnoteReference,
+
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        defaultProtocol: "https",
+        protocols: ["http", "https"],
+        isAllowedUri: (url, ctx) => {
+ try {
+            // construct URL
+            const parsedUrl = url.includes(':') ? new URL(url) : new URL(`${ctx.defaultProtocol}://${url}`)
+
+            // use default validation
+            if (!ctx.defaultValidate(parsedUrl.href)) {
+              return false
+            }
+
+            // disallowed protocols
+            const disallowedProtocols = ['ftp', 'file', 'mailto']
+            const protocol = parsedUrl.protocol.replace(':', '')
+
+            if (disallowedProtocols.includes(protocol)) {
+              return false
+            }
+
+            // only allow protocols specified in ctx.protocols
+            const allowedProtocols = ctx.protocols.map(p => (typeof p === 'string' ? p : p.scheme))
+
+            if (!allowedProtocols.includes(protocol)) {
+              return false
+            }
+
+            // disallowed domains
+            const disallowedDomains = ['example-phishing.com', 'malicious-site.net']
+            const domain = parsedUrl.hostname
+
+            if (disallowedDomains.includes(domain)) {
+              return false
+            }
+
+            // all checks have passed
+            return true
+          } catch {
+            return false
+          }
+        },
+
+        shouldAutoLink: (url) => {
+           try {
+            // construct URL
+            const parsedUrl = url.includes(':') ? new URL(url) : new URL(`https://${url}`)
+
+            // only auto-link if the domain is not in the disallowed list
+            const disallowedDomains = ['example-no-autolink.com', 'another-no-autolink.com']
+
+            const domain = parsedUrl.hostname
+
+            return !disallowedDomains.includes(domain)
+          } catch {
+            return false
+          }
+        },
+
+      })
 
     ],
   });
@@ -236,8 +290,18 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
       <DrawerContent width="100%" height={"100%"} background={"default"} className="bg-background" overflowY={"scroll"}>
 
       <DrawerHeader width={"100%"} background="transparent">
+
         <HStack width={"100%"}>
+          <VStack className="w-full" gap={0}>
+            <HStack width={"100%"}>
             <MainMenu title={title} content={content} setTitle={setTitle} editor={editor} close={onClose} setContent={setContent} />
+            </HStack>
+
+            <HStack width={"100%"}>
+              <EditorSecondMenu editor={editor} handleVideo={handleVideo} handleImage={handleImage} />
+            </HStack>
+
+          </VStack>
 
           <Spacer />
 
@@ -246,6 +310,7 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
       </DrawerHeader>
 
       <DrawerBody overscrollY={"scroll"} width="90%" height={"100%"} alignSelf={"center"} padding={0}>
+
         <VStack
           maxHeight={"95%"}
           minHeight={"95%"}
@@ -317,14 +382,11 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
             }
 
 
-
-
             <EditorContent
+              aria-label="EDITOR"
               editor={editor}
               className={"w-full border-0 p-4"}
             autofocus />
-
-            <EditorFloatingMenu editor={editor} handleImage={handleImage} handleVideo={handleVideo} />
 
           </VStack>
         </DrawerBody>

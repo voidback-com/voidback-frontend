@@ -10,7 +10,7 @@ import { AuthContext } from "@/app/providers/AuthProvider";
 
 
 // includes the follow/unfollow feature and truncated bio
-const AccountCard = ({account, size, verified_size, inFeed}) => {
+const AccountCard = ({account, size, verified_size, inFeed, avatarSize}) => {
 
   const auth = useContext(AuthContext);
 
@@ -37,7 +37,7 @@ const AccountCard = ({account, size, verified_size, inFeed}) => {
       else
         getFollowStatus();
     }
-  }, [!followStatus])
+  }, [!followStatus, auth.account])
 
 
   return (
@@ -53,7 +53,7 @@ const AccountCard = ({account, size, verified_size, inFeed}) => {
           username={account.username}
           avatarUrl={account.avatar}
           fullName={account.full_name}
-          avatar_size={size ? size : "sm"}
+          avatar_size={avatarSize ? avatarSize : "sm"}
           name_size={size ? size : "sm"}
           username_size={size ? size : "sm"}
           isVerified={account.isVerified}
