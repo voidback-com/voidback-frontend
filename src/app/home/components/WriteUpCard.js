@@ -169,7 +169,7 @@ export const WriteUpCard = ({writeup, setWriteUps}) => {
       shadow="none"
     >
       <CardHeader
-        className="flex flex-col justify-center h-[30vh] max-h-[300px] rounded-md p-0"
+        className="flex flex-col justify-center rounded-md p-0"
       >
         <Image
           fetchPriority="low"
