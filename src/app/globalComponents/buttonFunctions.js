@@ -14,7 +14,7 @@ export const NavBack = ({home}) => {
   return (
 
       <Touchable
-        onClick={()=>home?router.push("/home"):router.back()}
+        onPress={()=>home?router.push("/home"):router.back()}
         className="bg-background"
         style={{
           padding: 2,
