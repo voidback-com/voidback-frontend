@@ -14,6 +14,7 @@ export const isAuthenticated = () => {
 
   const tok = getCookie("authTok");
 
+
   if(tok)
   {
     return true;

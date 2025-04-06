@@ -22,6 +22,10 @@ import Color from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
 import ListItem from '@tiptap/extension-list-item';
 import { createLowlight, all } from "lowlight";
+import Link from "@tiptap/extension-link";
+import Document from "@tiptap/extension-document";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import { Footnote, FootnoteReference, Footnotes } from "tiptap-footnotes";
 
 
 
@@ -35,98 +39,98 @@ const EditorReadOnly = ({content}) => {
     editable: false,
     content: content,
     extensions: [
+      Color.configure({ types: [TextStyle.name, ListItem.name] }),
 
-    Color.configure({ types: [TextStyle.name, ListItem.name] }),
-    TextStyle.configure({ types: [ListItem.name] }),
-    StarterKit.configure({
-      bulletList: {
-        keepMarks: true,
-      },
-      orderedList: {
-        keepMarks: true,
-        keepAttributes: true, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      },
+      TextStyle.configure({ types: [ListItem.name] }),
 
-    }),
-
-
-    BubbleMenu.configure({
-      pluginKey: new PluginKey('bubbleMenuOne'),
-      element: document.querySelector('.menu-one'),
-    }),
-
-    FloatingMenu.configure({
-      element: document.querySelector('.menu'),
-        shouldShow: ({ editor, view, state, oldState }) => {
-          // show the floating within any paragraph
-          return editor.isActive('paragraph')
+      StarterKit.configure({
+        
+        bulletList: {
+          keepMarks: true,
         },
 
-      "tippyOptions": {"placement": "left-start"}
-    }),
-
-    TextAlign.configure({
-      types: ['heading', 'paragraph'],
-      alignments: ['left', "center", 'right'],
-      defaultAlignment: "left",
-}),
-
-      Placeholder.configure({
-        placeholder: "Content here...",
+        document: false
       }),
 
-      Heading.configure({
-        levels: [1,2,3,4,5,6],
+
+      Document.extend({
+        content: "block+ footnotes?",
       }),
 
-      Paragraph,
 
-      FontSize.configure({
-      }),
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+        alignments: ['left', "center", 'right'],
+        defaultAlignment: "left",
+  }),
 
-      Image.configure({
-        "allowBase64": true,
-        "HTMLAttributes": {
-          "class": "w-[90%] self-center"
-        }
-      }),
+        Placeholder.configure({
+          placeholder: "Content here...",
+        }),
 
-      CodeBlock.configure({
-        defaultLanguage: "plaintext",
-        exitOnArrowDown: true,
-        exitOnTripleEnter: false,
-      }),
+        Heading.configure({
+          levels: [1,2,3,4,5,6],
+        }),
 
-      CodeBlockLowlight.extend({
-          addNodeView() {
+        Paragraph,
 
-            return ReactNodeViewRenderer(codeBlockComponent)
+        FontSize.configure({
+        }),
+
+        Image.configure({
+          HTMLAttributes: {
+            "class": "w-[90%] self-center"
           },
 
-        "addKeyboardShortcuts": () => {
-          return {
-            "Tab": ({editor}) => editor.chain().focus().insertContent(`\t`).run(),
+          allowBase64: true
+        }),
+
+        CodeBlock.configure({
+          defaultLanguage: "plaintext",
+          exitOnArrowDown: true,
+          exitOnTripleEnter: false,
+        }),
+
+        CodeBlockLowlight.extend({
+            addNodeView() {
+
+              return ReactNodeViewRenderer(codeBlockComponent)
+            },
+
+          "addKeyboardShortcuts": () => {
+            return {
+              "Tab": ({editor}) => editor.chain().focus().insertContent(`\t`).run(),
+            }
           }
-        }
-        })
-        .configure({ lowlight }),
+          })
+          .configure({ lowlight }),
 
 
-      Youtube.configure({
-        "HTMLAttributes": {
-          "class": "w-full rounded-lg"
-        },
-      }),
+        Youtube.configure({
+          "HTMLAttributes": {
+            "class": "w-full"
+          },
+        }),
 
 
-      Dropcursor,
+        Dropcursor,
 
-      Blockquote.configure({
-        HTMLAttributes: {
-          "class": "bg-default-50 rounded-lg p-5"
-        } 
-      }),
+        Blockquote.configure({
+          HTMLAttributes: {
+            "class": "bg-default-50 rounded-lg p-5"
+          } 
+        }),
 
+        HorizontalRule,
+        Footnotes,
+        Footnote,
+        FootnoteReference,
+        Link.configure({
+          openOnClick: false,
+          autolink: true,
+          defaultProtocol: "https",
+          protocols: ["http", "https"],
+        }),
     ],
   });
 
