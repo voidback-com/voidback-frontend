@@ -473,7 +473,7 @@ const ViewWriteup = ({ params }) => {
 
 
                 { writeUp && writeUp.series &&
-                <Chip onClick={()=>router.push(`/view/account/${writeUp.author.username}`)} className="border-1 bg-default-0 rounded-md">
+                <Chip onClick={()=>router.push(`/view/series/${writeUp.series.name}`)} className="border-1 bg-default-0 rounded-md">
                   {writeUp.series.name}
                 </Chip>
                 }
