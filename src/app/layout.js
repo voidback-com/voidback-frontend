@@ -49,6 +49,8 @@ export default function RootLayout({ children }) {
 
         <link rel="stylesheet" href="/github-dark.min.css"/>
 
+        <title>Voidback</title>
+
 
       <meta name="description" content={`Voidback - Discover Voidback, a platform built for readers and writers to create and share content. Write "write ups" (blog posts), organize them into categories, and create "series" to tell stories. Our goal is to be the go-to place for online reading, writing and learning.`} />
 

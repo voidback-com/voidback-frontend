@@ -6,7 +6,7 @@ import {
   VStack,
   Show
 } from "@chakra-ui/react";
-import { API_URL, getAccessToken, isAuthenticated, toAuthHeaders, WS_ANALYTICS } from "@/app/configs/api";
+import { API_URL, isAuthenticated, toAuthHeaders, WS_ANALYTICS } from "@/app/configs/api";
 import { useEffect, useState, useContext } from "react";
 import { Tab, Tabs, Skeleton } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ import { Users } from "@geist-ui/icons";
 import { AutoAwesomeMosaicTwoTone } from "@mui/icons-material";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { Cities, Countries, StatusCard } from "./cards";
+import { getCookie } from "cookies-next";
 
 
 
@@ -27,14 +28,14 @@ export const UsersActivity = () => {
 
   useEffect(()=> {
 
-    if(isAuthenticated() && account && account.is_staff){
+    if(isAuthenticated()){
 
 
       const ws = new WebSocket(WS_ANALYTICS+"usersActivity");
 
 
       ws.onopen = (event) => {
-        ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(getCookie("authTok"));
         setLoading(true);
       }
 
@@ -66,7 +67,7 @@ export const UsersActivity = () => {
         try{
           if(ws.readyState!==WebSocket.CLOSED)
           {
-            ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(getCookie("authTok"));
           }
         }catch(err){
           //
@@ -77,7 +78,7 @@ export const UsersActivity = () => {
 
     }
 
-  }, [account])
+  }, [])
 
 
 
@@ -145,14 +146,14 @@ export const PositiveEvents = () => {
 
   useEffect(()=> {
 
-    if(isAuthenticated() && account && account.is_staff){
+    if(isAuthenticated()){
 
 
       const ws = new WebSocket(WS_ANALYTICS+"positiveEvents");
 
 
       ws.onopen = (event) => {
-        ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(getCookie("authTok"));
         setLoading(true);
       }
 
@@ -184,7 +185,7 @@ export const PositiveEvents = () => {
         try{
           if(ws.readyState!==WebSocket.CLOSED)
           {
-            ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(getCookie("authTok"));
           }
         }catch(err){
           //
@@ -195,7 +196,7 @@ export const PositiveEvents = () => {
 
     }
 
-  }, [account])
+  }, [])
 
 
 
@@ -260,14 +261,15 @@ export const NegativeEvents = () => {
 
   useEffect(()=> {
 
-    if(isAuthenticated() && account && account.is_staff){
+    if(isAuthenticated()){
 
+      console.log(222)
 
       const ws = new WebSocket(WS_ANALYTICS+"negativeEvents");
 
 
       ws.onopen = (event) => {
-        ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(getCookie("authTok"));
         setLoading(true);
       }
 
@@ -299,7 +301,7 @@ export const NegativeEvents = () => {
         try{
           if(ws.readyState!==WebSocket.CLOSED)
           {
-            ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(getCookie("authTok"));
           }
         }catch(err){
           //
@@ -310,7 +312,7 @@ export const NegativeEvents = () => {
 
     }
 
-  }, [account])
+  }, [])
 
 
 
@@ -355,7 +357,6 @@ export const NegativeEvents = () => {
 
 export const NeutralEvents = () => {
   
-  const { account } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
@@ -363,14 +364,14 @@ export const NeutralEvents = () => {
 
   useEffect(()=> {
 
-    if(isAuthenticated() && account && account.is_staff){
+    if(isAuthenticated()){
 
 
       const ws = new WebSocket(WS_ANALYTICS+"neutralEvents");
 
 
       ws.onopen = (event) => {
-        ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(getCookie("authTok"));
         setLoading(true);
       }
 
@@ -402,7 +403,7 @@ export const NeutralEvents = () => {
         try{
           if(ws.readyState!==WebSocket.CLOSED)
           {
-            ws.send(JSON.stringify({"token": getAccessToken()}));
+        ws.send(getCookie("authTok"));
           }
         }catch(err){
           //
@@ -413,7 +414,7 @@ export const NeutralEvents = () => {
 
     }
 
-  }, [account])
+  }, [])
 
 
 
