@@ -11,7 +11,6 @@ import { useEffect, useState, useContext } from "react";
 import { Tab, Tabs, Skeleton } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { Users } from "@geist-ui/icons";
-import { AutoAwesomeMosaicTwoTone } from "@mui/icons-material";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { Cities, Countries, StatusCard } from "./cards";
 import { getCookie } from "cookies-next";
