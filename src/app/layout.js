@@ -40,6 +40,7 @@ export default function RootLayout({ children }) {
       <html 
       lang="en"
       className={`${AbrilFatFace.variable} ${RobotoFont.variable}`}
+      suppressHydrationWarning
     >
         <head>
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
