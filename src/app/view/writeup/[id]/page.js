@@ -826,18 +826,6 @@ const ViewWriteup = ({ params }) => {
 
             <Divider />
 
-            <HStack className="py-5">
-              <SkeletonText isLoaded={!loading}>
-                <Text
-                  fontSize={"20pt"}
-                  className="font-abril text-writeup"
-                >
-                  {writeUp && writeUp.title}
-                </Text>
-              </SkeletonText>
-            </HStack>
-
-
             <VStack className="h-full w-[80%] max-w-[800px] border-0">
               { writeUp &&
                 <EditorReadOnly content={writeUp.content} />
