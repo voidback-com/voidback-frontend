@@ -163,7 +163,7 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
 
     if(res.status==200)
     {
-      setSeriesList()
+      setSeriesList(dat);
 
       toast({
         title: "Created series.",
@@ -512,6 +512,8 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
                 >
                   <Button
                     variant="bordered"
+                    disabled
+                    isDisabled={!thumbnail || !tags.length ? true : false}
                     onPress={()=>handlePublish()}
                   >
                     Publish
