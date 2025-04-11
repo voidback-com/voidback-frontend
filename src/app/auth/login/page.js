@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/providers/AuthProvider";
 import { Input, Image, Button } from "@nextui-org/react";
 import { setCookie } from "cookies-next";
-import { isAuthenticated } from "@/app/configs/api";
+import { errorToReadable, isAuthenticated } from "@/app/configs/api";
 
 
 
@@ -123,6 +123,15 @@ const Login = () => {
       {
         toast({
           title: loginError.detail,
+          status: "error",
+          duration: 4000
+        })
+      }
+
+      else{
+        toast({
+          title: "Failed to authenticate.",
+          description: errorToReadable(loginError),
           status: "error",
           duration: 4000
         })

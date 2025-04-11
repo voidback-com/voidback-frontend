@@ -30,7 +30,8 @@ export const Topbar = ({ showNavBack, setSelected, fetchWriteUps, setEnd, setWri
   const {
     newNotifications,
     autocompleteQuery,
-    newQuery
+    newQuery,
+    isMobile
   } = useContext(LeftFeedContext);
 
 
@@ -117,23 +118,47 @@ export const Topbar = ({ showNavBack, setSelected, fetchWriteUps, setEnd, setWri
       padding={10}
     >
 
-      <Button
-        _hover={{opacity: "70%"}}
-        marginLeft={3}
-        onPress={()=>router.push("/profile")}
-        variant="unstyled"
-        size="md"
-      >
-        <Avatar 
-          size={"md"} 
-          radius="md"
-          src={account && account.avatar}
-          className="border-1"
-        />
-      </Button>
+      {
+        isMobile
+        ?
+         
+          <Button
+            className="w-fit p-0"
+            size="sm"
+            variant="light"
+            onPress={()=>colorMode.toggleColorMode()}
+          >
+            {colorMode.colorMode==="dark"
+              ?
+              <Sun />
+              :
+              <Moon />
+            }
+          </Button>
+
+        :
+        <Button
+          _hover={{opacity: "70%"}}
+          marginLeft={3}
+          onPress={()=>router.push("/profile")}
+          variant="unstyled"
+          size="md"
+        >
+          <Avatar 
+            size={"md"} 
+            radius="md"
+            src={account && account.avatar}
+            className="border-1"
+          />
+        </Button>
+      }
 
       
     {
+        isMobile
+        ?
+        null
+        :
         isAuthenticated()
         ?
      <Button
@@ -214,6 +239,10 @@ export const Topbar = ({ showNavBack, setSelected, fetchWriteUps, setEnd, setWri
       <HStack>
 
         {
+          isMobile
+          ?
+            null
+          :
           isAuthenticated()
           ?
             <Button 
@@ -234,24 +263,31 @@ export const Topbar = ({ showNavBack, setSelected, fetchWriteUps, setEnd, setWri
           null
         }
 
-      <Show breakpoint="(min-width: 1000px)">
-        <Button
-          className="w-fit p-0"
-          size="sm"
-          variant="light"
-          onPress={()=>colorMode.toggleColorMode()}
-        >
-          {colorMode.colorMode==="dark"
-            ?
-            <Sun />
-            :
-            <Moon />
-          }
-        </Button>
-      </Show>
+        { !isMobile &&
+        <Show breakpoint="(min-width: 1000px)">
+          <Button
+            className="w-fit p-0"
+            size="sm"
+            variant="light"
+            onPress={()=>colorMode.toggleColorMode()}
+          >
+            {colorMode.colorMode==="dark"
+              ?
+              <Sun />
+              :
+              <Moon />
+            }
+          </Button>
+        </Show>
+        }
 
 
+        
       {
+          isMobile
+          ?
+            null 
+          :
           isAuthenticated()
           ?
       <Button

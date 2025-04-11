@@ -19,7 +19,7 @@ const Home = () => {
   document.title = "Home";
 
 
-  const { getWriteUps } = useContext(LeftFeedContext);
+  const { getWriteUps, isMobile } = useContext(LeftFeedContext);
 
 
   const [tags, setTags] = useState(null);
@@ -96,6 +96,7 @@ const Home = () => {
 
         <TagsFilterBar tags={tags} setTags={setTags} selectedTag={selectedTag} selectTag={handleSelectTag} />
       </div>
+
 
       <div 
         className="w-full h-full overflow-y-scroll"

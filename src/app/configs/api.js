@@ -3,7 +3,6 @@ import { getCookie } from "cookies-next";
 
 
 
-
 export const API_URL = process.env.API_URL;
 export const WS_NOTIFICATIONS_COUNT = process.env.WS_NOTIFICATIONS_COUNT;
 export const WS_ANALYTICS = process.env.WS_ANALYTICS;
@@ -118,5 +117,8 @@ export const accountCacheGet = () => {
 export const accountCacheDelete = () => {
   localStorage.removeItem("cached_accInfo");
 }
+
+
+
 
 

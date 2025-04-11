@@ -2,6 +2,7 @@
 import { createContext, useState, useContext } from "react";
 import { API_URL, toAuthHeaders } from "@/app/configs/api";
 import { AnalyticsContext } from "../AnalyticsProvider";
+import { deviceIsMobile } from "@/app/configs/isMobile";
 
 
 
@@ -12,9 +13,10 @@ const WriteUpsContext = () => {
 
   const { logEvent } = useContext(AnalyticsContext);
 
+  const isMobile = deviceIsMobile();
 
-  const getTags = async (page) => {
-    return fetch(API_URL+`tags?page_size=5&page=${page}`, {
+  const getTags = async (page, size) => {
+    return fetch(API_URL+`tags?page_size=${size}&page=${page}`, {
       method: "GET"
     })
   }
@@ -221,6 +223,8 @@ const WriteUpsContext = () => {
 
 
   const contextData = {
+
+    isMobile,
 
     autocompleteQuery,
     newQuery,

@@ -32,13 +32,13 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
   const [prev, setPrev] = useState(false);
 
 
-  const { getTags } = useContext(LeftFeedContext);
+  const { getTags, isMobile } = useContext(LeftFeedContext);
 
 
   const fetchPage = async () => {
     setLoading(true);
 
-    const response = await getTags(page+1);
+    const response = await getTags(page+1, isMobile ? 1 : 5);
 
     const data = await response.json();
 
@@ -81,7 +81,7 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
     {
       setLoading(true);
 
-      const response = await getTags(page);
+      const response = await getTags(page, isMobile ? 1 : 5);
 
       const data = await response.json();
 
