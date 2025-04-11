@@ -26,9 +26,10 @@ const Tag = ({tag, selectTag, selectedTag}) => {
 
 const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [end, setEnd] = useState(false);
+  const [next, setNext] = useState(true);
+  const [prev, setPrev] = useState(false);
 
 
   const { getTags } = useContext(LeftFeedContext);
@@ -37,7 +38,7 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
   const fetchPage = async () => {
     setLoading(true);
 
-    const response = await getTags(page);
+    const response = await getTags(page+1);
 
     const data = await response.json();
 
@@ -47,10 +48,20 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
 
       if(data.next)
       {
-        setPage(p=>p+1);
+        setPage(page+1);
+        setNext(true);
       } else {
-        setEnd(true);
+        setNext(false)
       }
+
+
+      if(data.previous)
+      {
+        setPrev(true);
+      } else {
+        setPrev(false);
+      }
+
     }
 
     setLoading(false);
@@ -58,18 +69,46 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
 
 
   useEffect(()=> {
-    if(page===1 && !loading && !tags)
+    if(!page && !loading && !tags)
     {
       fetchPage();
     }
   }, [!loading, !tags])
 
 
-  const previous = () => {
-    if(page > 1)
+  const previous = async () => {
+    if(prev)
     {
-      setPage(p=>p-1);
-      fetchPage();
+      setLoading(true);
+
+      const response = await getTags(page);
+
+      const data = await response.json();
+
+      if(response.status===200)
+      {
+        setPage(page-1);
+
+        setTags(data.results);
+
+        if(data.next)
+        {
+          setNext(true);
+        } else {
+          setNext(false)
+        }
+
+
+        if(data.previous)
+        {
+          setPrev(true);
+        } else {
+          setPrev(false);
+        }
+
+      }
+
+      setLoading(false);
     }
   }
 
@@ -80,8 +119,8 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
         variant="bordered"
         size="sm"
         className="border-1"
-        isDisabled={page<2}
-        onPress={previous}
+        isDisabled={!prev}
+        onPress={()=>previous()}
       >
         <ChevronLeft />
       </Button>
@@ -115,7 +154,7 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
         variant="bordered"
         size="sm"
         className="border-1"
-        isDisabled={end}
+        isDisabled={!next}
         onPress={()=>fetchPage()}
       >
         <ChevronRight />
