@@ -103,7 +103,7 @@ const Home = () => {
         ref={(r)=>vref.current=r}
       >
         <InfiniteScroll
-          className="py-[10vh] gap-6 flex flex-wrap justify-start gap-y-10 p-8"
+          className="py-10 gap-6 flex flex-wrap justify-start gap-y-10  justify-center"
           initialLoad
           hasMore={!end}
           loadMore={()=>fetchWriteUps()}
