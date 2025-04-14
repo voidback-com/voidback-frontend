@@ -163,7 +163,7 @@ export const WriteUpCard = ({writeup, setWriteUps}) => {
     <Card
       itemScope
       itemType="https://schema.org/blogPost"
-      className={`w-full max-w-[330px] max-h-[400px] h-full bg-background rounded-md p-0 border-1`}
+      className={`w-full max-w-[300px] max-h-[350px] h-full bg-background rounded-md p-0 border-1`}
       isPressable
       onPress={()=>router.push(`/view/writeup/${writeup.id}`)}
       shadow="none"
@@ -176,19 +176,19 @@ export const WriteUpCard = ({writeup, setWriteUps}) => {
           loading="lazy"
           alt="thumbnail"
           itemProp="thumbnail"
-          className="object-fit aspect-[7/5]"
+          className="object-fit aspect-[3/2]"
           radius="none"
           conn
           src={writeup.thumbnail.thumbnail}
-          width={350}
-          height={250}
+          width={300}
+          height={200}
         />
       </CardHeader>
 
 
       <CardBody className="p-5 flex flex-row">
 
-        <VStack className="h-fit w-fit p-2">
+        <VStack className="w-fit p-2">
           <Avatar itemProp="avatar"  name={writeup.author.full_name[0]} src={writeup.author.avatar} size="md" />
         </VStack>
 
