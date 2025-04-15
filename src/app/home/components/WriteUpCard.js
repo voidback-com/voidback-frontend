@@ -163,7 +163,7 @@ export const WriteUpCard = ({writeup, setWriteUps}) => {
     <Card
       itemScope
       itemType="https://schema.org/blogPost"
-      className={`w-full max-w-[300px] max-h-[350px] h-full bg-background rounded-md p-0 border-1`}
+      className={`w-full max-w-[300px] max-h-[370px] h-full bg-background rounded-md p-0 border-1`}
       isPressable
       onPress={()=>router.push(`/view/writeup/${writeup.id}`)}
       shadow="none"
