@@ -10,17 +10,9 @@ import {
   Text,
   Skeleton,
   HStack,
-  Container,
   Stack,
   Spacer,
-  useColorMode,
   Divider,
-  Show,
-  Hide,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
   SkeletonText,
   ModalCloseButton,
   ModalOverlay,
@@ -32,7 +24,6 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Slider,
-
   useToast
 } from "@chakra-ui/react";
 import { Chip, Avatar, Button, Textarea, Spinner, Dropdown, DropdownTrigger, DropdownItem, DropdownMenu } from "@nextui-org/react";
@@ -54,7 +45,6 @@ import { MdSort } from "@react-icons/all-files/md/MdSort";
 
 const ViewWriteup = ({ params }) => {
 
-  document.title = "Write Up";
 
   const { id } = params;
 
@@ -151,6 +141,7 @@ const ViewWriteup = ({ params }) => {
 
     if(response.status===200)
     {
+      document.title = data.title;
       setWriteUp(data);
     }
     else if(response.status===404){      
