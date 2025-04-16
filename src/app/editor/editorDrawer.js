@@ -169,6 +169,7 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
 
       Youtube.configure({
+        "addPasteHandler": false,
         "HTMLAttributes": {
           "class": "w-full"
         },
@@ -191,6 +192,7 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
       Link.configure({
         openOnClick: false,
         autolink: true,
+        linkOnPaste: true,
         defaultProtocol: "https",
         protocols: ["http", "https"],
       })

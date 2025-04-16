@@ -107,6 +107,7 @@ const EditorReadOnly = ({content}) => {
 
 
         Youtube.configure({
+        "addPasteHandler": false,
           "HTMLAttributes": {
             "class": "w-full"
           },
@@ -126,6 +127,8 @@ const EditorReadOnly = ({content}) => {
         Footnote,
         FootnoteReference,
         Link.configure({
+
+          linkOnPaste: true,
           openOnClick: false,
           autolink: true,
           defaultProtocol: "https",

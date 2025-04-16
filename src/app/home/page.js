@@ -16,7 +16,7 @@ import InfiniteScroll from "react-infinite-scroller";
 const Home = () => {
 
 
-  document.title = "Home";
+  document.title = "Voidback";
 
 
   const { getWriteUps, isMobile } = useContext(LeftFeedContext);

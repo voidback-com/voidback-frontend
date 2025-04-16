@@ -128,8 +128,6 @@
 
   pre {
     width: 100%;
-    max-width: 800px;
-    min-width: 400px;
     place-self: center;
     background: #151b23;
     border: solid 0.5px lightgrey;

@@ -12,7 +12,7 @@ const Tag = ({tag, selectTag, selectedTag}) => {
 
 
   return (
-    <Card isPressable onPress={()=>selectTag(tag.tag)} className={`h-fit w-fit shadow-none rounded-xl border-1 p-0 ${selectedTag===tag.tag && "bg-default-200"}`}>
+    <Card isPressable onPress={()=>selectTag(tag.tag)} className={`min-w-fit shadow-none rounded-xl border-1 p-0 ${selectedTag===tag.tag && "bg-default-200"}`}>
       <CardBody>
         <Text className="text-sm font-semibold" fontFamily={"sans-serif"}>
           {tag.tag}

@@ -1,14 +1,12 @@
-'use client'
-import { useRouter } from "next/navigation";
+import Home from "./home/page";
 
 
 
 const Page = () => {
-  document.title = "Voidback";
 
-  const router = useRouter();
-
-  return router.replace("/home");
+  return (
+    <Home />
+  )
 }
 
 
