@@ -103,7 +103,6 @@ const Home = () => {
         ref={(r)=>vref.current=r}
       >
         <InfiniteScroll
-          className="py-10 gap-10 flex flex-wrap gap-y-10 justify-center"
           initialLoad
           hasMore={!end}
           loadMore={()=>fetchWriteUps()}
@@ -123,6 +122,7 @@ const Home = () => {
           useWindow={false}
           getScrollParent={()=>vref.current}
         >
+          <div className="flex flex-wrap w-full h-full gap-10 items-center p-10">
           { 
             writeups.length ?
             writeups.map((w)=> {
@@ -133,6 +133,7 @@ const Home = () => {
 
             : !loading && <Text fontSize={"small"}>no write ups found.</Text>
           }
+          </div>
         </InfiniteScroll>
       </div>
 

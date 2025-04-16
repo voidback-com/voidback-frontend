@@ -252,7 +252,7 @@ const WriteUpsContext = () => {
     handleCommentLike,
     getCommentImpressions,
     submitCommentReport,
-    submitWriteupReport
+    submitWriteupReport,
 
   }
 
