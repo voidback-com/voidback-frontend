@@ -127,7 +127,7 @@ const TagsFilterBar = ({tags, setTags, selectTag, selectedTag}) => {
 
       <Spacer />
       <div
-        className="w-full flex flex-row gap-5"
+        className="w-full flex flex-row gap-5 overflow-hidden"
       >
         <Tag tag={{"tag": "All"}} selectTag={selectTag} selectedTag={selectedTag} />
         {

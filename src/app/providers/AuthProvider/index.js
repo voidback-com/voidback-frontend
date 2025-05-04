@@ -2,7 +2,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { deleteCookie } from "cookies-next";
 import { accountCacheDelete, accountCacheGet, accountCacheStore, API_URL, isAuthenticated, toAuthHeaders } from "@/app/configs/api";
-import { AnalyticsContext } from "../AnalyticsProvider";
 
 
 export const AuthContext = createContext();
@@ -15,12 +14,10 @@ const AuthContextProvider = ({ children }) => {
 
 
 
-  const { logEvent } = useContext(AnalyticsContext);
 
 
   const auth_signup = async (username, email, password, full_name, birth_date) => {
 
-    await logEvent("auth-signup", window.location.href, {username: username, email: email});
 
     const body = {
       full_name: full_name,
@@ -67,7 +64,6 @@ const AuthContextProvider = ({ children }) => {
 
   const auth_sendOtp = async () => {
 
-    await logEvent("auth-send-otp", window.location.href);
 
     return fetch(API_URL+"account/sendOtp", {
       method: "POST",
@@ -145,7 +141,6 @@ const AuthContextProvider = ({ children }) => {
 
   const auth_verifyOtp = async (token) => {
 
-    await logEvent("auth-verify-otp", window.location.href);
 
     return fetch(API_URL+"account/verifyOtp", {
       method: "POST",
@@ -164,7 +159,6 @@ const AuthContextProvider = ({ children }) => {
 
   const auth_login = async (email, password) => {
 
-    await logEvent("auth-login", window.location.href, {email});
 
     const body = {
       username: email,
@@ -188,7 +182,6 @@ const AuthContextProvider = ({ children }) => {
   const logoutUser = async () => {
     deleteCookie("authTok");
     accountCacheDelete();
-    await logEvent("auth-logout", window.location.href);
 
     await fetch(API_URL+"logout", {
       method: "GET",
@@ -201,7 +194,6 @@ const AuthContextProvider = ({ children }) => {
 
   const updateAccount = async (data) => {
 
-    await logEvent("auth-account-update", window.location.href, {data});
 
     accountCacheDelete();
 
@@ -215,7 +207,6 @@ const AuthContextProvider = ({ children }) => {
 
 
   const deleteAccount = async (otp) => {
-    await logEvent("auth-delete-account", window.location.href);
 
 
     return await fetch(API_URL+`account`, {
@@ -232,7 +223,6 @@ const AuthContextProvider = ({ children }) => {
 
   const follow = async (username) => {
 
-    await logEvent("auth-follow", window.location.href, {"following": username});
 
     return await fetch(API_URL+`account/follow?username=${username}`, {
       method: "GET",
@@ -246,7 +236,6 @@ const AuthContextProvider = ({ children }) => {
 
  
   const unfollow = async (username) => {
-    await logEvent("auth-unfollow", window.location.href, {"unfollowing": username});
 
     return await fetch(API_URL+`account/unfollow?username=${username}`, {
       method: "GET",
@@ -362,7 +351,6 @@ const AuthContextProvider = ({ children }) => {
 
   const submitAccountReport = async (uid, description, priority, disturbance) => {
 
-    await logEvent("auth-account-report", window.location.href, {"user_id": uid});
 
     return fetch(API_URL+"report", {
       method: "POST",

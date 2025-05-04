@@ -30,7 +30,7 @@ module.exports = {
           light: {
               layout: {}, // light theme layout tokens
               colors: {
-                writeup: "#2c3853"
+                writeup: "#000000"
             }, // light theme colors
           },
 

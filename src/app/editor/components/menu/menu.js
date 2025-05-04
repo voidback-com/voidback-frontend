@@ -2,8 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Divider, HStack, Spacer, Show, Text, VStack, Modal, ModalBody, ModalCloseButton, Skeleton, ModalContent, ModalOverlay, useDisclosure, useToast } from "@chakra-ui/react";
 import { AlignCenter, AlignLeft, AlignRight, Bold, ChevronDown, ChevronDownCircleFill, Code, Image, Italic, Link, List, Menu, MoreHorizontal, MoreVertical, Plus, PlusCircle, Underline, Video, Youtube } from "@geist-ui/icons";
-import { Button, Input, Select, SelectItem, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, PopoverContent, PopoverTrigger, Popover } from "@nextui-org/react";
-import { BubbleMenu, FloatingMenu } from "@tiptap/react";
+import { Button, Input, Select, SelectItem, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { FaHeading } from "@react-icons/all-files/fa/FaHeading";
 import { FaParagraph } from "@react-icons/all-files/fa/FaParagraph";
 import { useFileUpload } from "use-file-upload";
@@ -254,7 +253,6 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
   return (
     <div className="border-1 w-full rounded-lg p-2 flex flex-row  gap-2 border-b-0 rounded-b-none">
 
-
         <Button
           variant="light"
           size="sm"
@@ -301,7 +299,7 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
           disallowEmptySelection
           selectedKeys={[getSelected()]}
           selectionMode="single"
-          variant="flat"
+          variant="bordered"
         >
            <DropdownItem
             key={"p"}
@@ -338,6 +336,7 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
           >
             H4
           </DropdownItem>
+
 
 
           <DropdownItem
@@ -389,9 +388,9 @@ export const MainMenu = ({editor, title, setTitle, content, close, setContent}) 
         >
 
           {
-            FontSizes.map((fontSize)=> {
+            FontSizes.map((fontSize,i)=> {
               return <DropdownItem
-                key={fontSize}
+                key={i}
                 onPress={()=> {
                   editor.chain().focus().setFontSize(fontSize).run();
                 }}

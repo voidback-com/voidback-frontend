@@ -6,7 +6,6 @@ import { chakraTheme } from "../configs/Theme.js";
 import LeftFeedContextProvider from "./FeedsProvider/LeftFeedProvider.js";
 import SidebarContextProvider from "./FeedsProvider/SidebarProvider.js";
 import {NextUIProvider} from "@nextui-org/react";
-import AnalyticsContextProvider from "./AnalyticsProvider/index.js";
 import EditorContextProvider from "./FeedsProvider/EditorProvider.js";
  
 
@@ -19,17 +18,15 @@ export default function Providers ({children}) {
     <ChakraProvider theme={chakraTheme}>
       <ColorModeScript initialColorMode={chakraTheme.config.initialColorMode}/>
         <NextUIProvider>
-          <AnalyticsContextProvider>
-            <AuthContextProvider>
-                <SidebarContextProvider>
-                  <LeftFeedContextProvider>
-                    <EditorContextProvider>
-                      {children}
-                    </EditorContextProvider>
-                  </LeftFeedContextProvider>
-                </SidebarContextProvider>
-            </AuthContextProvider>
-          </AnalyticsContextProvider>
+          <AuthContextProvider>
+              <SidebarContextProvider>
+                <LeftFeedContextProvider>
+                  <EditorContextProvider>
+                    {children}
+                  </EditorContextProvider>
+                </LeftFeedContextProvider>
+              </SidebarContextProvider>
+          </AuthContextProvider>
         </NextUIProvider>
     </ChakraProvider>
   )

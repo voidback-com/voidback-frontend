@@ -2,7 +2,7 @@
 import "./globals.css";
 import dynamic from 'next/dynamic'
 import HydrationZustand from "./globalComponents/HydrationZustand";
-import { Abril_Fatface, Roboto } from 'next/font/google';
+import { Roboto, Playfair_Display } from 'next/font/google';
 
 
 const DynamicProviders = dynamic(
@@ -12,11 +12,11 @@ const DynamicProviders = dynamic(
 
 
 
-export const AbrilFatFace = Abril_Fatface({
+export const PlayFair = Playfair_Display({
   subsets: ['latin'],
   display: "swap",
 
-  variable: "--font-abril",
+  variable: "--font-playfair",
   weight: "400",
 });
 
@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
 
       <html 
       lang="en"
-      className={`${AbrilFatFace.variable} ${RobotoFont.variable}`}
+      className={`${PlayFair.variable} ${RobotoFont.variable}`}
       suppressHydrationWarning
     >
         <head>

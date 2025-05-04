@@ -1,7 +1,6 @@
 'use client'
 import { createContext, useState, useContext } from "react";
 import { API_URL, toAuthHeaders } from "@/app/configs/api";
-import { AnalyticsContext } from "../AnalyticsProvider";
 import { deviceIsMobile } from "@/app/configs/isMobile";
 
 
@@ -11,7 +10,6 @@ import { deviceIsMobile } from "@/app/configs/isMobile";
 const WriteUpsContext = () => {
 
 
-  const { logEvent } = useContext(AnalyticsContext);
 
   const isMobile = deviceIsMobile();
 
@@ -104,7 +102,6 @@ const WriteUpsContext = () => {
 
 
   const submitCommentReport = async (account, commentID, description, priority, disturbance) => {
-    await logEvent("writeup-comment-report", window.location.href, {"comment_id": commentID});
 
     return fetch(API_URL+"report", {
       method: "POST",
@@ -124,7 +121,6 @@ const WriteUpsContext = () => {
 
 
   const submitWriteupReport = async (account, writeup_id, description, priority, disturbance) => {
-    await logEvent("writeup-report", window.location.href, {"writeup_id": writeup_id});
 
     return fetch(API_URL+"report", {
       method: "POST",

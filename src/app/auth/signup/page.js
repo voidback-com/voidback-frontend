@@ -256,7 +256,7 @@ const Signup = () => {
           >
             <Image 
               src="/logo.png"
-              width={"200px"}
+              width={"100px"}
             />
         </Skeleton>
 

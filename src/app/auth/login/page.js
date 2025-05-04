@@ -201,7 +201,8 @@ const Login = () => {
           >
             <Image 
               src="/logo.png"
-              width={"200px"}
+              width={"100px"}
+              className="rounded-xl"
             />
         </Skeleton>
 
@@ -212,7 +213,6 @@ const Login = () => {
         >
            <Skeleton
             width="100%"
-            borderRadius={"3px"}
             isLoaded={!auth_loading}
             >
             <Input 

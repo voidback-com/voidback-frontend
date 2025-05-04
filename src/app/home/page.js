@@ -12,11 +12,13 @@ import InfiniteScroll from "react-infinite-scroller";
 
 
 
+export const metdata = {
+  "title": "WtfD"
+}
+
 
 const Home = () => {
 
-
-  document.title = "Voidback";
 
 
   const { getWriteUps, isMobile } = useContext(LeftFeedContext);

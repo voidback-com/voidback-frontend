@@ -90,35 +90,35 @@
 
   /* Heading styles */
   h1{
-    font-family: var(--font-abril);
-    font-size: xx-large;
-  text-wrap: pretty;
+    font-family: var(--font-playfair);
+    font-size: x-large;
+    font-weight: 900;
+    text-wrap: pretty;
   } 
   h2 {
-    font-family: var(--font-abril);
-    font-size: x-large;
-  text-wrap: pretty;
-  } 
-  h3 {
-    font-family: var(--font-abril);
+    font-family: var(--font-roboto);
     font-size: larger;
   text-wrap: pretty;
   } 
-  h4 {
-    font-family: var(--font-abril);
+  h3 {
+    font-family: var(--font-roboto);
     font-size: large;
+  text-wrap: pretty;
+  } 
+  h4 {
+    font-family: var(--font-roboto);
+    font-size: medium;
   text-wrap: pretty;
   }
   h5{
     font-family: var(--font-abril);
-    font-size: large;
-    font-size: medium;
+    font-size: small;
     text-wrap: pretty;
   } 
   h6 {
     font-family: var(--font-abril);
     text-wrap: pretty;
-    font-size: small;
+    font-size: smaller;
   }
 
   .footnote-ref{
@@ -144,11 +144,6 @@
       padding: 0;
       font-family: 'JetBrainsMono', monospace;
     }
-  }
-  blockquote {
-    border-left: 3px solid var(--gray-3);
-    margin: 1.5rem 0;
-    padding-left: 1rem;
   }
 
   hr {

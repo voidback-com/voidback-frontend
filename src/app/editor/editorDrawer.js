@@ -22,7 +22,6 @@ import {
   DrawerBody,
   Text,
 } from "@chakra-ui/react";
-import { Input, Chip } from "@nextui-org/react";
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
@@ -31,9 +30,6 @@ import StarterKit from '@tiptap/starter-kit'
 import "./components/editor.css"
 import { EditorSecondMenu, MainMenu } from "./components/menu/menu";
 import { EditorContent } from "@tiptap/react";
-import BubbleMenu from "@tiptap/extension-bubble-menu";
-import { PluginKey } from "prosemirror-state";
-import FloatingMenu from "@tiptap/extension-floating-menu";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
@@ -63,7 +59,6 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
   const { 
     postError, 
-    postLoading, 
     postSuccess,
     lastPostId,
   } = useContext(EditorContext);
@@ -86,6 +81,20 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
   }, [postError])
 
 
+
+  const getSavedContents = () => {
+    const saved = localStorage.getItem("editorSavedContent");
+
+    if(saved)
+    {
+      const parsed = JSON.parse(saved);
+
+      return parsed;
+    }
+
+  }
+
+
   useEffect(()=> {
     if(postSuccess)
       setSuccessOpen(true);
@@ -97,21 +106,29 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
 
   const editor = useEditor({
+    content: getSavedContents(),
+
     onUpdate: ({editor}) => {
+
       setContent(editor.getJSON());
+
+      localStorage.setItem("editorSavedContent", JSON.stringify(editor.getJSON()));
     },
 
     extensions: [
+
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
 
     TextStyle.configure({ types: [ListItem.name] }),
+
+    
 
     StarterKit.configure({
       bulletList: {
         keepMarks: true,
       },
 
-      document: false
+      document: false,
     }),
 
 
@@ -161,7 +178,7 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
         "addKeyboardShortcuts": () => {
           return {
-            "Tab": ({editor}) => editor.chain().focus().insertContent(`\t`).run(),
+            "Shift+Tab": ({editor}) => editor.chain().focus().insertContent(`\t`).run(),
           }
         }
         })
@@ -180,7 +197,7 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
 
       Blockquote.configure({
         HTMLAttributes: {
-          "class": "bg-default-50 rounded-lg p-5"
+          "class": "border-l-4 pl-[20px] border-foreground rounded-none"
         } 
       }),
 
@@ -332,8 +349,9 @@ const VoidBackEditor = ({isOpen, onClose, onOpen}) => {
             <EditorContent
               aria-label="EDITOR"
               editor={editor}
-              className={"w-full border-0 p-4"}
-            autofocus />
+              className={"w-full border-0 p-4 z-0"}
+              autofocus 
+            />
 
           </VStack>
         </DrawerBody>
