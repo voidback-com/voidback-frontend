@@ -1,8 +1,6 @@
-const Config = require('./lib/config');
-const siteUrl = Config.url;
 
 module.exports = {
-   siteUrl,
+  siteUrl: "https://voidback.com",
    generateRobotsTxt: true,
    robotsTxtOptions: {
       policies: [

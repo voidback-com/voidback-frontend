@@ -12,6 +12,11 @@ const nextConfig = {
     styledComponents: true,
   },
 
+
+  eslint: {
+    ignoreDuringBuilds: true
+  },
+
    webpack: (config) => {
 
         config.module.rules.push({

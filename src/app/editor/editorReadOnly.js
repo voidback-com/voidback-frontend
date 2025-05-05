@@ -118,7 +118,7 @@ const EditorReadOnly = ({content}) => {
 
         Blockquote.configure({
           HTMLAttributes: {
-            "class": "bg-default-50 rounded-lg p-5"
+            "class": "border-l-4 pl-[20px] border-foreground rounded-none"
           } 
         }),
 
