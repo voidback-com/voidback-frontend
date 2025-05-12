@@ -192,3 +192,36 @@ button {
 
 
 
+
+.ReactFlagsSelect-module_selectOptions__3LNBJ{
+  background-color: var(--theme-background) !important;
+  border-width: 0px !important;
+
+
+  li:hover{
+    background-color: var(--theme-background);
+  }
+}
+
+
+
+.ReactFlagsSelect-module_selectBtn__19wW7{
+  border-width: 0px !important;
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+
+
+
+

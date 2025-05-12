@@ -11,7 +11,7 @@ export default async function sitemap({results}) {
 
   const writeupsUrls = results.map(({id})=> {
     return {
-        "url": `https://voidback.com/view/writeup/${id}`,
+        "url": `https://voidback.com/apps/${id}`,
         'lastModified': new Date(),
         'changeFrequency': "daily",
         'priority': 1 
@@ -26,11 +26,7 @@ export default async function sitemap({results}) {
 
 export async function getServerSideProps() {
 
-  const writeUpsRes = await fetch("https://api.voidback.com/api/writeup/list?page_size=50000")
-    .from("Model") 
-    .select("id")
-    .limit(10000);
-
+  const writeUpsRes = await fetch("https://api.voidback.com/api/apps?page_size=50000");
 
   const response = await writeUpsRes.json();
 

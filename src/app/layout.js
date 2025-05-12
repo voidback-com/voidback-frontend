@@ -1,15 +1,7 @@
 "use client"
 import "./globals.css";
-import dynamic from 'next/dynamic'
-import HydrationZustand from "./globalComponents/HydrationZustand";
 import { Roboto, Playfair_Display } from 'next/font/google';
-
-
-const DynamicProviders = dynamic(
-  () => import('./providers/index'),
-  { ssr: false }
-)
-
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 
 export const PlayFair = Playfair_Display({
@@ -50,24 +42,26 @@ export default function RootLayout({ children }) {
 
         <link rel="stylesheet" href="/github-dark.min.css"/>
 
-        <title itemProp="title" itemScope>Voidback</title>
+        <title itemProp="title" itemScope>Voidback | AI Appstore</title>
 
-    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1" />
 
-      <meta name="description" content={`Voidback: Read Limitlessly. Write Freely. Rise Together..`} />
+      <meta name="description" content={`Voidback: In browser AI apps`} />
 
-      <meta name="keywords" content="Voidback, Docs, Editor, Publish, Write Ups, Write, Read, News, Learning, Writing, Blog, Blogs, WriteUps, Communities, Discussions, Knowledge, E-Learning, Online Learning" />
+      <meta name="keywords" content="Voidback, A.I, AI, AI Apps, ML Models, Inferencing, Pretrained Models, Appstore" />
 
 
   </head>
 
         <body>
-          <HydrationZustand>
-            <DynamicProviders>
-              {children}
-            </DynamicProviders>
-          </HydrationZustand>
-
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </body>
 
       </html>
