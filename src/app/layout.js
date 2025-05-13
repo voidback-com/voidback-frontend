@@ -2,6 +2,7 @@
 import "./globals.css";
 import { Roboto, Playfair_Display } from 'next/font/google';
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 
 export const PlayFair = Playfair_Display({
@@ -42,13 +43,13 @@ export default function RootLayout({ children }) {
 
         <link rel="stylesheet" href="/github-dark.min.css"/>
 
-        <title itemProp="title" itemScope>Voidback | AI Appstore</title>
+        <title itemProp="title" itemScope>Voidback</title>
 
     <meta name="viewport" content="width=device-width, minimum-scale=1" />
 
-      <meta name="description" content={`Voidback: In browser AI apps`} />
+      <meta name="description" content={`Voidback: a platform by nerds for nerds`} />
 
-      <meta name="keywords" content="Voidback, A.I, AI, AI Apps, ML Models, Inferencing, Pretrained Models, Appstore" />
+      <meta name="keywords" content="Voidback, A.I, AI, AI Apps, ML Models, Inferencing, Pretrained Models, Ethical Hacking, Security, " />
 
 
   </head>
@@ -62,6 +63,8 @@ export default function RootLayout({ children }) {
           >
             {children}
           </ThemeProvider>
+
+          <Toaster />
         </body>
 
       </html>

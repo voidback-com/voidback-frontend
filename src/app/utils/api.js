@@ -1,6 +1,45 @@
+import { getCookie } from "cookies-next";
 
 
 export const API_URL = process.env.API_URL;
+export const WS_NOTIFICATIONS_COUNT = process.env.WS_NOTIFICATIONS_COUNT;
+
+
+export const isAuthenticated = () => {
+
+  const tok = getCookie("authTok");
+
+
+  if(tok)
+  {
+    return true;
+  }
+
+  return false;
+
+}
+
+
+export const toAuthHeaders = (headers) => {
+  try{
+    const tok = JSON.parse(getCookie("authTok"));
+  
+
+    if(tok)
+    {
+      if(tok)
+      {
+        headers["Authorization"] = `Token ${tok.token}`
+        return headers;
+      }
+    }
+
+  } catch(err){
+
+  }
+
+  return headers;
+}
 
 
 export const errorToReadable = (errorObj) => {
@@ -47,4 +86,31 @@ export const isError = (obj) => {
   else{
     return false;
   }
+}
+
+
+
+
+export const accountCacheStore = (accObj) => {
+  localStorage.setItem("cached_accInfo", JSON.stringify(accObj));
+}
+
+
+export const accountCacheGet = () => {
+  const x = localStorage.getItem("cached_accInfo")
+
+  if(x)
+  {
+    try{
+      return JSON.parse(x);
+    } catch(err) {
+      // nothing for now
+    }
+  }
+}
+
+
+
+export const accountCacheDelete = () => {
+  localStorage.removeItem("cached_accInfo");
 }

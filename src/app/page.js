@@ -1,5 +1,5 @@
 'use server'
-import { AppsList } from "./components/apps/AppsList";
+import { AuthenticationDrawer } from "./components/authentication/auth-drawer";
 import { ThemeSwitch } from "./components/themeSwitch";
 import { API_URL } from "./utils/api";
 
@@ -9,9 +9,7 @@ import { API_URL } from "./utils/api";
 const Page = async () => {
 
 
-  const response = await fetch(API_URL+`apps/list`);
 
-  const data = await response.json();
 
 
   return (
@@ -32,12 +30,18 @@ const Page = async () => {
           <div className="h-full flex flex-col justify-center h-full gap-0 space-y-0">
             <p className="text-[25px]" style={{fontWeight: 800}}>Voidback.</p>
 
-            <p className="font-black w-fit self-start pl-1 text-[11px] font-roboto font-black">In Browser AI Appstore</p>
+            <p className="font-black w-fit self-start pl-1 text-[11px] font-roboto font-black">A platform by nerds for nerds.</p>
           </div>
         </div>
 
+          
 
         <div className="h-full w-fit flex flex-row gap-2">
+
+          <div className="w-fit h-full flex flex-col justify-center">
+            <AuthenticationDrawer />
+          </div>
+
           <div className="w-fit h-full flex flex-col justify-center">
             <ThemeSwitch />
           </div>
@@ -45,8 +49,7 @@ const Page = async () => {
       </div>
 
 
-      {/* Apps here */}
-      <AppsList data={data} />
+      {/* category cards here */}
 
     </div>
 
