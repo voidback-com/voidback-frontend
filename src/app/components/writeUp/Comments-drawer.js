@@ -8,14 +8,19 @@ import { useToast } from "@/hooks/use-toast"
 import clsx from "clsx"
 import { ArrowUp, Loader2, Plane, SendHorizonal } from "lucide-react"
 import { useState } from "react"
+import { CommentsList } from "./Comments-list"
 
 
 
 
-export const CommentsDrawer = ({isOpen, setIsOpen, count, wid}) => {
+export const CommentsDrawer = ({isOpen, setIsOpen, count, wid, commentId=null}) => {
 
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+
+
+  const [comments, setComments] = useState([]);
+
 
 
   const { toast } = useToast();
@@ -29,7 +34,7 @@ export const CommentsDrawer = ({isOpen, setIsOpen, count, wid}) => {
     const data = {
       writeup: wid,
       comment: comment,
-      parent: null
+      parent: commentId ? commentId : null
     };
 
     const response = await fetch(API_URL+`writeup/comment`, {
@@ -49,9 +54,18 @@ export const CommentsDrawer = ({isOpen, setIsOpen, count, wid}) => {
 
     else{
       setComment("");
+
       toast({
         title: "Comment sent!"
       });
+
+      const myComment = await response.json();
+
+      if(comments.length)
+        setComments(p=>[myComment, ...p]);
+
+      else
+        setComments([myComment]);
     }
 
     setLoading(false);
@@ -59,20 +73,27 @@ export const CommentsDrawer = ({isOpen, setIsOpen, count, wid}) => {
   }
 
 
+  const num = require("human-readable-numbers");
+
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerContent className="h-[100svh]">
         <DrawerHeader className="text-left">
-          <DrawerTitle>Comments {count!==false ? `(${count})` : ""}</DrawerTitle>
+          <DrawerTitle>{commentId ? "Replies" : "Comments"} {count!==false ? `(${num.toHumanString(count)})` : ""}</DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
 
-            <div className="w-full h-full flex flex-col bg-red-200 justify-between">
-              {/* comments infinite scroll here... */}
-              <div className="w-full h-full bg-red-500">
-              </div>
+            <div className="w-full h-full flex flex-col justify-between">
 
-              <div className="w-full flex flex-row b-5 border-t pb-[5vh] p-3 justify-center">
+              {/* comments infinite scroll here... */}
+              <CommentsList 
+                setComments={setComments} 
+                comments={comments} 
+                wid={wid}
+              commentId={commentId}
+              />
+
+              <div className="w-full flex flex-row b-5 border-t pb-[5vh] p-3 justify-center fixed bottom-0 z-[50] bg-background">
                 <Textarea
                   disabled={loading}
                   value={comment}

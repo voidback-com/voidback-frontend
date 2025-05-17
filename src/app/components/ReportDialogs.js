@@ -31,7 +31,7 @@ export const submitReport = async ({object_type, object_id, object_uuid, descrip
 
 
 
-export const WriteUpReportDialog = ({writeUpId, show, setShow}) => {
+export const ReportDialog = ({object_id, object_type, object_uuid, show, setShow}) => {
 
 
   const { toast } = useToast();
@@ -61,8 +61,9 @@ export const WriteUpReportDialog = ({writeUpId, show, setShow}) => {
 
 
     const res = await submitReport({
-      object_type: 'writeup',
-      object_id: writeUpId,
+      object_type: object_type,
+      object_id: object_id,
+      object_uuid: object_uuid,
       description: description,
       disturbance: disturbance[0],
       priority: priority[0],
@@ -89,7 +90,7 @@ export const WriteUpReportDialog = ({writeUpId, show, setShow}) => {
 
   return (
     <Drawer defaultOpen={false} open={show} onOpenChange={(p)=>setShow(p)}>
-      <DrawerContent className="h-[50svh]">
+      <DrawerContent className="min-h-[50vh] h-fit p-5">
         <DrawerHeader>
           <DrawerTitle>
             Report
@@ -111,7 +112,7 @@ export const WriteUpReportDialog = ({writeUpId, show, setShow}) => {
               max={100} 
               step={1} 
               onValueChange={(p)=>setPriority(p)}
-              className="w-[80%] max-w-[60svw] place-self-center"
+              className="w-[80%] max-w-[600px] place-self-center"
             />
           </div>
 
@@ -125,7 +126,7 @@ export const WriteUpReportDialog = ({writeUpId, show, setShow}) => {
               max={100} 
               step={1} 
               onValueChange={(d)=>setDisturbance(d)}
-              className="w-[80%] max-w-[60svw] place-self-center"
+              className="w-[80%] max-w-[600px] place-self-center"
             />
           </div>
 
@@ -136,12 +137,12 @@ export const WriteUpReportDialog = ({writeUpId, show, setShow}) => {
                 Description:
               </Label>
             </div>
-            <Textarea onChange={(e)=>setDescription(e.target.value)} placeholder="Describe what happened..." className="w-[80%] place-self-center max-w-[60svw]" />
+            <Textarea onChange={(e)=>setDescription(e.target.value)} placeholder="Describe what happened..." className="w-[80%] place-self-center max-w-[600px] h-[25vh] text-large" />
           </div>
         </div>
 
-        <DrawerFooter className="w-full flex flex-row justify-center">
-          <Button disabled={!description || loading || !disturbance[0] || !priority[0]} className="w-[80%] max-w-[600px]" variant="outline" onClick={()=>handleSubmit()}>
+        <DrawerFooter className="w-full flex flex-row justify-end">
+          <Button disabled={!description || loading || !disturbance[0] || !priority[0]} className="w-fit" variant="outline" onClick={()=>handleSubmit()}>
             {loading && <Loader2 className="animate-spin" />}
             submit
           </Button>

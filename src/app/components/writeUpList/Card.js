@@ -1,15 +1,17 @@
 'use client'
+import { accountCacheGet, API_URL, toAuthHeaders } from "@/app/utils/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { Separator } from "@radix-ui/react-separator";
-import { Divide, Dot, Ellipsis, Flag, SeparatorVertical } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
+import { Divide, Dot, Ellipsis, Flag, SeparatorVertical, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { WriteUpReportDialog } from "../ReportDialogs";
+import { ReportDialog } from "../ReportDialogs";
 import { UserCard } from "../UserCard";
 import { BottomBar } from "../writeUp/BottomBar";
+
 
 
 
@@ -22,6 +24,13 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false}) => {
 
   const [showReportModal, setShowReportModal] = useState(false);
 
+  const [deleted, setDeleted] = useState(false);
+
+
+  const { toast } = useToast();
+
+
+  const account = accountCacheGet();
 
 
   const hdate = require("human-date");
@@ -60,6 +69,38 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false}) => {
     }
 
   }
+
+  const handleDelete = async () => {
+    const response = await fetch(API_URL+`writeup`, {
+      method: "DELETE",
+      headers: toAuthHeaders({"Content-Type": "application/json"}),
+      body: JSON.stringify({"id": id})
+    })
+
+
+    if(response.ok)
+    {
+      toast({
+        title: "Write Up deleted successfully!"
+      });
+      setDeleted(true);
+    }
+
+    else{
+      toast({
+        title: "Failed to delete Write up!",
+        description: errorToReadable(await response.json())
+      })
+
+
+    }
+  }
+
+
+  if(deleted)
+    return null;
+
+
 
   const router = useRouter();
 
@@ -104,22 +145,31 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false}) => {
                 variant="ghost"
                 size="icon"
               >
-                <Ellipsis className="fill-red-200 min-h-[20px] min-w-[20px]" />
+                <Ellipsis className="min-h-[20px] min-w-[20px]" />
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="w-full h-full flex flex-row justify-between relative right-5 rounded-lg p-0">
-              <DropdownMenuItem onClick={()=>setShowReportModal(!showReportModal)} className="border p-2 rounded-xl flex flex-row justify-between w-full gap-4 bg-background">
-                <div className="h-full flex flex-col justify-center">
+            <DropdownMenuContent className="relative right-5">
+
+              <DropdownMenuItem onClick={()=>setShowReportModal(!showReportModal)} className="w-full flex flex-row justify-between">
                   <Flag size={18} />
-                </div>
 
-                <DropdownMenuLabel className="font-semibold">
                   Report 
-                </DropdownMenuLabel>
-
-
               </DropdownMenuItem>
+
+
+              {
+                account && account.username===author.username ?
+              <DropdownMenuItem onClick={()=>handleDelete()} className="w-full flex flex-row justify-between">
+                <Trash /> 
+
+                Delete
+              </DropdownMenuItem>
+
+                : null
+
+              }
+
             </DropdownMenuContent>
           </DropdownMenu>
           </div>
@@ -161,7 +211,7 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false}) => {
         </CardFooter>
       </Card>
 
-      <WriteUpReportDialog writeUpId={id} show={showReportModal} setShow={setShowReportModal} />
+      <ReportDialog object_id={id} object_type="writeup" show={showReportModal} setShow={setShowReportModal} />
     </>
   )
 }

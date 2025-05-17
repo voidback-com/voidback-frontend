@@ -9,7 +9,7 @@ import { ViewportList } from "react-viewport-list";
 import { WriteUpCard } from "./Card";
 
 
-const Skeletons = ({size}) => {
+export const Skeletons = ({size}) => {
   
   return (
     <div className="w-full h-full flex flex-col gap-1">
