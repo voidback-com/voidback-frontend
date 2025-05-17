@@ -33,20 +33,16 @@ export const WriteUpList = ({writeUps, loading, hasMore, loadMore}) => {
     return <WriteUpCard writeup={item} key={item.id} firstRendered={i===0} />
   }
 
-  if(loading || !writeUps.length)
-  {
-    return <Skeletons size={10} />
-  }
-
-
+  const isDesktop = useMediaQuery({query: "(min-width: 768px) and (pointer: fine)"});
 
   return (
-    <div id="scroll-div" className="w-full max-h-[100%] overflow-y-scroll pb-[10vh] pt-[10vh]">
+    <div id="scroll-div" className={`w-full max-h-[100%] overflow-y-scroll ${!isDesktop ? "pb-[10vh]" : ""} pt-[10vh]`}>
       <InfiniteScroll
         hasMore={hasMore}
         dataLength={writeUps}
         next={loadMore}
         scrollableTarget="scroll-div"
+        loader={<Skeletons size={10} />}
       >
         {writeUps.length ? writeUps.map((writeup, i)=> renderItem(writeup, i)) : null}
       </InfiniteScroll>
@@ -61,7 +57,7 @@ export const WriteUpsFeed = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(1);
+  const [nextPage, setNextPage] = useState(null);
 
 
   const { toast } = useToast();
@@ -71,7 +67,7 @@ export const WriteUpsFeed = () => {
 
     setLoading(true);
 
-    const response = await fetch(API_URL+`writeup/list?page_size=5&page=${page}`);
+    const response = await fetch(nextPage ? nextPage : API_URL+`writeup/list?page_size=5&page=1`);
 
     const data = await response.json();
 
@@ -87,7 +83,7 @@ export const WriteUpsFeed = () => {
     }
 
     else{
-      if(page>1)
+      if(nextPage)
       {
         setItems(p=>[...p, ...data.results]);
       }
@@ -98,9 +94,10 @@ export const WriteUpsFeed = () => {
       if(!data.next)
       {
         setHasMore(false);
+        setNextPage(null);
       }
       else{
-        setPage(p=>p+1);
+        setNextPage(data.next);
       }
 
       setLoading(false);

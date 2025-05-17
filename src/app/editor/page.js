@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { API_URL, errorToReadable, toAuthHeaders } from "../utils/api";
 import { useToast } from "@/hooks/use-toast";
 import { getImageClass } from "../components/helpers/sfwImageVerifier";
+import { NavBack } from "../components/helpers/NavBack";
 
 
 
@@ -112,6 +113,7 @@ const VoidBackEditor = () => {
   const [content, setContent] = useState(" ");
   const [thumbnail, setThumbnail] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [thumbnailSafe, setThumbnailSafe] = useState(false);
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -119,7 +121,6 @@ const VoidBackEditor = () => {
 
   const isDesktop = useMediaQuery({query: "(min-width: 768px)"});
 
-  const editorRef = useRef();
 
   const theme = useTheme();
 
@@ -153,34 +154,11 @@ const VoidBackEditor = () => {
 
 
 
-  const verifyImage = async () => {
-    if(thumbnail)
-    {
-      const r = new FileReader();
-
-      r.readAsDataURL(thumbnail);
-
-      r.onload = async (e) => {
-
-        const img_dat = e.target.result;
-        const img_cls = await getImageClass(img_dat);
-
-        if(img_cls==="sfw")
-        {
-          // nothing
-        }
-        else
-        {
-          setLoading(false);
-          form.setError("thumbnail", {"message": "Thumbnail was classified as not safe for work."});
-        }
-      }
-
-    }
-
-  }
-
   const handleSubmitWriteUp = async (writeup) => {
+
+    if(loading) return;
+
+    setLoading(true);
 
 
     const data = {
@@ -192,23 +170,21 @@ const VoidBackEditor = () => {
     };
 
 
-
     const form_writeup = new FormData();
 
 
     form_writeup.append("writeUp", JSON.stringify(data));
 
-    setLoading(true);
 
-    if(thumbnail)
-    {
-      await verifyImage();
-      if(loading)
-        form_writeup.append("thumbnail", thumbnail);
+    if(thumbnail && thumbnailSafe){
+      form_writeup.append("thumbnail", thumbnail);
     }
 
-    if(!loading)
+    else if(thumbnail && !thumbnailSafe)
+    {
+      setLoading(false);
       return;
+    }
 
 
     const response = await fetch(API_URL+`writeup`, {
@@ -217,11 +193,14 @@ const VoidBackEditor = () => {
       body: form_writeup
     })
 
+
     const resData = await response.json();
 
     if(!response.ok){
-      form.setError("description", {"message": resData?.error ? resData.error : errorToReadable(resData)});
-      setLoading(false);
+      toast.toast({
+        title: "Error publishing!",
+        description: resData?.error ? resData.error : errorToReadable(resData),
+        })
     }
 
     else{
@@ -230,10 +209,45 @@ const VoidBackEditor = () => {
         description: "Write-up published successfully!"
       });
 
-      setLoading(false);
     }
 
+    setLoading(false);
   }
+
+
+  useEffect(()=> {
+
+    if(thumbnail)
+    {
+      setLoading(true);
+
+      const r = new FileReader();
+
+      r.readAsDataURL(thumbnail);
+
+      r.onload = async (e) => {
+
+        const img_dat = e.target.result;
+        const img_cls = await getImageClass(img_dat);
+
+        if(img_cls==="sfw")
+        {
+          setThumbnailSafe(true);
+        }
+
+        else
+        {
+          setThumbnailSafe(false);
+          form.setError("thumbnail", {"message": "Thumbnail was classified as not safe for work."});
+        }
+
+        setLoading(false);
+      }
+    }
+
+
+  }, [thumbnail])
+
 
 
   return (
@@ -244,9 +258,7 @@ const VoidBackEditor = () => {
       <div className="w-full h-[10vh] relative flex flex-row bg-background justify-between pl-5 pr-5">
 
         <div className="h-full flex flex-col justify-center">
-          <Link href={"/"}>
-            <ArrowLeft />
-          </Link>
+          <NavBack />
         </div>
 
         <div className="h-full flex flex-col justify-center">

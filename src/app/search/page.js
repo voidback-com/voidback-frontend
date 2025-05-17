@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { AuthenticationDrawer } from "../components/authentication/auth-drawer";
+import { NavBack } from "../components/helpers/NavBack";
 import { NavigationBar } from "../components/Navigation";
 import { ThemeSwitch } from "../components/themeSwitch";
 import { UserCard } from "../components/UserCard";
@@ -134,9 +135,7 @@ const Page = () => {
           &&
           <div className="w-full p-5">
               {/* show desktop navbar */}
-            <Link href={"/"}>
-              <ArrowLeft />
-            </Link>
+              <NavBack />
           </div>
         }
         

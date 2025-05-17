@@ -1,5 +1,6 @@
 'use server'
 import { AuthenticationDrawer } from "@/app/components/authentication/auth-drawer";
+import { NavBack } from "@/app/components/helpers/NavBack";
 import { ThemeSwitch } from "@/app/components/themeSwitch";
 import { UserCard } from "@/app/components/UserCard";
 import { BottomBar } from "@/app/components/writeUp/BottomBar";
@@ -85,6 +86,7 @@ export default async function Page ({ params }) {
 
   const hdate = require("human-date");
 
+
   return (
     <div
       itemScope
@@ -139,9 +141,7 @@ export default async function Page ({ params }) {
 
           <div className="flex flex-row gap-2">
             <div className="flex flex-col justify-center p-2">
-              <Link href={"/"}>
-                <ArrowLeft />
-              </Link>
+              <NavBack />
             </div>
 
             <UserCard 

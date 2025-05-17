@@ -1,9 +1,15 @@
 "use client"
 
+import { NavBack } from "./components/helpers/NavBack"
+
 
 export default function NotFound() {
   return (
     <div className='bg-background'>
+
+      <div className="p-5 w-full flex flex-row justify-start">
+        <NavBack />
+      </div>
 
       <div
         className='w-full h-[100%] bg-background flex flex-col justify-center py-10'
@@ -16,7 +22,7 @@ export default function NotFound() {
             <p
               className='w-full flex flex-row justify-center font-semibold text-md'
             >
-              #404 AKA "this page does not exist."
+              404 - "this page does not exist."
             </p>
           </div>
         </div>
