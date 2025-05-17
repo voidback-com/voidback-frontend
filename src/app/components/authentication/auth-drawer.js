@@ -8,6 +8,7 @@ import { useState } from "react";
 import SignupForm from "./signup-form";
 import LoginForm from "./login-form";
 import { useMediaQuery } from "react-responsive";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 
 
@@ -73,6 +74,7 @@ export const AuthenticationDrawer = ({isOpen, setIsOpen}) => {
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>Authenticate</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">Simple & Quick</DialogDescription>
             </DialogHeader>
 
 
@@ -104,6 +106,7 @@ export const AuthenticationDrawer = ({isOpen, setIsOpen}) => {
       <DrawerContent>
         <DrawerHeader className="text-left">
           <DrawerTitle>Authenticate</DrawerTitle>
+          <DrawerDescription>Simple & Quick</DrawerDescription>
         </DrawerHeader>
 
             <div className="w-full h-full flex flex-col">

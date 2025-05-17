@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 
+
+
+
 const nextConfig = {
+ 
+  images: {
+    domains: ['voidback.com', 'media.voidback.com', 'api.voidback.com'],
+  },
+
 
   env: {
     "API_URL": process.env.API_URL
@@ -15,15 +23,17 @@ const nextConfig = {
     ignoreDuringBuilds: true
   },
 
+  reactStrictMode: true,
 
+  webpack: (config) => {
 
- webpack: (config) => {
 
       config.resolve.alias = {
           ...config.resolve.alias,
           "sharp$": false,
           "onnxruntime-node$": false,
       }
+
       return config;
   },
 

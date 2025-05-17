@@ -1,28 +1,34 @@
 'use server'
+import { NotebookPen, Pen } from "lucide-react";
+import { cookies } from "next/headers";
+import Link from "next/link";
 import { AuthenticationDrawer } from "./components/authentication/auth-drawer";
+import { NavigationBar } from "./components/Navigation";
+import { NavigationBarMobile } from "./components/Navigation/NavigationBarMobile";
 import { ThemeSwitch } from "./components/themeSwitch";
-import { API_URL } from "./utils/api";
+import { WriteUpsFeed } from "./components/writeUpList";
 
 
 
 
 const Page = async () => {
 
+  const cookieStore = await cookies();
 
-
+  const authTok = cookieStore.get("authTok")
 
 
   return (
     <div
-      className="w-full min-h-[100vh] overflow-x-hidden bg-default flex flex-col overflow-y-hidden justify-between fixed"
+      className="w-full min-h-[100vh] overflow-x-hidden bg-default flex flex-col overflow-y-hidden justify-between"
     >
 
-      <div className="w-full h-[10vh] bg-background p-4 flex flex-row gap-5 border-b shadow-none justify-between">
+      <div className="w-full h-[10svh] p-4 flex flex-row gap-5 border-b shadow-none justify-between fixed top-0 z-[40] bg-background">
 
         <div className="w-fit flex flex-row gap-3">
           <div className="h-full flex flex-col justify-center">
             <img
-              src="logo.png"
+              src="/logo.png"
               className="w-[50px] animate-spin animate-once animate-ease-in-out"
             />
           </div>
@@ -39,7 +45,15 @@ const Page = async () => {
         <div className="h-full w-fit flex flex-row gap-2">
 
           <div className="w-fit h-full flex flex-col justify-center">
-            <AuthenticationDrawer />
+            { authTok
+
+              ?
+                <Link href={"/editor"} className="w-fit h-fit">
+                  <NotebookPen size={18} />
+                </Link>
+              :
+                <AuthenticationDrawer />
+            }
           </div>
 
           <div className="w-fit h-full flex flex-col justify-center">
@@ -49,7 +63,8 @@ const Page = async () => {
       </div>
 
 
-      {/* category cards here */}
+      {/* Write Ups Feed */}
+      <NavigationBar feed={<WriteUpsFeed />} />
 
     </div>
 

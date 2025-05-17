@@ -1,8 +1,12 @@
+'use client'
 import { getCookie } from "cookies-next";
 
 
 export const API_URL = process.env.API_URL;
 export const WS_NOTIFICATIONS_COUNT = process.env.WS_NOTIFICATIONS_COUNT;
+
+
+
 
 
 export const isAuthenticated = () => {
@@ -92,12 +96,14 @@ export const isError = (obj) => {
 
 
 export const accountCacheStore = (accObj) => {
-  localStorage.setItem("cached_accInfo", JSON.stringify(accObj));
+  if(typeof window===undefined)return;
+  window.localStorage.setItem("cached_accInfo", JSON.stringify(accObj));
 }
 
 
 export const accountCacheGet = () => {
-  const x = localStorage.getItem("cached_accInfo")
+  if(typeof window===undefined)return;
+  const x = window.localStorage.getItem("cached_accInfo")
 
   if(x)
   {
@@ -112,5 +118,6 @@ export const accountCacheGet = () => {
 
 
 export const accountCacheDelete = () => {
-  localStorage.removeItem("cached_accInfo");
+  if(typeof window===undefined)return;
+  window.localStorage.removeItem("cached_accInfo");
 }

@@ -8,6 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { API_URL } from "@/app/utils/api";
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 
 
@@ -39,34 +42,49 @@ export default function LoginForm() {
   });
 
 
+  const router = useRouter();
+
+
   const signIn = async (creds) => {
     setLoading(true);
-    //
-    // const { data, error } = await supabase.auth.signInWithPassword({
-    //   email: creds.email,
-    //   password: creds.password
-    // });
-    //
-    // fetch from api instead of supabase
-  
-    // if(error)
-    // {
-    //   form.setError("password", {"message": error.message})
-    // }
-    //
-    // else{
-    //   toast({
-    //     title: "Success",
-    //     description: "Successfully logged in!"
-    //   });
-    //
 
-      window.location.reload();
+    const credentials = {
+      "username": creds.email,
+      "password": creds.password
+    };
 
-    // }
+
+    const response = await fetch(API_URL+"login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(credentials)
+    })
+
+    const data = await response.json();
+
+
+    if(!response.ok)
+    {
+      form.setError("password", {"message": data.error});
+    }
+
+    else{
+
+      setCookie("authTok", JSON.stringify(data));
+
+      toast({
+        title: "Success",
+        description: "Successfully logged in!"
+      });
+
+
+      router.refresh();
+
+    }
 
     setLoading(false);
   }
+
 
 
   const LoadingSkeleton = () => {

@@ -28,6 +28,7 @@ export const RobotoFont = Roboto({
 
 export default function RootLayout({ children }) {
 
+
   return (
 
       <html 
@@ -45,7 +46,7 @@ export default function RootLayout({ children }) {
 
         <title itemProp="title" itemScope>Voidback</title>
 
-    <meta name="viewport" content="width=device-width, minimum-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
 
       <meta name="description" content={`Voidback: a platform by nerds for nerds`} />
 

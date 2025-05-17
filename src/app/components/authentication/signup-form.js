@@ -14,7 +14,6 @@ import { API_URL, errorToReadable } from "@/app/utils/api";
 
 export default function SignupForm() {
 
-  const [fullName, setFullName] = useState(null);
   const [email, setEmail] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);

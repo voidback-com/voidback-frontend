@@ -94,6 +94,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 a {
@@ -110,13 +111,7 @@ a {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 0;
-}
-
-
-
-ul {
-  list-style-type: none;
+  width: 0 !important;
 }
 
 
@@ -190,24 +185,6 @@ button {
 
 
 
-
-
-
-.ReactFlagsSelect-module_selectOptions__3LNBJ{
-  background-color: var(--theme-background) !important;
-  border-width: 0px !important;
-
-
-  li:hover{
-    background-color: var(--theme-background);
-  }
-}
-
-
-
-.ReactFlagsSelect-module_selectBtn__19wW7{
-  border-width: 0px !important;
-}
 
 
 
