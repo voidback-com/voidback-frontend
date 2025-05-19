@@ -144,7 +144,7 @@ export default function SignupForm() {
           render={({field}) => (
               <FormItem className="w-fit place-self-center">
                 <FormControl>
-                  <Input placeholder="Full Name" type="text" className="w-full min-w-[400px] place-self-start rounded-lg p-5" {...field} />
+                  <Input placeholder="Full Name" type="text" className="w-full min-w-[400px] text-large place-self-start rounded-lg p-5" {...field} />
                 </FormControl>
 
                  <div className="flex flex-row justifty-center p-2  max-w-fit place-self-start">
@@ -161,7 +161,7 @@ export default function SignupForm() {
           render={({field}) => (
               <FormItem className="w-fit place-self-center">
                 <FormControl>
-                  <Input placeholder="Username" type="text" className="w-full min-w-[400px] place-self-start rounded-lg p-5" {...field} />
+                  <Input placeholder="Username" type="text" className="w-full min-w-[400px] text-large place-self-start rounded-lg p-5" {...field} />
                 </FormControl>
 
                  <div className="flex flex-row justifty-center p-2  max-w-fit place-self-start">
@@ -179,7 +179,7 @@ export default function SignupForm() {
           render={({field}) => (
               <FormItem className="w-fit place-self-center">
                 <FormControl>
-                  <Input placeholder="Email" type="email" className="w-full min-w-[400px] place-self-start rounded-lg p-5" {...field} />
+                  <Input placeholder="Email" type="email" className="w-full min-w-[400px] text-large place-self-start rounded-lg p-5" {...field} />
                 </FormControl>
 
                  <div className="flex flex-row justifty-center p-2  max-w-fit place-self-start">
@@ -195,7 +195,7 @@ export default function SignupForm() {
           render={({field}) => (
               <FormItem className="w-fit place-self-center">
                 <FormControl>
-                  <Input placeholder="Password" type="password" className="w-full min-w-[400px] place-self-start rounded-lg p-5" {...field} />
+                  <Input placeholder="Password" type="password" className="w-full min-w-[400px] text-large place-self-start rounded-lg p-5" {...field} />
                 </FormControl>
 
                  <div className="flex flex-row justifty-center p-2  max-w-fit place-self-start">

@@ -1,11 +1,12 @@
 'use client'
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AtSign, Home, MessageSquare, Search, Settings, User } from "lucide-react";
+import { AtSign, Bell, Home, MessageSquare, Search, Settings, User } from "lucide-react";
 
 
 
-export const NavigationBarMobile = ({selected, setSelected}) => {
+export const NavigationBarMobile = ({selected, setSelected, notificationsCount}) => {
 
 
 
@@ -21,11 +22,17 @@ export const NavigationBarMobile = ({selected, setSelected}) => {
         <Search className="min-w-[25px] min-h-[25px]" />
       </Button>
 
-
-
       <Button onClick={()=>setSelected("threads")} variant="ghost" className={`h-full w-full hover:bg-transparent focus:bg-transparent rounded-none outline-none ${selected==="threads" ? "text-foreground border-b-[2px] border-b-foreground" : "text-muted-foreground"}`}>
         <AtSign className="min-w-[25px] min-h-[25px]" />
       </Button>
+
+
+      <Button variant="ghost" onClick={()=>setSelected("notifications")} className={`h-full w-full hover:bg-transparent focus:bg-transparent rounded-none outline-none ${selected==="notifications" ? "text-foreground border-b-[2px] border-b-foreground" : "text-muted-foreground"}`}>
+        <Bell className="min-w-[25px] min-h-[25px]" />
+        {notificationsCount ? <Badge className={"bg-blue-500 text-white font-semibold"}>{notificationsCount}</Badge> : null}
+      </Button>
+
+
 
 
       <Button variant="ghost" onClick={()=>setSelected("settings")} className={`h-full w-full hover:bg-transparent focus:bg-transparent rounded-none outline-none ${selected==="settings" ? "text-foreground border-b-[2px] border-b-foreground" : "text-muted-foreground"}`}>

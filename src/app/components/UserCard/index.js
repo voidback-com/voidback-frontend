@@ -219,9 +219,11 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
       itemScope
       itemType="Person"
       className="border-[0px] w-fit flex flex-row shadow-none rounded-none gap-2"
-      onClick={()=>router.push(`/view/account/${username}`)}
+
     >
-      <div itemScope itemType="Image" className="h-full flex flex-col justify-center">
+      <div  
+        onClick={()=>router.push(`/view/account/${username}`)}
+        itemScope itemType="Image" className="h-full flex flex-col justify-center">
         <UserAvatar avatarURL={avatarUrl} fullName={fullName} />
       </div>
 
@@ -229,7 +231,9 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
       <div className="h-full flex flex-col justify-center">
         <div className="w-fit flex flex-row gap-2 justify-between">
 
-          <div className="h-full flex flex-col justify-center">
+          <div  
+            onClick={()=>router.push(`/view/account/${username}`)}
+            className="h-full flex flex-col justify-center">
             <p itemScope itemType="name" className="font-semibold text-md">{fullName}</p>
           </div>
 
@@ -237,12 +241,10 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
 
 
           {isFollowed===true ? (
-
-            <Button onClick={()=>handleUnfollow()} className="p-1 relative top-1 h-fit">unfollow</Button>
-
+            null
           ) : isFollowed===false ? (
 
-            <Button onClick={()=>handleFollow()} className="p-1 relative top-1 h-fit">follow</Button>
+            <Button onClick={()=>handleFollow()} variant="outline" className="p-1 h-fit">follow</Button>
 
           ) : null}
           

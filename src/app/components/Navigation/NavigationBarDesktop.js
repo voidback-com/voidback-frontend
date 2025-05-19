@@ -1,10 +1,11 @@
 'use client'
 
 import { accountCacheDelete, isAuthenticated } from "@/app/utils/api"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { deleteCookie } from "cookies-next/client"
-import { AtSign, Home, HomeIcon, LogOut, MessageSquare, Search, Settings, User } from "lucide-react"
+import { AtSign, Bell, Home, HomeIcon, LogOut, MessageSquare, Search, Settings, User } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
@@ -12,7 +13,7 @@ import { useRouter } from "next/navigation"
 
 
 
-export const NavigationBarDesktop = ({setSelected, selected}) => {
+export const NavigationBarDesktop = ({setSelected, selected, notificationsCount}) => {
 
   const router = useRouter();
 
@@ -45,6 +46,19 @@ export const NavigationBarDesktop = ({setSelected, selected}) => {
         </Button>
 
 
+        <Button onClick={()=>setSelected("notifications")} variant="ghost" className={`h-fit w-fit hover:bg-transparent focus:bg-transparent rounded-none outline-none gap-5 ${selected==="notifications" ? "text-foreground border-l-[2px] border-l-foreground" : "text-muted-foreground"}`}>
+
+
+          <Bell className="min-w-[30px] min-h-[30px]" />
+
+        {notificationsCount ? <Badge className={"bg-blue-500 text-white font-semibold"}>{notificationsCount}</Badge> : null}
+          <p className={`${selected==="notifications" && "font-semibold"} text-xl`}>
+            Notifications
+          </p>
+        </Button>
+
+
+
         <Button variant="ghost" onClick={()=>setSelected("settings")} className={`h-fit w-fit hover:bg-transparent focus:bg-transparent rounded-none outline-none gap-5 ${selected==="settings" ? "text-foreground border-l-[2px] border-l-foreground" : "text-muted-foreground"}`}>
           <Settings className="min-w-[30px] min-h-[30px]" />
 
@@ -71,21 +85,21 @@ export const NavigationBarDesktop = ({setSelected, selected}) => {
           }
           <div className="w-full h-fit flex flex-wrap gap-5 p-2 rounded-xl border">
 
-            <Link className="text-muted-foreground font-semibold" href={"/about-us"}>
+            <Link className="text-muted-foreground font-semibold" href={"/voidback/about-us"}>
               About Us
             </Link>
 
-            <Link className="text-muted-foreground font-semibold" href={"/about-us"}>
+            <Link className="text-muted-foreground font-semibold" href={"/voidback/about-us"}>
               Privacy Policy
             </Link>
 
 
-            <Link className="text-muted-foreground font-semibold" href={"/about-us"}>
+            <Link className="text-muted-foreground font-semibold" href={"/voidback/terms-of-service"}>
               Terms Of Service
             </Link>
 
 
-            <Link className="text-muted-foreground font-semibold" href={"/about-us"}>
+            <Link className="text-muted-foreground font-semibold" href={"/voidback/contact-us"}>
               Contact Us
             </Link>
 

@@ -1,10 +1,9 @@
 'use server'
-import { NotebookPen, Pen } from "lucide-react";
+import { NotebookPen } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { AuthenticationDrawer } from "./components/authentication/auth-drawer";
 import { NavigationBar } from "./components/Navigation";
-import { NavigationBarMobile } from "./components/Navigation/NavigationBarMobile";
 import { ThemeSwitch } from "./components/themeSwitch";
 import { WriteUpsFeed } from "./components/writeUpList";
 

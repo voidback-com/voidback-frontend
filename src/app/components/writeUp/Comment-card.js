@@ -17,7 +17,7 @@ import { CommentBottomBar } from "./Comment-Bottom-Bar"
 
 
 
-export const CommentCard = ({comment}) => {
+export const CommentCard = ({comment, noBorder}) => {
 
   const account = accountCacheGet();
 
@@ -61,7 +61,7 @@ export const CommentCard = ({comment}) => {
 
   return (
     <>
-      <Card className="shadow-none border-none rounded-none max-w-[600px] place-self-center w-full">
+      <Card className={`shadow-none border-none rounded-none max-w-[600px] place-self-center w-full ${noBorder && "border-0"}`}>
         <CardHeader className="w-full flex flex-row justify-between">
           <UserCard 
             username={comment.author.username}

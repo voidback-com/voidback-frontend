@@ -1,5 +1,5 @@
 'use client'
-import { API_URL } from "@/app/utils/api";
+import { API_URL, getToken, isAuthenticated, WS_NOTIFICATIONS_COUNT } from "@/app/utils/api";
 import { Command, CommandGroup, CommandList, CommandInput, CommandItem } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -15,13 +15,69 @@ import { NavigationBarMobile } from "./NavigationBarMobile";
 export const NavigationBar = ({feed, selected="home"}) => {
   
   const [path, setPath] = useState(selected);
+  const [count, setCount] = useState(0);
 
+
+  const token = getToken();
+
+
+  useEffect(()=> {
+    if(token)
+    {
+
+      const ws = new WebSocket(WS_NOTIFICATIONS_COUNT, [token]);
+
+      ws.onopen = (event) => {
+        //
+      }
+
+      ws.onmessage = (event) => {
+        const json = JSON.parse(event.data);
+
+
+        if(json?.count)
+        {
+          setCount(json.count);
+        }
+      }
+
+
+      ws.onclose = (ev) => {
+        console.log(ev)
+        return ()=> {
+          ws.close();
+        }
+
+      };     
+
+      ws.onerror = (event) => {
+        console.error("WebSocket error", event);
+      };
+
+
+      const interval = setInterval(()=> {
+        try{
+          if(ws.readyState!==WebSocket.CLOSED)
+          {
+            ws.send("ping");
+          }
+        }catch(err){
+          //
+        }
+      }, 5000); 
+    
+
+      return ()=> clearInterval(interval);
+
+    }
+  }, [token])
 
 
   const isDesktop = useMediaQuery({query: "(min-width: 768px) and (pointer: fine)"});
 
 
   const router = useRouter();
+
 
 
   useEffect(()=> {
@@ -114,11 +170,11 @@ export const NavigationBar = ({feed, selected="home"}) => {
           ?
           <>
             {feed}
-            <NavigationBarMobile setSelected={setPath} selected={path} />
+            <NavigationBarMobile notificationsCount={count} setSelected={setPath} selected={path} />
           </>
         :
           <>
-            <NavigationBarDesktop setSelected={setPath} selected={path} />
+            <NavigationBarDesktop notificationsCount={count} setSelected={setPath} selected={path} />
             {feed}
             <div className="w-[50svw] border-l flex flex-col z-0 h-[100%] min-h-[100svh] pt-[10vh] p-5">
               <div className="py-5 h-[90svh]">

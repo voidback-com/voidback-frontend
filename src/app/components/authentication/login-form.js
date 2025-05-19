@@ -117,7 +117,7 @@ export default function LoginForm() {
           render={({field}) => (
               <FormItem className="w-fit place-self-center">
                 <FormControl>
-                  <Input placeholder="Email" value={email} type="email" className="w-full min-w-[400px] place-self-start rounded-lg p-5" {...field} />
+                  <Input placeholder="Email" value={email} type="email" className="w-full text-large min-w-[400px] place-self-start rounded-lg p-5" {...field} />
                 </FormControl>
 
                  <div className="flex flex-row justifty-center p-2  max-w-fit place-self-start">
@@ -135,7 +135,7 @@ export default function LoginForm() {
           render={({field}) => (
               <FormItem className="w-fit place-self-center">
                 <FormControl>
-                  <Input placeholder="Password" value={password} type="password" className="min-w-[400px] w-full place-self-start rounded-lg p-5" {...field} />
+                  <Input placeholder="Password" value={password} type="password" className="min-w-[400px] text-large w-full place-self-start rounded-lg p-5" {...field} />
                 </FormControl>
 
                  <div className="flex flex-row justifty-center p-2  max-w-fit place-self-start">

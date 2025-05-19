@@ -9,10 +9,28 @@ export const WS_NOTIFICATIONS_COUNT = process.env.WS_NOTIFICATIONS_COUNT;
 
 
 
-export const isAuthenticated = () => {
+export const getToken = () => {
 
   const tok = getCookie("authTok");
 
+  try{
+
+    if(tok)
+    {
+      return JSON.parse(tok).token;
+    }
+
+  } catch(err) {
+    // log err
+  }
+
+  return false;
+}
+
+
+export const isAuthenticated = () => {
+
+  const tok = getCookie("authTok");
 
   if(tok)
   {
