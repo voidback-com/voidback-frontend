@@ -114,14 +114,15 @@ export const isError = (obj) => {
 
 
 export const accountCacheStore = (accObj) => {
-  if(typeof window===undefined)return;
-  window.localStorage.setItem("cached_accInfo", JSON.stringify(accObj));
+  if(typeof window==="undefined")return;
+    localStorage.setItem("cached_accInfo", JSON.stringify(accObj));
 }
 
 
 export const accountCacheGet = () => {
-  if(typeof window===undefined)return;
-  const x = window.localStorage.getItem("cached_accInfo")
+  if(typeof window==="undefined")return;
+
+  const x = localStorage.getItem("cached_accInfo")
 
   if(x)
   {
@@ -136,6 +137,7 @@ export const accountCacheGet = () => {
 
 
 export const accountCacheDelete = () => {
-  if(typeof window===undefined)return;
-  window.localStorage.removeItem("cached_accInfo");
+  if(typeof window==="undefined")return;
+
+  localStorage.removeItem("cached_accInfo");
 }

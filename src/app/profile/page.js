@@ -1,19 +1,29 @@
-'use client'
-import { useEffect, useState } from "react"
+'use server'
+import { cookies } from "next/headers";
 import { NavigationBar } from "../components/Navigation"
+import { redirect } from "next/navigation";
+import { ProfileLayout } from "../components/profile/Layout";
 
 
 
 
-export default function Page() {
+export default async function Page() {
+
+
+  const cookieStore = await cookies();
+
+  const authTok = cookieStore.get("authTok")
+
+  if(!authTok)
+  {
+    redirect("/");
+  }
 
 
   return (
     <div className="w-full h-[100svh]">
-
       <NavigationBar selected="profile" feed={
-        <div className="w-full bg-red-200 h-[100svh] p-0">
-        </div>
+        <ProfileLayout />
       } />
     </div>
   )

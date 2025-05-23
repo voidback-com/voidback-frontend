@@ -141,7 +141,7 @@ const Page = () => {
         
         <div className="p-5 h-full w-[90svw] max-w-[700px]">
           <Command className="border">
-            <CommandInput value={value} onValueChange={(e)=>{
+            <CommandInput value={value} className="text-large" onValueChange={(e)=>{
               handleSearch(e);
               setValue(e);
             }} placeholder="search" onKeyDown={(e)=> {

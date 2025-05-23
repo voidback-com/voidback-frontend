@@ -65,7 +65,7 @@ export const AuthUserCard = () => {
 }
 
 
-export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthenticatedUser}) => {
+export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthenticatedUser, showUnfollow=false}) => {
 
 
   const [isFollowed, setisFollowed] = useState(null);
@@ -73,6 +73,7 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
   const [returnAuthenticated, setReturnAuthenticated] = useState(returnAuthenticatedUser);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [unfollowed, setUnfollowed] = useState(false);
 
 
   const getAccount = async () => {
@@ -105,11 +106,12 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
 
   const getFollowStatus = async () => {
 
-    if(loading || loaded) return;
+    const acc = await getAccount();
+
+    if(loading || loaded || !acc) return;
 
     setLoading(true);
 
-    const acc = await getAccount();
 
 
     if(acc.username===username)
@@ -139,7 +141,10 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
     setLoaded(true);
   }
 
+
   const { toast } = useToast();
+
+  const router = useRouter();
 
 
   const handleFollow = async () => {
@@ -164,6 +169,7 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
       setisFollowed(false);
     }
 
+    
     setLoading(false);
   }
 
@@ -182,9 +188,10 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
     if(response.ok)
     {
       setisFollowed(false);
+      setUnfollowed(true);
     } else{
       toast({
-        title: `Failed unfollowing "${username}".`,
+        title: `Error unfollowing "${username}".`,
         description: "please try again, maybe refresh browser!"
       });
     }
@@ -212,7 +219,13 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
 
 
 
-  const router = useRouter();
+
+
+  
+  if(unfollowed)
+    return null;
+
+
 
   return (
     <div
@@ -240,13 +253,19 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
           {!verified && <BadgeCheck className="text-background fill-foreground" />}
 
 
-          {isFollowed===true ? (
-            null
-          ) : isFollowed===false ? (
+          {
+            isFollowed===true ? (
+
+              showUnfollow &&
+
+              <Button onClick={()=>handleUnfollow()} variant="outline" className="p-1 h-fit">unfollow</Button>
+
+
+          ) : isFollowed=== false ? (
 
             <Button onClick={()=>handleFollow()} variant="outline" className="p-1 h-fit">follow</Button>
 
-          ) : null}
+          ) : null }
           
         </div>
 

@@ -24,7 +24,7 @@ export const Skeletons = ({size}) => {
 
 
 
-export const WriteUpList = ({writeUps, loading, hasMore, loadMore}) => {
+export const WriteUpList = ({writeUps, loading, hasMore, loadMore, noPad}) => {
 
 
 
@@ -36,7 +36,7 @@ export const WriteUpList = ({writeUps, loading, hasMore, loadMore}) => {
   const isDesktop = useMediaQuery({query: "(min-width: 768px) and (pointer: fine)"});
 
   return (
-    <div id="scroll-div" className={`w-full max-h-[100%] overflow-y-scroll ${!isDesktop ? "pb-[10vh]" : ""} pt-[10vh]`}>
+    <div id="scroll-div" className={`w-full max-h-[100%] overflow-y-scroll ${!isDesktop && !noPad ? "pb-[10vh]" : ""} ${!noPad ? "pt-[10vh]" : ""}`}>
       <InfiniteScroll
         hasMore={hasMore}
         dataLength={writeUps}
