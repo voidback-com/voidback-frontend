@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
 
-      <meta name="description" content={`Voidback: a platform by nerds for nerds`} />
+      <meta name="description" content={`Voidback: Open Source, Open Minds.`} />
 
       <meta name="keywords" content="Voidback, A.I, AI, AI Apps, ML Models, Inferencing, Pretrained Models, Ethical Hacking, Security, " />
 

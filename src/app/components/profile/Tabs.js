@@ -4,6 +4,7 @@ import { accountCacheGet } from "@/app/utils/api"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Heart, ListVideo, Lock, Notebook, Pen, Pickaxe } from "lucide-react"
 import { ProfileWriteUps } from "./WriteUps";
+import { ProfileLiked } from "./Liked";
 
 
 
@@ -33,14 +34,16 @@ export default function ProfileTabs({username}) {
         <ProfileWriteUps username={account_username} />
       </TabsContent>
 
-      <TabsContent value="liked" className="bg-red-200 w-full min-h-[100%]">
-
+      <TabsContent value="liked">
+        <ProfileLiked username={account_username} />
       </TabsContent>
 
       <TabsContent value="series" className="w-full min-h-[100%] flex flex-col justify-center">
+
         <p className="w-fit flex flex-row gap-3 font-semibold self-center">
           Coming soon <Pickaxe />
         </p>
+
       </TabsContent>
 
 

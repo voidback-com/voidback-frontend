@@ -8,6 +8,7 @@ import { getFollowingUsernameCount, getUsernameFollowers, getUsernameFollowing, 
 import { UserCard } from "../UserCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 
@@ -293,15 +294,17 @@ export const Connections = ({username}) => {
     if(!username && acc)
       setUser(acc.username);
 
-    else
+    else if(!username && !acc)
+    {
       return notFound();
+    }
 
   }, [!user])
 
 
 
   return (
-    <div className="w-fit flex flex-row gap-10 pt-8">
+    <div className="w-fit flex flex-row gap-10">
       {
         user
           ?
@@ -310,7 +313,14 @@ export const Connections = ({username}) => {
               <FollowingList username={user} />
             </>
         :
-          <Loader2 className="animate-spin" />
+          <>
+            <Skeleton className={"w-[100px] h-[20px]"}>
+            </Skeleton>
+
+            <Skeleton className={"w-[100px] h-[20px]"}>
+            </Skeleton>
+          </>
+          
       }
     </div>
   )

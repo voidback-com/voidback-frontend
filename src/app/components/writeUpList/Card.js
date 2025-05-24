@@ -79,7 +79,7 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
         className={`border-[0px] shadow-none rounded-none ${firstRendered ? "border-b" : "border-t"} ${snippet && "w-full"}  ${noBorder && "border-0"}`}
 
       >
-        <CardHeader className="w-full max-h-fit p-4">
+        <CardHeader className="w-full max-h-fit">
           <div className="w-full flex flex-row justify-between">
 
             <div className="flex flex-row">
@@ -142,20 +142,22 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
           </DropdownMenu>
           </div>
 
-          <div onClick={()=>router.push(`/view/writeup/${writeup.id}`)} className="w-full h-fit pl-4 p-2 flex flex-col">
+          <div onClick={()=>router.push(`/view/writeup/${writeup.id}`)} className="w-full h-fit pl-10 pt-5 p-2 flex flex-col">
             <CardTitle className="text-lg">
               {title}
             </CardTitle>
 
+            {description &&
             <CardDescription className="font-robot place-self-start">
               {description}
             </CardDescription>
+            }
           </div>
 
         </CardHeader>
 
           { !snippet && thumbnail.thumbnail &&
-            <CardContent onClick={()=>router.push(`/view/writeup/${writeup.id}`)} className="flex flex-col gap-2 pl-5">
+            <CardContent onClick={()=>router.push(`/view/writeup/${writeup.id}`)} className="flex flex-col gap-2">
 
                 <div className="w-full h-fit flex flex-row justify-center py-2">
                   <Image
@@ -171,7 +173,7 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
             </CardContent>
           }
 
-        <CardFooter className="flex flex-row p-2">
+        <CardFooter className="flex flex-row p-0">
 
             <div className="w-full">
               <BottomBar id={writeup.id} />

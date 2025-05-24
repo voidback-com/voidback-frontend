@@ -60,11 +60,14 @@ const NotificationCard = ({item, index}) => {
         </div>
       </CardHeader>
 
-      <CardContent className="w-[98%] place-self-center">
-        <div className="p-5 border rounded-xl">
-          <RenderObject type={objectType} obj={object} />
-        </div>
-      </CardContent>
+      {
+        object &&
+        <CardContent className="w-[98%] place-self-center">
+          <div className="p-5 border rounded-xl">
+            <RenderObject type={objectType} obj={object} />
+          </div>
+        </CardContent>
+      }
     </Card>
   )
 }

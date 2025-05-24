@@ -19,13 +19,11 @@ export const updateAccount = async (data) => {
 }
 
 
-export const deleteAccount = async (otp) => {
-
+export const deleteAccount = async () => {
 
   return await fetch(API_URL+`account`, {
     method: "DELETE",
-    headers: toAuthHeaders({"Content-Type": "application/json"}),
-    body: JSON.stringify({"otp": otp})
+    headers: toAuthHeaders({})
   }).catch((err)=> {
     })
 
@@ -134,6 +132,14 @@ export const getAccountWriteUps = async (username, nextPage) => {
 }
 
 
+export const getAccountLikedWriteUps = async (username, nextPage) => {
+
+  if(nextPage)
+    return await fetch(nextPage);
+  return await fetch(API_URL+`writeup/list/liked?account=${username}&page=1&page_size=5`);
+}
+
+
 
 export const getAccountMutuals = async (username) => {
   if(!isAuthenticated()) return;
@@ -144,6 +150,47 @@ export const getAccountMutuals = async (username) => {
   }).catch((err)=> {
     })
 
+}
+
+
+
+// send an otp
+export const sendOtp = async () => {
+
+  return fetch(API_URL+"account/sendOtp", {
+    method: "POST",
+    headers: toAuthHeaders({})
+  }).catch(()=> {
+
+    })
+}
+
+
+
+export const verifyOtp = async (token) => {
+
+  return fetch(API_URL+"account/verifyOtp", {
+    method: "POST",
+    headers: toAuthHeaders({"Content-Type": "application/json"}),
+    body: JSON.stringify({otp: token})
+  }).then( async (r)=> {
+      if(r.ok)
+        accountCacheDelete();
+      return r;
+    })
+    .catch(()=> {
+
+    })
+}
+
+
+
+export const resetPassword = async (email, password) => {
+  return fetch(API_URL+"account/reset", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({email, password})
+  });
 }
 
 

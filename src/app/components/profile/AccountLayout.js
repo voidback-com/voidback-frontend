@@ -1,14 +1,12 @@
 'use client'
 
-import { AuthUserCard } from "../UserCard"
+import { UserCard } from "../UserCard"
 import { Bio } from "./Bio"
 import { Connections } from "./Connections"
-import { Editor } from "./Editor"
 import ProfileTabs from "./Tabs"
 
 
-
-export const ProfileLayout = () => {
+export const AccountLayout = ({account}) => {
 
 
   return (
@@ -19,18 +17,22 @@ export const ProfileLayout = () => {
         <div className="w-full flex flex-col gap-5">
           <div className="w-full flex flex-col gap-5">
             <div className="w-fit flex flex-row gap-5">
-              <AuthUserCard />
-              <Editor />
+              <UserCard
+                username={account.username}
+                fullName={account.full_name}
+                avatarUrl={account.avatar}
+                showUnfollow
+              />
             </div>
             
-            <Bio />
+            <Bio username={account.username} />
           </div>
 
-          <Connections />
+          <Connections username={account.username} />
         </div>
       </div>
 
-      <ProfileTabs />
+      <ProfileTabs username={account.username} />
     </div>
   )
 

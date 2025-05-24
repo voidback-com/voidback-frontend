@@ -1,0 +1,74 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import { getAccountLikedWriteUps } from "../helpers/Profile";
+import { WriteUpList } from "../writeUpList";
+
+
+
+export const ProfileLiked = ({username})=> {
+
+  const [writeups, setWriteups] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [nextPage, setNextPage] = useState(false);
+  const [end, setEnd] = useState(false);
+
+
+
+  const loadMore = async () => {
+
+    if(loading) return;
+
+    setLoading(true);
+
+    const data = await getAccountLikedWriteUps(username, nextPage);
+
+
+    if(data.ok)
+    {
+      const { results, next } = await data.json();
+
+
+      if(writeups.length && results.length)
+        setWriteups(p=>[...p, ...results]);
+
+      else if(results.length && !writeups.length)
+      {
+        setWriteups(results);
+      }
+
+      else{
+        setEnd(true);
+      }
+
+
+      if(!next)
+        setEnd(true);
+
+      setNextPage(next);
+    }
+
+
+    setLoading(false);
+  }
+
+
+
+  useEffect(()=> {
+    if(!end && !writeups.length && !loading)
+      loadMore();
+  }, [!end, !writeups.length, !loading])
+
+
+  return (
+    <div className="w-full max-h-[71svh] pb-[10vh] overflow-y-scroll">
+      <WriteUpList 
+        loadMore={loadMore}
+        loading={loading}
+        hasMore={!end}
+        writeUps={writeups}
+        noPad
+      />
+    </div>
+  )
+}

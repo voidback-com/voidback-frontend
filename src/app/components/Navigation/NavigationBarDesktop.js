@@ -85,21 +85,21 @@ export const NavigationBarDesktop = ({setSelected, selected, notificationsCount}
           }
           <div className="w-full h-fit flex flex-wrap gap-5 p-2 rounded-xl border">
 
-            <Link className="text-muted-foreground font-semibold" href={"/voidback/about-us"}>
+            <Link className="text-muted-foreground text-large" href={"/voidback/about-us"}>
               About Us
             </Link>
 
-            <Link className="text-muted-foreground font-semibold" href={"/voidback/about-us"}>
+            <Link className="text-muted-foreground text-large" href={"/voidback/privacy-policy"}>
               Privacy Policy
             </Link>
 
 
-            <Link className="text-muted-foreground font-semibold" href={"/voidback/terms-of-service"}>
+            <Link className="text-muted-foreground text-large" href={"/voidback/terms-of-service"}>
               Terms Of Service
             </Link>
 
 
-            <Link className="text-muted-foreground font-semibold" href={"/voidback/contact-us"}>
+            <Link className="text-muted-foreground text-large" href={"/voidback/contact-us"}>
               Contact Us
             </Link>
 

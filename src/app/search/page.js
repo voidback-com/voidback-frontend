@@ -101,7 +101,7 @@ const Page = () => {
           <div className="h-full flex flex-col justify-center h-full gap-0 space-y-0">
             <p className="text-[25px]" style={{fontWeight: 800}}>Voidback.</p>
 
-            <p className="font-black w-fit self-start pl-1 text-[11px] font-roboto font-black">A platform by nerds for nerds.</p>
+            <p className="font-black w-fit self-start pl-1 text-[11px] font-roboto font-black">Open Source, Open Minds.</p>
           </div>
         </div>
 

@@ -103,7 +103,7 @@ export const AuthenticationDrawer = ({isOpen, setIsOpen}) => {
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent>
+      <DrawerContent className="h-full">
         <DrawerHeader className="text-left">
           <DrawerTitle>Authenticate</DrawerTitle>
           <DrawerDescription>Simple & Quick</DrawerDescription>
