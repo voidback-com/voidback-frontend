@@ -25,6 +25,10 @@ import { API_URL, errorToReadable, toAuthHeaders } from "../utils/api";
 import { useToast } from "@/hooks/use-toast";
 import { getImageClass } from "../components/helpers/sfwImageVerifier";
 import { NavBack } from "../components/helpers/NavBack";
+import ResizeObserver from "resize-observer-polyfill";
+
+
+global.ResizeObserver = ResizeObserver;
 
 
 
