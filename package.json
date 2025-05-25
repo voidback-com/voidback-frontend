@@ -29,6 +29,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "cookies-next": "^5.1.0",
+    "framer-motion": "^12.12.2",
     "human-date": "^1.4.0",
     "human-readable-numbers": "^0.9.5",
     "lucide-react": "^0.509.0",

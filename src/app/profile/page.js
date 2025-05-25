@@ -21,7 +21,7 @@ export default async function Page() {
 
 
   return (
-    <div className="w-full h-[100svh]">
+    <div className="w-full h-[100svh] relative">
       <NavigationBar selected="profile" feed={
         <ProfileLayout />
       } />

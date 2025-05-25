@@ -60,7 +60,6 @@ export const ProfileWriteUps = ({username})=> {
 
 
   return (
-    <div className="w-full max-h-[71svh] pb-[10vh] overflow-y-scroll">
       <WriteUpList 
         loadMore={loadMore}
         loading={loading}
@@ -68,6 +67,5 @@ export const ProfileWriteUps = ({username})=> {
         writeUps={writeups}
         noPad
       />
-    </div>
   )
 }
