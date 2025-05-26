@@ -43,7 +43,7 @@ export default function ProfileTabs({username, ref, translateY, scrolling, setAc
 
 
 
-        <div ref={ref} className={`overflow-y-auto ${!isDesktop ? "pb-[10vh]" : "pb-[13vh]"}`} style={{ height: 'calc(100svh)' }}>
+        <div ref={ref} className={`overflow-y-auto ${!isDesktop ? "pb-[15vh]" : "pb-[13vh]"}`} style={{ height: 'calc(100svh)' }}>
 
           <TabsContent value="write-ups"  className={cn(activeTab !== "write-ups" && "hidden")}>
             <ProfileWriteUps username={account_username} />
