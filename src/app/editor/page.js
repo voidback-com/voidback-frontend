@@ -5,14 +5,13 @@ import {
   useEffect,
   useRef,
 } from "react";
-import MarkdownPreview from "@uiw/react-markdown-preview";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, LucideTag } from "lucide-react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useMediaQuery } from "react-responsive";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -26,6 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getImageClass } from "../components/helpers/sfwImageVerifier";
 import { NavBack } from "../components/helpers/NavBack";
 import ResizeObserver from "resize-observer-polyfill";
+import { Tags } from "../components/writeUp/Tags";
 
 
 global.ResizeObserver = ResizeObserver;
@@ -119,11 +119,30 @@ const VoidBackEditor = () => {
   const [loading, setLoading] = useState(false);
   const [thumbnailSafe, setThumbnailSafe] = useState(false);
 
+  const [tags, setTags] = useState([]);
+  const [tag, setTag] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
 
 
   const isDesktop = useMediaQuery({query: "(min-width: 768px)"});
+
+
+  const handleNewTag = () => {
+    const t = {"tag": tag};
+
+    if(tags.length)
+      setTags(p=>p.filter((t)=>t.tag!==tag));
+
+    setTags(p=>[...p, t]);
+
+    setTag("");
+  }
+
+
+  const handleDelete = (tagText) => {
+    setTags(p=>p.filter((t)=>t.tag!==tagText));
+  }
 
 
   const theme = useTheme();
@@ -169,7 +188,7 @@ const VoidBackEditor = () => {
       title: writeup.title,
       description: writeup?.description ? writeup.description : "",
       content: content,
-      tags: [], // later on support for tags will come
+      tags: tags, // later on support for tags will come
       series: null // later on support for series will come
     };
 
@@ -261,10 +280,75 @@ const VoidBackEditor = () => {
 
       <div className="w-full h-[10vh] relative flex flex-row bg-background justify-between pl-5 pr-5">
 
+        {/* Navback */}
         <div className="h-full flex flex-col justify-center">
           <NavBack />
         </div>
 
+
+        {/* Tags Drawer */}
+        <div className="h-full flex flex-col justify-center">
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button
+                disabled={!content.length}
+                variant="outline"
+              >
+                add tags <LucideTag />
+              </Button>
+            </DrawerTrigger>
+
+            <DrawerContent className="h-full w-full">
+              <DrawerHeader>
+                <DrawerTitle>
+                  Tags
+                </DrawerTitle>
+
+                <DrawerDescription>
+                  Tags are essentially cateogries that you're writ-up falls under.
+                </DrawerDescription>
+              </DrawerHeader>
+
+
+              <div className="self-center flex flex-col gap-5 p-5 min-w-[330px]">
+
+                <div className="w-full flex flex-col self-center gap-5">
+                  <Label>
+                    Tag (Hit enter)
+                  </Label>
+
+                  { tags.length < 4 ?
+                    <Input
+                      className="max-w-[350px]"
+                      placeholder="Tag..."
+                      maxLength={30}
+                      value={tag}
+                      onChange={(e)=>setTag(e.target.value)}
+                      onKeyDown={(e)=>{
+                        if(e.key==="Enter" || e.key==="Return")
+                        {
+                          handleNewTag();
+                        }
+                      }}
+                    />
+                    : null
+                  }
+                </div>
+
+
+                <Tags tags={tags} handleDelete={handleDelete} readonly={false} />
+              </div>
+
+
+
+            </DrawerContent>
+
+          </Drawer>
+        </div>
+
+
+
+        {/* Publish Drawer */}
         <div className="h-full flex flex-col justify-center">
           {
             !isDesktop

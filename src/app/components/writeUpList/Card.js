@@ -12,6 +12,7 @@ import { shortRelativeTime } from "../helpers/DateTime";
 import { ReportDialog } from "../ReportDialogs";
 import { UserCard } from "../UserCard";
 import { BottomBar } from "../writeUp/BottomBar";
+import { Tags } from "../writeUp/Tags";
 
 
 
@@ -162,7 +163,7 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
                 <div className="w-full h-fit flex flex-row justify-center py-2">
                   <Image
                     loading="eager"
-                    className="rounded-xl w-[80svw] h-[80svw] max-w-[600px] max-h-[400px] object-cover border"
+                    className="rounded-xl w-[80svw] h-[80svw] max-w-[600px] max-h-[400px] object-contain dark:border"
                     width={1600}
                     height={900}
                     src={thumbnail.thumbnail}
@@ -172,6 +173,8 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
 
             </CardContent>
           }
+
+          <Tags tags={writeup.tags} readonly={true} />
 
         <CardFooter className="flex flex-row p-0">
 
