@@ -182,7 +182,7 @@ export default async function Page ({ params }) {
               <div className="w-full flex flex-row justify-center">
                 <Image
                   loading="eager"
-                  className="rounded-xl w-[80svw] h-[80svw] max-w-[600px] max-h-[400px] object-contain"
+                  className="rounded-xl w-[80svw] h-[80svw] max-w-[600px] max-h-[400px] object-contain dark:border"
                   width={1600}
                   height={900}
                   src={writeup.thumbnail.thumbnail}
