@@ -6,11 +6,11 @@ import { UserCard } from "@/app/components/UserCard";
 import { BottomBar } from "@/app/components/writeUp/BottomBar";
 import { WriteUpContent } from "@/app/components/writeUp/WriteUpContent";
 import { API_URL } from "@/app/utils/api-server";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Dot, Heart, NotebookPen } from "lucide-react";
+import { NotebookPen } from "lucide-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 
 
@@ -80,6 +80,8 @@ export default async function Page ({ params }) {
     headers: authTok && headers
   });
 
+  if(!response.ok)
+    return notFound();
 
   const writeup = await response.json();
 

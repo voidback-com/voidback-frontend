@@ -1,17 +1,8 @@
 'use server'
-import { AuthenticationDrawer } from "@/app/components/authentication/auth-drawer";
-import { NavBack } from "@/app/components/helpers/NavBack";
 import { NavigationBar } from "@/app/components/Navigation";
 import { AccountLayout } from "@/app/components/profile/AccountLayout";
-import { Bio } from "@/app/components/profile/Bio";
-import { Connections } from "@/app/components/profile/Connections";
-import ProfileTabs from "@/app/components/profile/Tabs";
-import { ThemeSwitch } from "@/app/components/themeSwitch";
-import { UserCard } from "@/app/components/UserCard";
 import { API_URL } from "@/app/utils/api-server";
-import { NotebookPen } from "lucide-react";
-import { cookies } from "next/headers";
-import Link from "next/link";
+import { notFound } from "next/navigation";
 
 
 
@@ -65,12 +56,13 @@ export default async function Page ({ params }) {
   const { username } = await params;
 
 
-  const cookieStore = await cookies();
-
-  const authTok = cookieStore.get("authTok")
-
 
   const response = await fetch(API_URL+`account/getAccount/${username}`);
+
+
+  if(!response.ok)
+    return notFound();
+
 
   const account = await response.json();
 
