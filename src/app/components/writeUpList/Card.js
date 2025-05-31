@@ -7,14 +7,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Divide, Dot, Ellipsis, Flag, SeparatorVertical, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { shortRelativeTime } from "../helpers/DateTime";
 import { ReportDialog } from "../ReportDialogs";
 import { UserCard } from "../UserCard";
 import { BottomBar } from "../writeUp/BottomBar";
 import { Tags } from "../writeUp/Tags";
-
-
+import ColorThief from 'colorthief'; // Or 'color-thief-react' if you use its hooks/components
 
 
 
@@ -72,6 +71,33 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
 
 
   const router = useRouter();
+
+
+  const imref = useRef(null);
+  const [imgStyle, setImgStyle] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+
+  const getImageStyle = async () => {
+    if(!imref.current && !loaded) return;
+
+    const color = new ColorThief();
+
+
+    if(imref.current.complete)
+    {
+      const bg = await color.getColor(imref.current);
+
+      setImgStyle({borderRadius: 10, background: `rgba(${bg[0]}, ${bg[1]}, ${bg[2]})`, backdropFilter: "blur(10px)"});
+
+    }
+    
+  }
+
+
+  useEffect(()=> {
+    getImageStyle();
+  }, [imref, !imgStyle, loaded])
 
 
   return (
@@ -160,14 +186,20 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
           { !snippet && thumbnail.thumbnail &&
             <CardContent onClick={()=>router.push(`/view/writeup/${writeup.id}`)} className="flex flex-col gap-2">
 
-                <div className="w-full h-fit flex flex-row justify-center py-2">
+              <div 
+                className={"w-full h-fit flex flex-row justify-center py-2"}  
+                style={imgStyle ? imgStyle : {}}
+              >
                   <Image
+
                     loading="eager"
-                    className="rounded-xl w-[80svw] h-[80svw] max-w-[600px] max-h-[400px] object-contain dark:border"
+                    className={`rounded-md w-[80svw] h-[80svw] max-w-[600px] max-h-[400px] object-contain animate-fade-up`}
                     width={1600}
                     height={900}
                     src={thumbnail.thumbnail}
                     alt={title}
+                    ref={imref}
+                  onLoadingComplete={()=>setLoaded(true)}
                   />
                 </div>
 
