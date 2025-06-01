@@ -169,7 +169,7 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
           </DropdownMenu>
           </div>
 
-          <div onClick={()=>router.push(`/view/writeup/${writeup.id}`)} className="w-full h-fit pl-10 pt-5 p-2 flex flex-col">
+          <div onClick={()=>router.push(`/view/writeup/${writeup.id}`)} className="w-full h-fit pl-5 pt-5 p-2 flex flex-col">
             <CardTitle className="text-lg">
               {title}
             </CardTitle>
@@ -187,13 +187,13 @@ export const WriteUpCard = ({writeup, firstRendered, snippet=false, noBorder}) =
             <CardContent onClick={()=>router.push(`/view/writeup/${writeup.id}`)} className="flex flex-col gap-2">
 
               <div 
-                className={"w-full h-fit flex flex-row justify-center py-2"}  
+                className={"w-full h-fit flex flex-row justify-center py-2 border"}  
                 style={imgStyle ? imgStyle : {}}
               >
                   <Image
 
                     loading="eager"
-                    className={`rounded-md w-[80svw] h-[80svw] max-w-[600px] max-h-[400px] object-contain animate-fade-up`}
+                    className={`rounded-md w-[80svw] h-[80svw] max-w-[600px] max-h-[400px] object-cover animate-fade-up`}
                     width={1600}
                     height={900}
                     src={thumbnail.thumbnail}
