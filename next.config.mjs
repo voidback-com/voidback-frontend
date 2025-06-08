@@ -12,7 +12,8 @@ const nextConfig = {
 
   env: {
     "API_URL": process.env.API_URL,
-    "WS_NOTIFICATIONS_COUNT": process.env.WS_NOTIFICATIONS_COUNT
+    "WS_NOTIFICATIONS_COUNT": process.env.WS_NOTIFICATIONS_COUNT,
+    "WS_THREAD": process.env.WS_THREAD
   },
   
   compiler: {

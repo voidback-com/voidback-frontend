@@ -10,6 +10,7 @@ import { useEffect, useState } from "react"
 
 
 export const UserAvatar = ({avatarURL, fullName}) => {
+
   return (
     <Avatar>
       <AvatarImage src={avatarURL} />
@@ -32,7 +33,7 @@ export const AuthUserCard = () => {
   return (
     <div
       itemScope
-      itemType="Person"
+      itemType="person"
       className="border-[0px] w-fit flex flex-row shadow-none rounded-none gap-2"
       onClick={()=>router.push(`/profile`)}
     >
@@ -48,7 +49,7 @@ export const AuthUserCard = () => {
             <p itemScope itemType="name" className="font-semibold text-md">{account.full_name}</p>
           </div>
 
-          {!account.verified && <BadgeCheck className="text-background fill-foreground" />}
+          {account.isVerified && <BadgeCheck className="text-background fill-foreground" />}
 
           
         </div>
@@ -250,7 +251,7 @@ export const UserCard = ({username, fullName, avatarUrl, verified, returnAuthent
             <p itemScope itemType="name" className="font-semibold text-md">{fullName}</p>
           </div>
 
-          {!verified && <BadgeCheck className="text-background fill-foreground" />}
+          {verified && <BadgeCheck className="text-background fill-foreground" />}
 
 
           {

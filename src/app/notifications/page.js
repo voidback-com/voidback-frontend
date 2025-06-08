@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { NavigationBar } from "../components/Navigation"
 import { deleteAllNotifications, getNotifications, readNotifications } from "../components/helpers/Notifications";
-import { useMediaQuery } from "react-responsive";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeletons } from "../components/writeUpList";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -34,6 +33,7 @@ const RenderObject = ({type, obj}) => {
       return <CommentCard noBorder comment={obj} />;
 
 
+
     default:
       return null;
   }
@@ -44,6 +44,7 @@ const RenderObject = ({type, obj}) => {
 const NotificationCard = ({item, index}) => {
 
   const { from, object, objectType } = item.content;
+
 
   return (
     <Card className={`w-full ${index===0 ? "border-t" : "border-b"} rounded-none shadow-none`}>

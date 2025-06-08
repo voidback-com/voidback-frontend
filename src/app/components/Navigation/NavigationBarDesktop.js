@@ -3,9 +3,8 @@
 import { accountCacheDelete, isAuthenticated } from "@/app/utils/api"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { deleteCookie } from "cookies-next/client"
-import { AtSign, Bell, Home, HomeIcon, LogOut, MessageSquare, Search, Settings, User } from "lucide-react"
+import { Bell, Home, LogOut, Settings, User } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
@@ -33,15 +32,6 @@ export const NavigationBarDesktop = ({setSelected, selected, notificationsCount}
 
           <p className={`${selected==="home" ? "font-semibold" : "font-normal"} text-xl`}>
             Home
-          </p>
-        </Button>
-
-
-        <Button onClick={()=>setSelected("threads")} variant="ghost" className={`h-fit w-fit hover:bg-transparent focus:bg-transparent rounded-none outline-none gap-5 ${selected==="threads" ? "text-foreground border-l-[2px] border-l-foreground" : "text-muted-foreground"}`}>
-          <AtSign className="min-w-[30px] min-h-[30px]" />
-
-          <p className={`${selected==="threads" && "font-semibold"} text-xl`}>
-            Threads
           </p>
         </Button>
 

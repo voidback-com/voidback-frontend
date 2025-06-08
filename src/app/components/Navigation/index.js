@@ -1,7 +1,6 @@
 'use client'
 import { API_URL, getToken, isAuthenticated, WS_NOTIFICATIONS_COUNT } from "@/app/utils/api";
 import { Command, CommandGroup, CommandList, CommandInput, CommandItem } from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";

@@ -4,6 +4,7 @@ import { Roboto, Playfair_Display } from 'next/font/google';
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { useEffect } from "react";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 
 export const PlayFair = Playfair_Display({
@@ -79,7 +80,9 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <SidebarProvider>
+              {children}
+            </SidebarProvider>
           </ThemeProvider>
 
           <Toaster />

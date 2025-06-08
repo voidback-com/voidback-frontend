@@ -15,7 +15,7 @@ export const Skeletons = ({size}) => {
     <div className="w-full h-full flex flex-col gap-1">
       {
         Array(size).fill(null).map((n, i)=> {
-          return <Skeleton className={"h-[250px] w-full rounded-none"} key={i} />
+          return <Skeleton className={"h-[250px] w-full rounded-none"} key={i+Math.random()} />
         })
       }
     </div>

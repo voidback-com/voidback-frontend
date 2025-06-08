@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AtSign, Bell, Home, MessageSquare, Search, Settings, User } from "lucide-react";
+import { Bell, Home, Search, Settings, User } from "lucide-react";
 
 
 
@@ -20,10 +20,6 @@ export const NavigationBarMobile = ({selected, setSelected, notificationsCount})
 
       <Button variant="ghost" onClick={()=>setSelected("search")} className={`h-full w-full hover:bg-transparent focus:bg-transparent rounded-none outline-none ${selected==="search" ? "text-foreground border-b-[2px] border-b-foreground" : "text-muted-foreground"}`}>
         <Search className="min-w-[25px] min-h-[25px]" />
-      </Button>
-
-      <Button onClick={()=>setSelected("threads")} variant="ghost" className={`h-full w-full hover:bg-transparent focus:bg-transparent rounded-none outline-none ${selected==="threads" ? "text-foreground border-b-[2px] border-b-foreground" : "text-muted-foreground"}`}>
-        <AtSign className="min-w-[25px] min-h-[25px]" />
       </Button>
 
 
