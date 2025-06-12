@@ -17,7 +17,7 @@ import { CommentBottomBar } from "./Comment-Bottom-Bar"
 
 
 
-export const CommentCard = ({comment, noBorder}) => {
+export const CommentCard = ({ comment, noBorder }) => {
 
   const account = accountCacheGet();
 
@@ -29,22 +29,21 @@ export const CommentCard = ({comment, noBorder}) => {
 
 
   const handleDelete = async () => {
-    const response = await fetch(API_URL+`writeup/comment`, {
+    const response = await fetch(API_URL + `writeup/comment`, {
       method: "DELETE",
-      headers: toAuthHeaders({"Content-Type": "application/json"}),
-      body: JSON.stringify({"id": comment.id})
+      headers: toAuthHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ "id": comment.id })
     })
 
 
-    if(response.ok)
-    {
+    if (response.ok) {
+      "Commented deleted successfully!"
       toast({
-        title: "Commented deleted successfully!"
       });
       setDeleted(true);
     }
 
-    else{
+    else {
       toast({
         title: "Failed to delete comment!",
         description: errorToReadable(await response.json())
@@ -55,15 +54,16 @@ export const CommentCard = ({comment, noBorder}) => {
   }
 
 
-  if(deleted)
+  if (deleted)
     return null;
+
 
 
   return (
     <>
       <Card className={`shadow-none border-none rounded-none max-w-[600px] place-self-center w-full ${noBorder && "border-0"}`}>
         <CardHeader className="w-full flex flex-row justify-between">
-          <UserCard 
+          <UserCard
             username={comment.author.username}
             fullName={comment.author.full_name}
             avatarUrl={comment.author.avatar}
@@ -72,7 +72,7 @@ export const CommentCard = ({comment, noBorder}) => {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button 
+              <Button
                 variant="ghost"
                 size="icon"
               >
@@ -81,17 +81,17 @@ export const CommentCard = ({comment, noBorder}) => {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className="border bg-background rounded-xl p-2">
-              <DropdownMenuItem onClick={()=>setShowReport(true)} className="w-full flex flex-row justiby-between">
+              <DropdownMenuItem onClick={() => setShowReport(true)} className="w-full flex flex-row justiby-between">
                 Report <Flag />
               </DropdownMenuItem>
 
               {
-                account && account.username===comment.author.username ?
-              <DropdownMenuItem onClick={()=>handleDelete()} className="w-full flex flex-row justiby-between">
-                Delete <Trash />
-              </DropdownMenuItem>
+                account && account.username === comment.author.username ?
+                  <DropdownMenuItem onClick={() => handleDelete()} className="w-full flex flex-row justiby-between">
+                    Delete <Trash />
+                  </DropdownMenuItem>
 
-                : null
+                  : null
 
               }
             </DropdownMenuContent>
