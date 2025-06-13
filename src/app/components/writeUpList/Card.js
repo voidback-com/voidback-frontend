@@ -65,10 +65,6 @@ export const WriteUpCard = ({ writeup, firstRendered, snippet = false, noBorder 
   }
 
 
-  if (deleted)
-    return null;
-
-
 
   const router = useRouter();
 
@@ -102,8 +98,7 @@ export const WriteUpCard = ({ writeup, firstRendered, snippet = false, noBorder 
   return (
     <>
       <Card
-        className={`border-[0px] shadow-none rounded-none ${firstRendered ? "border-b" : "border-t"} ${snippet && "w-full"}  ${noBorder && "border-0"}`}
-
+        className={`border-[0px] ${deleted && "opacity-25"} shadow-none rounded-none ${firstRendered ? "border-b" : "border-t"} ${snippet && "w-full"}  ${noBorder && "border-0"}`}
       >
         <CardHeader className="w-full max-h-fit">
           <div className="w-full flex flex-row justify-between">

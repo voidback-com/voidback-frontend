@@ -9,13 +9,13 @@ import { ViewportList } from "react-viewport-list";
 import { WriteUpCard } from "./Card";
 
 
-export const Skeletons = ({size}) => {
-  
+export const Skeletons = ({ size }) => {
+
   return (
     <div className="w-full h-full flex flex-col gap-1">
       {
-        Array(size).fill(null).map((n, i)=> {
-          return <Skeleton className={"h-[250px] w-full rounded-none"} key={i+Math.random()} />
+        Array(size).fill(null).map((n, i) => {
+          return <Skeleton className={"h-[250px] w-full rounded-none"} key={i + Math.random()} />
         })
       }
     </div>
@@ -24,16 +24,16 @@ export const Skeletons = ({size}) => {
 
 
 
-export const WriteUpList = ({writeUps, loading, hasMore, loadMore, noPad}) => {
+export const WriteUpList = ({ writeUps, loading, hasMore, loadMore, noPad }) => {
 
 
 
 
   const renderItem = (item, i) => {
-    return <WriteUpCard writeup={item} key={item.id} firstRendered={i===0} />
+    return <WriteUpCard writeup={item} key={item.id} firstRendered={i === 0} />
   }
 
-  const isDesktop = useMediaQuery({query: "(min-width: 768px) and (pointer: fine)"});
+  const isDesktop = useMediaQuery({ query: "(min-width: 768px) and (pointer: fine)" });
 
   return (
     <div id="scroll-div" className={`w-full max-h-[100%] overflow-y-scroll ${!isDesktop && !noPad ? "pb-[10vh]" : ""} ${!noPad ? "pt-[10vh]" : ""}`}>
@@ -44,9 +44,9 @@ export const WriteUpList = ({writeUps, loading, hasMore, loadMore, noPad}) => {
         scrollableTarget="scroll-div"
         loader={<Skeletons size={10} />}
       >
-        {writeUps.length ? writeUps.map((writeup, i)=> renderItem(writeup, i)) : null}
+        {writeUps.length ? writeUps.map((writeup, i) => renderItem(writeup, i)) : null}
       </InfiniteScroll>
-      </div>
+    </div>
   )
 }
 
@@ -67,13 +67,12 @@ export const WriteUpsFeed = () => {
 
     setLoading(true);
 
-    const response = await fetch(nextPage ? nextPage : API_URL+`writeup/list?page_size=5&page=1`);
+    const response = await fetch(nextPage ? nextPage : API_URL + `writeup/list?page_size=5&page=1`);
 
     const data = await response.json();
 
 
-    if(!response.ok)
-    {
+    if (!response.ok) {
       setLoading(false);
       setHasMore(false);
       toast({
@@ -82,41 +81,38 @@ export const WriteUpsFeed = () => {
       });
     }
 
-    else{
-      if(nextPage)
-      {
-        setItems(p=>[...p, ...data.results]);
+    else {
+      if (nextPage) {
+        setItems(p => [...p, ...data.results]);
       }
-      else{
+      else {
         setItems(data.results);
       }
 
-      if(!data.next)
-      {
+      if (!data.next) {
         setHasMore(false);
         setNextPage(null);
       }
-      else{
+      else {
         setNextPage(data.next);
       }
 
       setLoading(false);
     }
 
-  } 
+  }
 
 
-  useEffect(()=> {
-    if(!items.length && !loading && hasMore)
-    {
+  useEffect(() => {
+    if (!items.length && !loading && hasMore) {
       loadMore();
     }
   }, [!items, !loading, hasMore])
 
 
   return (
-    <WriteUpList 
-      writeUps={items} 
+    <WriteUpList
+      writeUps={items}
       hasMore={hasMore}
       loadMore={loadMore}
       loading={loading}
