@@ -291,6 +291,8 @@ const VoidBackEditor = () => {
       });
 
       setNewSeries(null);
+
+      fetchSeries();
     }
 
     else {
@@ -298,6 +300,7 @@ const VoidBackEditor = () => {
         title: "Failed to create new series!",
         description: errorToReadable(await response.json())
       });
+
     }
   }
 

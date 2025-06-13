@@ -14,14 +14,13 @@ export const getToken = () => {
 
   const tok = getCookie("authTok");
 
-  try{
+  try {
 
-    if(tok)
-    {
+    if (tok) {
       return JSON.parse(tok).token;
     }
 
-  } catch(err) {
+  } catch (err) {
     // log err
   }
 
@@ -33,31 +32,29 @@ export const isAuthenticated = () => {
 
   const tok = getCookie("authTok");
 
-  if(tok)
-  {
+  if (tok) {
     return true;
   }
 
+  accountCacheDelete(); // make sure any cache is gone
   return false;
 
 }
 
 
 export const toAuthHeaders = (headers) => {
-  try{
+  try {
     const tok = JSON.parse(getCookie("authTok"));
-  
 
-    if(tok)
-    {
-      if(tok)
-      {
+
+    if (tok) {
+      if (tok) {
         headers["Authorization"] = `Token ${tok.token}`
         return headers;
       }
     }
 
-  } catch(err){
+  } catch (err) {
 
   }
 
@@ -68,21 +65,21 @@ export const toAuthHeaders = (headers) => {
 export const errorToReadable = (errorObj) => {
   let messages = [];
 
-  if(!errorObj)
+  if (!errorObj)
     return "An unknown error occurred!";
 
-  Object.keys(errorObj).map((key)=> {
+  Object.keys(errorObj).map((key) => {
     let v = errorObj[key];
-    if(typeof v === Array)
+    if (typeof v === Array)
       v = v[0];
-    
+
     messages.push(`${key}: ${v}`);
   })
 
   let res = "";
 
-  messages.forEach((f)=> {
-    res+=f+'\n';
+  messages.forEach((f) => {
+    res += f + '\n';
   })
 
   return res;
@@ -91,22 +88,22 @@ export const errorToReadable = (errorObj) => {
 
 
 export const isError = (obj) => {
-  if(obj === null || obj === undefined)
+  if (obj === null || obj === undefined)
     return false;
 
-  if("details" in obj){
+  if ("details" in obj) {
     return true;
   }
 
-  else if("message" in obj){
+  else if ("message" in obj) {
     return true;
   }
 
-  else if(!obj){
+  else if (!obj) {
     return true;
   }
 
-  else{
+  else {
     return false;
   }
 }
@@ -115,21 +112,20 @@ export const isError = (obj) => {
 
 
 export const accountCacheStore = (accObj) => {
-  if(typeof window==="undefined")return;
-    localStorage.setItem("cached_accInfo", JSON.stringify(accObj));
+  if (typeof window === "undefined") return;
+  localStorage.setItem("cached_accInfo", JSON.stringify(accObj));
 }
 
 
 export const accountCacheGet = () => {
-  if(typeof window==="undefined")return;
+  if (typeof window === "undefined") return;
 
   const x = localStorage.getItem("cached_accInfo")
 
-  if(x)
-  {
-    try{
+  if (x) {
+    try {
       return JSON.parse(x);
-    } catch(err) {
+    } catch (err) {
       // nothing for now
     }
   }
@@ -138,7 +134,7 @@ export const accountCacheGet = () => {
 
 
 export const accountCacheDelete = () => {
-  if(typeof window==="undefined")return;
+  if (typeof window === "undefined") return;
 
   localStorage.removeItem("cached_accInfo");
 }

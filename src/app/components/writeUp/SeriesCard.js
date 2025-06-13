@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Folder, ListVideo } from "lucide-react"
+import { Folder } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 
@@ -11,10 +11,12 @@ export const SeriesCard = ({ name }) => {
 
   return (
     <Button
+      variant="secondary"
+      size="sm"
       className="flex flex-row border p-2 rounded-md"
       onClick={() => router.push(`/explore/series/${name}`)}
     >
-      <ListVideo />
+      <Folder />
 
       <p
         className="text-xs font-semibold"
