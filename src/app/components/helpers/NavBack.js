@@ -30,7 +30,7 @@ export const NavBack = () => {
     }
 
     else {
-      router.push("/home")
+      router.push("/")
     }
 
   }
