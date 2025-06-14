@@ -12,11 +12,10 @@ export async function generateMetadata({ params }) {
   const { username } = await params;
 
 
-  const response = await fetch(API_URL+`account/getAccount/${username}`);
+  const response = await fetch(API_URL + `account/getAccount/${username}`);
 
 
-  if(response.status===404)
-  {
+  if (response.status === 404) {
     return {
       title: "Not Found",
       description: "This Account doesn't exist!"
@@ -28,39 +27,39 @@ export async function generateMetadata({ params }) {
 
 
   return {
+    title: data.full_name,
+    description: data.bio,
+
+    openGraph: {
       title: data.full_name,
       description: data.bio,
+      images: data.avatar && [{ url: data.avatar, alt: data.full_name }],
+      url: `https://voidback.com/view/account/${username}`,
+      siteName: "Voidback",
+      type: "profile"
+    },
 
-      openGraph: {
-        title: data.full_name,
-        description: data.bio,
-        images: data.avatar && [{ url: data.avatar, alt: data.full_name }],
-        url: `https://voidback.com/view/account/${username}`,
-        siteName: "Voidback",
-        type: "profile"
-      },
-
-      robots: {
-          index: true, // Allow indexing (default)
-          follow: true, // Allow following links (default)
-          nocache: false, // Allow caching
-        },
-    }
+    robots: {
+      index: true, // Allow indexing (default)
+      follow: true, // Allow following links (default)
+      nocache: false, // Allow caching
+    },
+  }
 }
 
 
 
 
-export default async function Page ({ params }) {
+export default async function Page({ params }) {
 
   const { username } = await params;
 
 
 
-  const response = await fetch(API_URL+`account/getAccount/${username}`);
+  const response = await fetch(API_URL + `account/getAccount/${username}`);
 
 
-  if(!response.ok)
+  if (!response.ok)
     return notFound();
 
 
@@ -74,7 +73,7 @@ export default async function Page ({ params }) {
       className="w-full h-[100svh] max-h-[100vh] flex flex-col justify-between"
     >
       <NavigationBar selected="" feed={<AccountLayout account={account} />} />
-  </div>
+    </div>
 
   )
 }
