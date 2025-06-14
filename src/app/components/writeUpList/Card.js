@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import { Divide, Dot, Ellipsis, Flag, SeparatorVertical, Trash } from "lucide-react";
+import { Divide, Dot, Ellipsis, Flag, Pen, SeparatorVertical, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -149,11 +149,19 @@ export const WriteUpCard = ({ writeup, firstRendered, snippet = false, noBorder 
 
                 {
                   account && account.username === author.username ?
-                    <DropdownMenuItem onClick={() => handleDelete()} className="w-full flex flex-row justify-between">
-                      <Trash />
+                    <>
+                      <DropdownMenuItem onClick={() => handleDelete()} className="w-full flex flex-row justify-between">
+                        <Trash />
 
-                      Delete
-                    </DropdownMenuItem>
+                        Delete
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem onClick={() => router.push(`/editor/update/${writeup.id}`)} className="w-full flex flex-row justify-between">
+                        <Pen />
+
+                        Edit
+                      </DropdownMenuItem>
+                    </>
 
                     : null
 
@@ -177,7 +185,7 @@ export const WriteUpCard = ({ writeup, firstRendered, snippet = false, noBorder 
 
         </CardHeader>
 
-        {!snippet && thumbnail.thumbnail &&
+        {!snippet && thumbnail?.thumbnail && thumbnail.thumbnail &&
           <CardContent onClick={() => router.push(`/view/writeup/${writeup.id}`)} className="flex flex-col gap-2">
 
             <div

@@ -20,14 +20,20 @@ import { Label } from "@/components/ui/label";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { accountCacheGet, API_URL, errorToReadable, toAuthHeaders } from "../utils/api";
+import { accountCacheGet, API_URL, errorToReadable, toAuthHeaders } from "@/app/utils/api";
 import { useToast } from "@/hooks/use-toast";
-import { getImageClass } from "../components/helpers/sfwImageVerifier";
-import { NavBack } from "../components/helpers/NavBack";
 import ResizeObserver from "resize-observer-polyfill";
-import { Tags } from "../components/writeUp/Tags";
-import { fetchUserSeries } from "../components/helpers/Profile";
 import { Select, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue, SelectContent } from "@/components/ui/select";
+import { fetchUserSeries } from "@/app/components/helpers/Profile";
+import { Tags } from "@/app/components/writeUp/Tags";
+import { NavBack } from "@/app/components/helpers/NavBack";
+import { getImageClass } from "@/app/components/helpers/sfwImageVerifier";
+import NotFound from "@/app/not-found";
+
+
+
+
+
 
 
 global.ResizeObserver = ResizeObserver;
@@ -104,7 +110,7 @@ const PublishForm = ({ form, submit, loading, setThumbnail }) => {
 
         <Button className="max-w-[400px] w-full place-self-center top-5 relative">
           {loading && <Loader2 className="animate-spin" />}
-          publish
+          update
         </Button>
       </form>
     </Form>
@@ -112,12 +118,14 @@ const PublishForm = ({ form, submit, loading, setThumbnail }) => {
 }
 
 
-const VoidBackEditor = () => {
+const VoidBackEditor = ({ params }) => {
+
 
 
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(" ");
   const [thumbnail, setThumbnail] = useState(null);
+  const [description, setDescription] = useState(null);
   const [loading, setLoading] = useState(false);
   const [thumbnailSafe, setThumbnailSafe] = useState(false);
   const [selectedSeries, setSelectedSeries] = useState("");
@@ -172,9 +180,14 @@ const VoidBackEditor = () => {
 
   const form = useForm({
     resolver: zodResolver(formSchema),
+    values: {
+      title: title,
+      description: description
+    },
+
     defaultValues: {
-      title: "",
-      description: "",
+      title: title,
+      description: description,
     },
   });
 
@@ -196,7 +209,8 @@ const VoidBackEditor = () => {
       description: writeup?.description ? writeup.description : "",
       content: content,
       tags: tags, // later on support for tags will come
-      series: selectedSeries
+      series: selectedSeries,
+      id: writeUp.id
     };
 
 
@@ -217,7 +231,7 @@ const VoidBackEditor = () => {
 
 
     const response = await fetch(API_URL + `writeup`, {
-      method: "POST",
+      method: "PATCH",
       headers: toAuthHeaders({}),
       body: form_writeup
     })
@@ -227,7 +241,7 @@ const VoidBackEditor = () => {
 
     if (!response.ok) {
       toast({
-        title: "Error publishing!",
+        title: "Error updating!",
         description: resData?.error ? resData.error : errorToReadable(resData),
       })
     }
@@ -235,7 +249,7 @@ const VoidBackEditor = () => {
     else {
       toast({
         title: "Success",
-        description: "Write-up published successfully!"
+        description: "Write-up updated successfully!"
       });
 
     }
@@ -328,6 +342,58 @@ const VoidBackEditor = () => {
 
 
 
+  const [writeUp, setWriteUp] = useState(null);
+  const [error, setError] = useState(false);
+
+
+  const fetchWriteUp = async () => {
+    const { id } = await params;
+
+    const response = await fetch(API_URL + `getWriteUp?id=${id}`);
+
+    if (response.ok) {
+      const data = await response.json();
+
+
+      setTitle(data.title);
+      setTags(data.tags);
+      setContent(data.content);
+
+      if (data.series)
+        setSelectedSeries(data.series.name);
+
+
+
+      setDescription(data.description);
+
+      setWriteUp(data);
+    }
+
+    else {
+      setError(true);
+    }
+  }
+
+
+  useEffect(() => {
+    if (!error)
+      fetchWriteUp();
+  }, [!writeUp, !error])
+
+
+  if (error)
+    return NotFound();
+
+
+  if (!writeUp) {
+    return (
+      <div
+        className="w-full h-full max-h-[100vh] flex flex-col justify-center"
+      >
+        <div className="w-full flex flex-row p-10"><Loader2 className="animate-spin" /></div>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -411,7 +477,7 @@ const VoidBackEditor = () => {
                     </div>
 
 
-                    <Select id="series" onValueChange={(v) => setSelectedSeries(v)} value={selectedSeries}>
+                    <Select id="series" onValueChange={(v) => setSelectedSeries(v)} value={selectedSeries} defaultValue={selectedSeries}>
 
                       <SelectTrigger>
                         <SelectValue placeholder="select a series" />
@@ -520,14 +586,14 @@ const VoidBackEditor = () => {
                     variant="outline"
                   >
                     {loading && <Loader2 className="animate-spin" />}
-                    publish
+                    update
                   </Button>
                 </DrawerTrigger>
 
                 <DrawerContent>
                   <DrawerHeader>
                     <DrawerTitle>
-                      Publish
+                      Update
                     </DrawerTitle>
 
                     <DrawerDescription>
