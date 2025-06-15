@@ -38,13 +38,18 @@ export const ProfileLayout = () => {
 
       {/* top section */}
       <motion.div ref={topsec} className="w-full flex flex-col h-full justify-between p-10">
+
         <div className="w-full flex flex-col gap-5">
+
           <div className="w-full flex flex-col gap-5">
+
             <div className="w-fit flex flex-row gap-5">
+
               <AuthUserCard />
               <Editor />
+
             </div>
-            
+
             <Bio />
           </div>
 
@@ -52,9 +57,9 @@ export const ProfileLayout = () => {
         </div>
       </motion.div>
 
-      <ProfileTabs 
-        scrolling={currentScrollY>0} 
-        ref={scrollRef} translateY={currentScrollY && currentScrollY < topsec.current.clientHeight ? -currentScrollY : currentScrollY ? -topsec.current.clientHeight : 0} 
+      <ProfileTabs
+        scrolling={currentScrollY > 0}
+        ref={scrollRef} translateY={currentScrollY && currentScrollY < topsec.current.clientHeight ? -currentScrollY : currentScrollY ? -topsec.current.clientHeight : 0}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />

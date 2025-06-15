@@ -40,6 +40,7 @@ export default function ProfileTabs({ username, ref, translateY, scrolling, setA
 
 
           <TabsTrigger value="series" className="text-[16px] data-[state=active]:border-b-[3px] rounded-none shadow-none border-b-foreground flex flex-row gap-4">Series <Folder /></TabsTrigger>
+
         </TabsList>
 
 
