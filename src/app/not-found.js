@@ -12,10 +12,10 @@ export default function NotFound() {
       </div>
 
       <div
-        className='w-full h-[100%] bg-background flex flex-col justify-center py-10'
+        className='w-full h-[100%] bg-background flex flex-col justify-start py-10'
       >
         <div
-          className='w-full flex flex-row justify-center'
+          className='w-[100svw] flex flex-row justify-center'
         >
           <div className='flex flex-col'>
             <img src={"/illustrations/404.svg"} className='w-full max-w-[500px]' />
